@@ -19,8 +19,30 @@
 }
 
 .card-border{
+    border-radius: 10px;
     border: 5px solid #1D1C1B;
 }
-.login-background{
+
+.login-background {
+    width: 75%;
+    padding: 15px;
+    background-repeat: no-repeat;
+    background-size: cover;
     background-image: url("../images/rewards-icon/15%.png");
+}
+
+.login-btn {
+    padding: 10px 40px;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+}
+
+.login-btn:hover {
+    background-color: #7fff88;
+    color: white;
+}
+
+label {
+    color: white;
 }

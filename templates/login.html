@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1 class="text-centre text-colour mt-5">Login</h1>
+    <br>
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-center">
+            <div class="card card-border login-background">
+                <div class="card-body">
+                    <form method="post">
+                        <div class="mb-5">
+                            {{ formHelper.renderField(form.email) }}
+                        </div>
+                        <div class="mb-5">
+                            {{ formHelper.renderField(form.password) }}
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <input type="submit" value="Login" class="login-btn">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
