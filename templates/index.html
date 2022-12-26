@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content_fluid %}
+    <div class="row card-animation">
+        <div class="col-md-12">
+            <img src="{{ url_for('static', filename='images/background.png') }}" class="w-100 px-5">
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <br>
+    <br>
+    <h2 class="text-centre mb-5 text-colour">New Arrivals</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card  card-border background" style="width: 100%;">
+                <div class="card-body">
+                    <div class="d-flex flex-column justify-content-center">
+                        <img src="{{ url_for('static', filename='images/seiko/watch1.png') }}" class="image-size">
+                        <p class="card-text text-colour text-centre">Seiko Chronograph Quartz Watch</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-border background" style="width: 100%;">
+                <div class="card-body ">
+                    <div class="d-flex flex-column justify-content-center">
+                        <img src="{{ url_for('static', filename='images/seiko/watch3.png') }}" class="image-size">
+                        <p class="card-text text-colour text-centre">Seiko Prospex Save the Ocean Series</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
