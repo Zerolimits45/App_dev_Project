@@ -63,3 +63,4 @@ class SignUpForm(Form):
         for key in user_dict:
             if self.email.data == user_dict[key].get_email():
                 raise ValidationError('Email is already in use.')
+
