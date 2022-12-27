@@ -7,13 +7,14 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Admin</th>
                     <th>Actions</th>
                 </tr>
-                {% for user in users_list %}
                 <tr>
-                    <td>{{ user.get_uid() }}</td>
-                    <td>{{ user.get_name() }}</td>
-                    <td>{{ user.get_email() }}</td>
+                    <td>1</td>
+                    <td>Aloysius</td>
+                    <td>Aloysius@gmail.com</td>
+                    <td>False</td>
                     <td>
                         <a href="#" class="me-1">
                             <button class="edit-btn">Edit</button>
@@ -23,7 +24,6 @@
                         </a>
                     </td>
                 </tr>
-                {% endfor %}
             </table>
         </div>
     </div>
