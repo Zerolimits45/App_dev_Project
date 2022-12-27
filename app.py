@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from forms import LoginForm
 import shelve
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect  # up for debate
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
