@@ -15,7 +15,7 @@
                 <li class="nav-item">
                     <a class="nav-link " href="#">Contact</a>
                 </li>
-                {% if session.get('Admin') == None and session.get('CurrentUser') == None %}
+                {% if 'Admin' in session or 'CurrentUser' in session %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">Log In
@@ -25,7 +25,7 @@
                         <li><a class="dropdown-item" href="{{ url_for('signup') }}">Sign Up</a></li>
                     </ul>
                 </li>
-                {% else %}
+                {% elif 'CurrentUser' in session %}
                 <li class="nav-item">
                     <a class="nav-link" href="#">Profile</a>
                 </li>
