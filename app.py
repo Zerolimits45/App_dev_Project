@@ -44,6 +44,9 @@ def login():
                     return redirect(url_for('home'))
     return render_template('login.html', form=form)
 
+@app.route('/signup')
+def signup():
+    return render_template('login.html', form=form)
 
 @app.route('/logout')
 def logout():

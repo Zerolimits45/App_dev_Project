@@ -18,7 +18,7 @@
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         </div>
                         <div class="d-flex justify-content-center mt-4">
-                            <p class="text-white">New User? <a href="#">Click to Sign Up!</a></p>
+                            <p class="text-white">New User? <a href="{{ url_for('signup') }}">Click to Sign Up!</a></p>
                         </div>
                     </form>
                 </div>
