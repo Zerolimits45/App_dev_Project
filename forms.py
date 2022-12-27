@@ -37,3 +37,29 @@ class LoginForm(Form):
         if id != None:
             if self.password.data != id[1]:
                 raise ValidationError('Incorrect Email or Password')
+
+
+# Sign up for users
+class SignUpForm(Form):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=64,
+                                                                            message="Password needs to be at least 6 characters long.")])
+    confirmPassword = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Sign Up')
+
+    def validate_email(self, email):
+        user_dict = {}
+        db = shelve.open('Users')
+        try:
+            if 'User' in db:
+                user_dict = db['User']
+            else:
+                db['User'] = user_dict
+        except:
+            print("Error in retrieving Users from storage.")
+        db.close()
+
+        for key in user_dict:
+            if self.email.data == user_dict[key].get_email():
+                raise ValidationError('Email is already in use.')
