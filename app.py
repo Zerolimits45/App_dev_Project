@@ -84,7 +84,7 @@ def logout():
 
 @app.route('/admin/users')
 def users():
-    return render_template('admin-home.html')
+    return render_template('admin/admin-home.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
