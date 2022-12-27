@@ -35,7 +35,7 @@ def login():
         db.close()
         if form.email.data == 'admin@mail.com' and form.password.data == 'password':
             session['Admin'] = form.email.data
-            return redirect(url_for('home'))
+            return redirect(url_for('users'))
         else:
             for key in user_dict:
                 if form.email.data == user_dict[key].get_email():
@@ -82,9 +82,27 @@ def logout():
     session.pop('Admin', None)
     return redirect(url_for('home'))
 
+
 @app.route('/admin/users')
 def users():
-    return render_template('admin/admin-home.html')
+    user_dict = {}
+    db = shelve.open('Users', 'c')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+    db.close()
+
+    users_list = []
+    for key in user_dict:
+        user = user_dict.get(key)
+        users_list.append(user)
+
+    return render_template('admin/admin-home.html', count=len(users_list), users_list=users_list)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
