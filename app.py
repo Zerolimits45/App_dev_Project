@@ -82,6 +82,9 @@ def logout():
     session.pop('Admin', None)
     return redirect(url_for('home'))
 
+@app.route('/admin/users')
+def users():
+    return render_template('admin-home.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
