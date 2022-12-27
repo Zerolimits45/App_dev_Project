@@ -36,4 +36,4 @@ class LoginForm(Form):
 
         if id != None:
             if self.password.data != id[1]:
-                raise ValidationError('Incorrect Username or Password')
+                raise ValidationError('Incorrect Email or Password')
