@@ -6,7 +6,7 @@
         <div class="col-lg-6 mb-3 mb-lg-0">
             <div class="card card-border login-background">
                 <div class="card-body">
-                    <form method="post">
+                    <form method="post" novalidate>
                         <div class="mb-3">
                             {{ formHelper.renderField(form.name) }}
                         </div>
@@ -23,6 +23,7 @@
                         </div>
                         <div class="d-flex justify-content-center">
                             <input type="submit" value="Login" class="login-btn">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         </div>
                         <div>
                             <p class="text-white">Already a User? <a href="{{ url_for('login') }}">Click to Log In!</a></p>
