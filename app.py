@@ -45,5 +45,12 @@ def login():
     return render_template('login.html', form=form)
 
 
+@app.route('/logout')
+def logout():
+    session.pop('CurrentUser', None)
+    session.pop('Admin', None)
+    return redirect(url_for('home'))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
