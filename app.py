@@ -9,16 +9,22 @@ csrf = CSRFProtect(app)
 app.secret_key = 'jiceuiruineruiferuifbwneionweicbuivbruinewicwebvuierniwndiwebciuevbiuerdniweoncueivbuiecbwuicbewui'
 
 
+# Home
 @app.route('/')
 def home():
     return render_template('index.html')
 
 
+# Shop
 @app.route('/shop')
 def shop():
     return render_template('shop.html')
 
 
+# Contact
+@app.route('/shop')
+
+# Login
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     form = LoginForm(request.form)
@@ -47,6 +53,7 @@ def login():
     return render_template('login.html', form=form)
 
 
+# Session
 @app.before_request
 def make_session_permanent():
     form = LoginForm(request.form)
@@ -57,7 +64,8 @@ def make_session_permanent():
             session.permanent = False
 
 
-@app.route('/signup', methods=['GET', 'POST'])
+# Sign up
+@app.route('/signup', methods=['GET', 'POST'])  # adding the new user after the sign-up
 def signup():
     form = SignUpForm(request.form)
     if request.method == 'POST' and form.validate():
@@ -87,6 +95,7 @@ def signup():
     return render_template('signUp.html', form=form)
 
 
+# Logout
 @app.route('/logout')
 def logout():
     session.pop('CurrentUser', None)
@@ -94,6 +103,7 @@ def logout():
     return redirect(url_for('home'))
 
 
+# Admin user view
 @app.route('/admin/users')
 def users():
     user_dict = {}
