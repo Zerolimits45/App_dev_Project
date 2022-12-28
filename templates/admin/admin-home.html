@@ -15,7 +15,7 @@
                     <td>{{ user.get_name() }}</td>
                     <td>{{ user.get_email() }}</td>
                     <td>
-                        <a href="{{ url_for('editUsers') }}" class="me-1">
+                        <a href="{{url_for('editUsers', id=user.get_uid())}}" class="me-1">
                             <button class="edit-btn">Edit</button>
                         </a>
                         <a href="#">

@@ -14,6 +14,7 @@
                         </div>
                         <div class="d-flex justify-content-center">
                             <input type="submit" value="Save" class="login-btn">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         </div>
                     </form>
                 </div>
