@@ -82,3 +82,7 @@ a {
     border: none;
     background-color: #ff5261;
 }
+
+.contact-image{
+    object-fit: contain;
+}
