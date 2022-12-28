@@ -6,7 +6,9 @@ import shelve
 # Login for users
 class LoginForm(Form):
     email = StringField('Email', validators=[DataRequired(message='Please input your email'), Email()])
-    password = PasswordField('Password', validators=[DataRequired(message='Please input your password'), Length(min=6, max=64, message='Password must be at least 6 characters')])
+    password = PasswordField('Password', validators=[DataRequired(message='Please input your password'),
+                                                     Length(min=6, max=64,
+                                                            message='Password must be at least 6 characters')])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Log In')
 
@@ -43,7 +45,8 @@ class LoginForm(Form):
 class SignUpForm(Form):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=64, message="Password needs to be at least 6 characters long.")])
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=64,
+                                                                            message="Password needs to be at least 6 characters long.")])
     confirmPassword = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
 
@@ -63,10 +66,18 @@ class SignUpForm(Form):
             if self.email.data == user_dict[key].get_email():
                 raise ValidationError('Email is already in use.')
 
-#Contact Form
+
+# Contact Form
 class ContactForm(Form):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    phone = StringField("Phone Number", validators=[regexp("^[689]\d{7}$", message="Please enter a valid phone number")])
+    phone = StringField("Phone Number",validators=[regexp("^[689]\d{7}$", message="Please enter a valid phone number")])
     feedback = TextAreaField('Explain your Problem', validators=[DataRequired(), Length(min=1, max=1024, message="Please leave a message within 1024 characters")])
     submit = SubmitField('Send Feedback')
+
+
+# Edit User Form
+class EditUserForm(Form):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Save')

@@ -6,24 +6,23 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Phone</th>
                     <th>Email</th>
+                    <th>Message</th>
                     <th>Actions</th>
                 </tr>
-                {% for user in users_list %}
                 <tr>
-                    <td>{{ user.get_uid() }}</td>
-                    <td>{{ user.get_name() }}</td>
-                    <td>{{ user.get_email() }}</td>
+                    <td>1</td>
+                    <td>bob</td>
+                    <td>91234567</td>
+                    <td>bob@email.com</td>
+                    <td>Insert feedback message here</td>
                     <td>
-                        <a href="{{ url_for('editUsers') }}" class="me-1">
-                            <button class="edit-btn">Edit</button>
-                        </a>
                         <a href="#">
                             <button class="delete-btn">Delete</button>
                         </a>
                     </td>
                 </tr>
-                {% endfor %}
             </table>
         </div>
     </div>
