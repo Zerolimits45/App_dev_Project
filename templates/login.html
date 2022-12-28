@@ -25,6 +25,10 @@
                         <div class="mb-5">
                             {{ formHelper.renderField(form.password) }}
                         </div>
+                        <div>
+                            {{ form.remember_me.label }}
+                            {{ form.remember_me }}
+                        </div>
                         <div class="d-flex justify-content-center">
                             <input type="submit" value="Login" class="login-btn">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

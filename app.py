@@ -42,8 +42,19 @@ def login():
                     user = user_dict[key]
                     session['CurrentUser'] = user.get_uid()
                     session.pop('Admin', None)
+                    flash('Logged In Successfully')
                     return redirect(url_for('home'))
     return render_template('login.html', form=form)
+
+
+@app.before_request
+def make_session_permanent():
+    form = LoginForm(request.form)
+    if request.method == 'POST' and form.validate():
+        if form.remember_me.data:
+            session.permanent = True
+        else:
+            session.permanent = False
 
 
 @app.route('/signup', methods=['GET', 'POST'])
