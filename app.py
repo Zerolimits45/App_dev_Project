@@ -12,6 +12,8 @@ app.secret_key = 'jiceuiruineruiferuifbwneionweicbuivbruinewicwebvuierniwndiwebc
 # Home
 @app.route('/')
 def home():
+    if 'Admin' in session:
+        return redirect(url_for('users'))
     return render_template('index.html')
 
 
@@ -135,10 +137,44 @@ def feedback():
     return render_template('admin/admin-users-feedback.html')
 
 
-@app.route('/admin/users/edit')
-def editUsers():
-    form = EditUserForm(request.form)
-    return render_template('admin/admin-user-edit.html', form=form)
+@app.route('/admin/users/edit/<int:id>', methods=['GET', 'POST'])
+def editUsers(id):
+    form = EditUserForm(id, request.form)
+    if request.method == 'POST' and form.validate():
+        user_dict = {}
+        db = shelve.open('Users')
+        try:
+            if 'User' in db:
+                user_dict = db['User']
+            else:
+                db['User'] = user_dict
+        except:
+            print("Error in retrieving Users from storage.")
+
+        user = user_dict.get(id)
+        user.set_email(form.email.data)
+        user.set_name(form.name.data)
+
+        db['User'] = user_dict
+        db.close()
+        return redirect(url_for('users'))
+    else:
+        user_dict = {}
+        db = shelve.open('Users')
+        try:
+            if 'User' in db:
+                user_dict = db['User']
+            else:
+                db['User'] = user_dict
+        except:
+            print("Error in retrieving Users from storage.")
+
+        user = user_dict.get(id)
+        form.email.data = user.get_email()
+        form.name.data = user.get_name()
+
+        db.close()
+        return render_template('admin/admin-user-edit.html', form=form)
 
 
 if __name__ == '__main__':

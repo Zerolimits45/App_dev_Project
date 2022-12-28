@@ -81,3 +81,24 @@ class EditUserForm(Form):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Save')
+
+    def __init__(self, user_id, *args, **kwargs):
+        super(EditUserForm, self).__init__(*args, **kwargs)
+        self.user_id = user_id
+
+    def validate_email(self, email):
+        user_dict = {}
+        db = shelve.open('Users')
+        try:
+            if 'User' in db:
+                user_dict = db['User']
+            else:
+                db['User'] = user_dict
+        except:
+            print("Error in retrieving Users from storage.")
+        db.close()
+
+        current_user = user_dict[self.user_id].get_email()
+        for key in user_dict:
+            if self.email.data == user_dict[key].get_email() and self.email.data != current_user:
+                raise ValidationError('Email is already in use.')
