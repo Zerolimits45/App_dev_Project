@@ -27,6 +27,7 @@ def contact():
     form = ContactForm(request.form)
     return render_template('contact.html', form=form)
 
+
 # Login
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -126,6 +127,18 @@ def users():
         users_list.append(user)
 
     return render_template('admin/admin-home.html', count=len(users_list), users_list=users_list)
+
+
+# Admin feedback View
+@app.route('/admin/feedback')
+def feedback():
+    return render_template('admin/admin-users-feedback.html')
+
+
+@app.route('/admin/users/edit')
+def editUsers():
+    form = EditUserForm(request.form)
+    return render_template('admin/admin-user-edit.html', form=form)
 
 
 if __name__ == '__main__':
