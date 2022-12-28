@@ -24,7 +24,7 @@ def shop():
 
 
 # Contact
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = ContactForm(request.form)
     return render_template('contact.html', form=form)
