@@ -133,5 +133,13 @@ def users():
 @app.route('/admin/feedback')
 def feedback():
     return render_template('admin/admin-users-feedback.html')
+
+
+@app.route('/admin/users/edit')
+def editUsers():
+    form = EditUserForm(request.form)
+    return render_template('admin/admin-user-edit.html', form=form)
+
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,9 +1,11 @@
 <nav class="navbar navbar-expand-sm navbar-dark background">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('home') }}">
+        <div class="row d-flex align-contents-center">
+            <a class="navbar-brand">
             <img src="{{ url_for('static', filename='images/logo.png') }}" style="width:40px;">
-        </a>
-        <a class="navbar-brand">TimeVault</a>
+            </a>
+            <a class="navbar-brand">TimeVault</a>
+        </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
