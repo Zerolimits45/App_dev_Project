@@ -1,6 +1,9 @@
-from wtforms import Form, BooleanField, PasswordField, StringField, SelectField, SubmitField, TextAreaField
+from wtforms import Form, BooleanField, PasswordField, StringField, SelectField, SubmitField, TextAreaField, validators
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
 import shelve
+
+
+
 
 
 # Login for users
@@ -63,3 +66,24 @@ class SignUpForm(Form):
         for key in user_dict:
             if self.email.data == user_dict[key].get_email():
                 raise ValidationError('Email is already in use.')
+
+
+# add product form
+class CreateProductForm(Form):
+    name = StringField('Name', validators=[DataRequired(message='Quantity needs to be a number.')])
+    price = StringField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
+    description = TextAreaField('Remarks', validators=[validators.Optional()])
+    quantity = StringField('Price', validators=[DataRequired(message="Quantity needs to be a number.")])
+    add = SubmitField('Add')
+
+# edit product form
+
+class EditProductForm(Form):
+    name = StringField('Name', validators=[DataRequired(message='Quantity needs to be a number.')])
+    price = StringField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
+    description = TextAreaField('Remarks', validators=[validators.Optional()])
+    quantity = StringField('Price', validators=[DataRequired(message="Quantity needs to be a number.")])
+    save = SubmitField('Save')
+
+
+
