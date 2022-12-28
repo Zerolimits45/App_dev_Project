@@ -177,5 +177,24 @@ def editUsers(id):
         return render_template('admin/admin-user-edit.html', form=form)
 
 
+@app.route('/deleteuser/<int:id>', methods=['GET', 'POST'])
+def delete_user(id):
+    user_dict = {}
+    db = shelve.open('Users')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+
+    user_dict.pop(id)
+    db['User'] = user_dict
+    db.close()
+
+    return redirect(url_for('users'))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
