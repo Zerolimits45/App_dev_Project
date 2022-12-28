@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from forms import *
 from user import *
+from feedback import *
 import shelve
 from flask_wtf.csrf import CSRFProtect  # up for debate
 
@@ -27,6 +28,28 @@ def shop():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = ContactForm(request.form)
+    if request.method == 'POST' and form.validate():
+        feedback_dict = {}
+        db = shelve.open('Feedbacks')
+        try:
+            if 'Feedback' in db:
+                feedback_dict = db['Feedback']
+            else:
+                db['Feedback'] = feedback_dict
+        except:
+            print("Error in retrieving Feedbacks from storage.")
+        email = form.email.data
+        phonenumber = form.phonenumber.data
+        name = form.name.data
+        message = form.message.data
+        count = len(feedback_dict)
+
+        feedback = Feedback(email, phonenumber, name,message, count)
+
+        feedback_dict[feedback.get_uid()] = feedback
+        db['Feedback'] = feedback_dict
+        db.close()
+        return redirect(url_for("home"))
     return render_template('contact.html', form=form)
 
 

@@ -71,8 +71,8 @@ class SignUpForm(Form):
 class ContactForm(Form):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    phone = StringField("Phone Number",validators=[regexp("^[689]\d{7}$", message="Please enter a valid phone number")])
-    feedback = TextAreaField('Explain your Problem', validators=[DataRequired(), Length(min=1, max=1024, message="Please leave a message within 1024 characters")])
+    phonenumber = StringField("Phone Number",validators=[regexp("^[689]\d{7}$", message="Please enter a valid phone number")])
+    message = TextAreaField('Explain your Problem', validators=[DataRequired(), Length(min=1, max=1024, message="Please leave a message within 1024 characters")])
     submit = SubmitField('Send Feedback')
 
 
