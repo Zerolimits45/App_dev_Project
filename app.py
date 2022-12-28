@@ -22,7 +22,10 @@ def shop():
 
 
 # Contact
-@app.route('/shop')
+@app.route('/contact')
+def contact():
+    form = ContactForm(request.form)
+    return render_template('contact.html', form=form)
 
 # Login
 @app.route('/login', methods=['POST', 'GET'])
