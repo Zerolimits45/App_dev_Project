@@ -12,6 +12,8 @@ app.secret_key = 'jiceuiruineruiferuifbwneionweicbuivbruinewicwebvuierniwndiwebc
 # Home
 @app.route('/')
 def home():
+    if 'Admin' in session:
+        return redirect(url_for('users'))
     return render_template('index.html')
 
 
@@ -26,6 +28,7 @@ def shop():
 def contact():
     form = ContactForm(request.form)
     return render_template('contact.html', form=form)
+
 
 # Login
 @app.route('/login', methods=['POST', 'GET'])
@@ -126,6 +129,25 @@ def users():
         users_list.append(user)
 
     return render_template('admin/admin-home.html', count=len(users_list), users_list=users_list)
+
+
+@app.route('/deleteuser/<int:id>', methods=['GET', 'POST'])
+def delete_user(id):
+    user_dict = {}
+    db = shelve.open('Users')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+
+    user_dict.pop(id)
+    db['User'] = user_dict
+    db.close()
+
+    return redirect(url_for('users'))
 
 
 if __name__ == '__main__':

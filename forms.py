@@ -63,6 +63,7 @@ class SignUpForm(Form):
             if self.email.data == user_dict[key].get_email():
                 raise ValidationError('Email is already in use.')
 
+
 #Contact Form
 class ContactForm(Form):
     name = StringField('Name', validators=[DataRequired()])
