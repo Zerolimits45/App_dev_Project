@@ -197,6 +197,7 @@ def editUsers(id):
         form.name.data = user.get_name()
 
         db.close()
+        flash('Edit Successfully')
         return render_template('admin/admin-user-edit.html', form=form)
 
 
@@ -215,7 +216,7 @@ def delete_user(id):
     user_dict.pop(id)
     db['User'] = user_dict
     db.close()
-
+    flash('Deleted Successfully')
     return redirect(url_for('users'))
 
 

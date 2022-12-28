@@ -1,7 +1,26 @@
 {% extends "admin/adminbase.html" %}
 {% block content %}
+    <div class="container-fluid" style="min-height:100%">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-warning mt-3 alert-dismissible" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
     <div class="row">
         <div class="col-12">
+            <div class="text-white">
+            {% if count == 0 %}
+            <p>There are no users.</p>
+            {% else %}
+            <p>There are {{ count }} users.</p>
+            {% endif %}
+            </div>
             <table class="table w-100">
                 <tr>
                     <th>ID</th>
