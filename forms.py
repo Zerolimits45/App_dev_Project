@@ -1,10 +1,6 @@
 from wtforms import Form, BooleanField, PasswordField, StringField, SelectField, SubmitField, TextAreaField, TelField, validators
-=======
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length, regexp
 import shelve
-
-
-
 
 
 # Login for users
@@ -71,7 +67,6 @@ class SignUpForm(Form):
                 raise ValidationError('Email is already in use.')
 
 
-
 # add product form
 class CreateProductForm(Form):
     name = StringField('Name', validators=[DataRequired(message='Quantity needs to be a number.')])
@@ -80,8 +75,8 @@ class CreateProductForm(Form):
     quantity = StringField('Price', validators=[DataRequired(message="Quantity needs to be a number.")])
     add = SubmitField('Add')
 
-# edit product form
 
+# edit product form
 class EditProductForm(Form):
     name = StringField('Name', validators=[DataRequired(message='Quantity needs to be a number.')])
     price = StringField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
@@ -90,8 +85,6 @@ class EditProductForm(Form):
     save = SubmitField('Save')
 
 
-
-=======
 # Contact Form
 class ContactForm(Form):
     name = StringField('Name', validators=[DataRequired()])
