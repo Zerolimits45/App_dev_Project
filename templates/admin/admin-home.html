@@ -2,13 +2,6 @@
 {% block content %}
     <div class="row">
         <div class="col-12">
-            <div class="text-white">
-            {% if count == 0 %}
-            <p>There are no users.</p>
-            {% else %}
-            <p>There are {{ count }} users.</p>
-            {% endif %}
-            </div>
             <table class="table w-100">
                 <tr>
                     <th>ID</th>
@@ -22,32 +15,12 @@
                     <td>{{ user.get_name() }}</td>
                     <td>{{ user.get_email() }}</td>
                     <td>
-                        <button class="edit-btn">Edit</button>
-                        <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#myModal_{{user.get_uid()}}">Delete</button>
-
-                        <!-- The Modal -->
-                        <div class="modal" id="myModal_{{user.get_uid()}}">
-                            <div class="modal-dialog">
-                                <div class="modal-content text-black">
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Delete Confirmation</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <!-- Modal body -->
-                                    <div class="modal-body">
-                                    Are you sure you want to delete {{user.get_email()}}
-                                    </div>
-                                    <!-- Modal footer -->
-                                    <div class="modal-footer">
-                                        <a href="{{url_for('delete_user', id=user.get_uid())}}" class="me-1">
-                                            <button class="delete-btn">Delete</button>
-                                        </a>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <a href="#" class="me-1">
+                            <button class="edit-btn">Edit</button>
+                        </a>
+                        <a href="#">
+                            <button class="delete-btn">Delete</button>
+                        </a>
                     </td>
                 </tr>
                 {% endfor %}
