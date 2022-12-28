@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="text-centre text-colour mt-5">Contact Us</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-border background" style="width: 100%;">
+                <div class="card-body">
+                    <div>
+                        <h1 class=text-colour>Contact Info</h1>
+                        <p class="text-colour mb-3">Fill up the form, and we will get back to you as soon as
+                            possible</p>
+                        <div class="d-flex align-content-center mb-5">
+                            <img src="{{ url_for('static', filename='images/phone.png') }}" class="contact-image">
+                            <p class="ms-3 text-colour">12345678</p>
+                        </div>
+                        <div class="d-flex align-content-center mb-5">
+                            <img src="{{ url_for('static', filename='images/email.png') }}" class="contact-image">
+                            <p class="ms-3 text-colour">timevault@gmail.com</p>
+                        </div>
+                        <div class="d-flex align-content-center mb-5">
+                            <img src="{{ url_for('static', filename='images/instagram.png') }}" class="contact-image">
+                            <p class="ms-3 text-colour">@TimeVault</p>
+                        </div>
+                        <div class="d-flex align-content-center mb-5">
+                            <img src="{{ url_for('static', filename='images/twitter.png') }}" class="contact-image">
+                            <p class="ms-3 text-colour">TimeVault</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card card-border background" style="width: 100%;">
+                <div class="card-body ">
+                    <form method="post" novalidate>
+                        <div class="row">
+                            <div class="col-lg-6 mb-5">
+                                {{ formHelper.renderField(form.name) }}
+                            </div>
+                            <div class="col-lg-6 mb-5">
+                                {{ formHelper.renderField(form.phonenumber) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-5">
+                                {{ formHelper.renderField(form.email) }}
+                            </div>
+                            <div class="mb-5">
+                                {{ formHelper.renderField(form.message) }}
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <input type="submit" value="Send Feedback" class="login-btn">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

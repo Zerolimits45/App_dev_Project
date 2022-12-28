@@ -1,5 +1,6 @@
-from wtforms import Form, BooleanField, PasswordField, StringField, SelectField, SubmitField, TextAreaField, validators
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
+from wtforms import Form, BooleanField, PasswordField, StringField, SelectField, SubmitField, TextAreaField, TelField, validators
+=======
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length, regexp
 import shelve
 
 
@@ -9,7 +10,9 @@ import shelve
 # Login for users
 class LoginForm(Form):
     email = StringField('Email', validators=[DataRequired(message='Please input your email'), Email()])
-    password = PasswordField('Password', validators=[DataRequired(message='Please input your password'), Length(min=6, max=64, message='Password must be at least 6 characters')])
+    password = PasswordField('Password', validators=[DataRequired(message='Please input your password'),
+                                                     Length(min=6, max=64,
+                                                            message='Password must be at least 6 characters')])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Log In')
 
@@ -68,6 +71,7 @@ class SignUpForm(Form):
                 raise ValidationError('Email is already in use.')
 
 
+
 # add product form
 class CreateProductForm(Form):
     name = StringField('Name', validators=[DataRequired(message='Quantity needs to be a number.')])
@@ -86,4 +90,41 @@ class EditProductForm(Form):
     save = SubmitField('Save')
 
 
+
+=======
+# Contact Form
+class ContactForm(Form):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    phonenumber = StringField("Phone Number",validators=[regexp("^[689]\d{7}$", message="Please enter a valid phone number")])
+    message = TextAreaField('Explain your Problem', validators=[DataRequired(), Length(min=1, max=1024, message="Please leave a message within 1024 characters")])
+    submit = SubmitField('Send Feedback')
+
+
+# Edit User Form
+class EditUserForm(Form):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Save')
+
+    def __init__(self, user_id, *args, **kwargs):
+        super(EditUserForm, self).__init__(*args, **kwargs)
+        self.user_id = user_id
+
+    def validate_email(self, email):
+        user_dict = {}
+        db = shelve.open('Users')
+        try:
+            if 'User' in db:
+                user_dict = db['User']
+            else:
+                db['User'] = user_dict
+        except:
+            print("Error in retrieving Users from storage.")
+        db.close()
+
+        current_user = user_dict[self.user_id].get_email()
+        for key in user_dict:
+            if self.email.data == user_dict[key].get_email() and self.email.data != current_user:
+                raise ValidationError('Email is already in use.')
 
