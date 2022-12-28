@@ -13,7 +13,7 @@
                     <a class="nav-link" href="{{ url_for('shop') }}">Shop</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">Contact</a>
+                    <a class="nav-link " href="{{ url_for('contact') }}">Contact</a>
                 </li>
                 {% if 'Admin' not in session and 'CurrentUser' not in session %}
                 <li class="nav-item dropdown">
