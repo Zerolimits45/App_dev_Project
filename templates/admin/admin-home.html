@@ -22,9 +22,7 @@
                     <td>{{ user.get_name() }}</td>
                     <td>{{ user.get_email() }}</td>
                     <td>
-                        <a href="#" class="me-1">
-                            <button class="edit-btn">Edit</button>
-                        </a>
+                        <button class="edit-btn">Edit</button>
                         <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#myModal_{{user.get_uid()}}">Delete</button>
 
                         <!-- The Modal -->
