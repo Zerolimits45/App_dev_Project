@@ -1,0 +1,30 @@
+{% extends "admin/adminbase.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <table class="table w-100">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+                {% for user in users_list %}
+                <tr>
+                    <td>{{ user.get_uid() }}</td>
+                    <td>{{ user.get_name() }}</td>
+                    <td>{{ user.get_email() }}</td>
+                    <td>
+                        <a href="#" class="me-1">
+                            <button class="edit-btn">Edit</button>
+                        </a>
+                        <a href="#">
+                            <button class="delete-btn">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

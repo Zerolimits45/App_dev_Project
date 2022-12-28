@@ -49,3 +49,36 @@
 label {
     color: white;
 }
+
+th {
+    color: white;
+    font-size: medium;
+}
+
+tr {
+    color: white;
+    font-size: medium;
+}
+
+.table {
+    border: 2px solid white;
+
+}
+
+a {
+    text-decoration: none;
+}
+
+.edit-btn {
+    padding: 5px 30px;
+    border-radius: 10px;
+    border: none;
+    background-color: #7fff88;
+}
+
+.delete-btn {
+    padding: 5px 30px;
+    border-radius: 10px;
+    border: none;
+    background-color: #ff5261;
+}
