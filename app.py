@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from forms import *
 from user import *
 import shelve
@@ -71,7 +71,7 @@ def signup():
         db['User'] = user_dict
 
         db.close()
-
+        flash('Signed Up Successfully')
         return redirect(url_for('login'))
     return render_template('signUp.html', form=form)
 
