@@ -44,7 +44,7 @@ def contact():
         message = form.message.data
         count = len(feedback_dict)
 
-        feedback = Feedback(email, phonenumber, name,message, count)
+        feedback = Feedback(email, phonenumber, name, message, count)
 
         feedback_dict[feedback.get_uid()] = feedback
         db['Feedback'] = feedback_dict
@@ -132,6 +132,8 @@ def logout():
     return redirect(url_for('home'))
 
 
+# Admin side
+# ====================================================================================================================
 # Admin user view
 @app.route('/admin/users')
 def users():
@@ -154,12 +156,7 @@ def users():
     return render_template('admin/admin-home.html', count=len(users_list), users_list=users_list)
 
 
-# Admin feedback View
-@app.route('/admin/feedback')
-def feedback():
-    return render_template('admin/admin-users-feedback.html')
-
-
+# Admin edit users
 @app.route('/admin/users/edit/<int:id>', methods=['GET', 'POST'])
 def editUsers(id):
     form = EditUserForm(id, request.form)
@@ -201,6 +198,7 @@ def editUsers(id):
         return render_template('admin/admin-user-edit.html', form=form)
 
 
+# Admin Delete User
 @app.route('/deleteuser/<int:id>', methods=['GET', 'POST'])
 def delete_user(id):
     user_dict = {}
@@ -219,6 +217,19 @@ def delete_user(id):
     flash('Deleted Successfully')
     return redirect(url_for('users'))
 
+# Admin Product View
+@app.route('/admin/product')
+def products():
+    return render_template('admin/admin-products.html')
+
+
+# Admin feedback View
+@app.route('/admin/feedback')
+def feedback():
+    return render_template('admin/admin-users-feedback.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+

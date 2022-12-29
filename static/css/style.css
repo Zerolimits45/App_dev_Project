@@ -82,7 +82,19 @@ a {
     border: none;
     background-color: #ff5261;
 }
+.add-btn{
+    padding: 15px 30px;
+    border-radius: 10px;
+    border: none;
+    background-color: #7fff88;
+    width: 100%;
+    font-size: large;
+}
 
+.add-btn:hover {
+    background-color: #7fff88;
+    color: white;
+}
 .contact-image{
     object-fit: contain;
 }
