@@ -1,6 +1,18 @@
 {% extends "admin/adminbase.html" %}
 {% block content %}
     <h3 class="text-centre text-colour mt-5">Feedbacks</h3>
+    <div class="container-fluid" style="min-height:100%">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-warning mt-3 alert-dismissible" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
     <div class="row">
         <div class="col-12">
             <table class="table w-100">
@@ -20,9 +32,32 @@
                     <td>{{ feedback.get_email() }}</td>
                     <td>{{ feedback.get_message() }}</td>
                     <td>
-                        <a href="#">
-                            <button class="delete-btn">Delete</button>
-                        </a>
+                        <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#myModal_{{feedback.get_uid()}}">Delete</button>
+
+                        <!-- The Modal -->
+                        <div class="modal" id="myModal_{{feedback.get_uid()}}">
+                            <div class="modal-dialog">
+                                <div class="modal-content text-black">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Delete Confirmation</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                    Are you sure you want to delete the feedback of {{ feedback.get_email() }}
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <a href="{{url_for('delete_feedback', id=feedback.get_uid())}}" class="me-1">
+                                            <button class="delete-btn">Delete</button>
+                                        </a>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </td>
                 </tr>
                 {% endfor %}

@@ -259,5 +259,26 @@ def feedback():
 
     return render_template('admin/admin-users-feedback.html', count=len(feedbacks_list), feedbacks_list=feedbacks_list)
 
+
+# Admin Delete Feedback
+@app.route('/deletefeedback/<int:id>', methods=['GET', 'POST'])
+def delete_feedback(id):
+    feedback_dict = {}
+    db = shelve.open('Feedbacks', 'c')
+    try:
+        if 'Feedback' in db:
+            feedback_dict = db['Feedback']
+        else:
+            db['Feedback'] = feedback_dict
+    except:
+        print("Error in retrieving Feedbacks from storage.")
+
+    feedback_dict.pop(id)
+    db['Feedback'] = feedback_dict
+    db.close()
+    flash('Deleted Successfully')
+    return redirect(url_for('feedback'))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
