@@ -41,6 +41,13 @@ class LoginForm(Form):
             if self.password.data != id[1]:
                 raise ValidationError('Incorrect Email or Password')
 
+        email_list = []
+        for key in user_dict:
+            email_list.append(user_dict[key].get_email())
+
+        if self.email.data not in email_list and self.email.data != 'admin@mail.com':
+            raise ValidationError('Incorrect Email or Password')
+
 
 # Sign up for users
 class SignUpForm(Form):
