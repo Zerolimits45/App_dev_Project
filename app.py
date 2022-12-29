@@ -217,10 +217,25 @@ def delete_user(id):
     flash('Deleted Successfully')
     return redirect(url_for('users'))
 
+
 # Admin Product View
 @app.route('/admin/product')
 def products():
     return render_template('admin/admin-products.html')
+
+
+# Admin Product Edit
+@app.route('/admin/product/edit')
+def edit_products():
+    form = EditProductForm(request.form)
+    return render_template('admin/admin-products-edit.html', form=form)
+
+
+# Admin Add Product
+@app.route('/admin/product/add')
+def create_products():
+    form = CreateProductForm(request.form)
+    return render_template('admin/admin-products-add.html', form=form)
 
 
 # Admin feedback View
@@ -228,8 +243,6 @@ def products():
 def feedback():
     return render_template('admin/admin-users-feedback.html')
 
+
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
