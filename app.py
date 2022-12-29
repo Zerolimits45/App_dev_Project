@@ -49,7 +49,7 @@ def contact():
         feedback_dict[feedback.get_uid()] = feedback
         db['Feedback'] = feedback_dict
         db.close()
-        return redirect(url_for("home"))
+        return render_template('contact-success.html')
     return render_template('contact.html', form=form)
 
 
