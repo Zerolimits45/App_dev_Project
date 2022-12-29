@@ -241,8 +241,23 @@ def create_products():
 # Admin feedback View
 @app.route('/admin/feedback')
 def feedback():
-    return render_template('admin/admin-users-feedback.html')
+    feedback_dict = {}
+    db = shelve.open('Feedbacks', 'c')
+    try:
+        if 'Feedback' in db:
+            feedback_dict = db['Feedback']
+        else:
+            db['Feedback'] = feedback_dict
+    except:
+        print("Error in retrieving Feedbacks from storage.")
+    db.close()
 
+    feedbacks_list = []
+    for key in feedback_dict:
+        feedback = feedback_dict.get(key)
+        feedbacks_list.append(feedback)
+
+    return render_template('admin/admin-users-feedback.html', count=len(feedbacks_list), feedbacks_list=feedbacks_list)
 
 if __name__ == '__main__':
     app.run(debug=True)
