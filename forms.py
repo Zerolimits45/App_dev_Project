@@ -1,5 +1,4 @@
-from wtforms import Form, BooleanField, PasswordField, StringField, SelectField, SubmitField, TextAreaField, TelField, \
-    validators
+from wtforms import Form, BooleanField, PasswordField, StringField, SelectField, SubmitField, TextAreaField, TelField, validators, IntegerField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length, regexp
 import shelve
 
@@ -76,20 +75,20 @@ class SignUpForm(Form):
 
 # add product form
 class CreateProductForm(Form):
-    name = StringField('Name', validators=[DataRequired(message='Quantity needs to be a number.')])
-    price = StringField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
-    description = TextAreaField('Remarks', validators=[validators.Optional()])
-    quantity = StringField('Price', validators=[DataRequired(message="Quantity needs to be a number.")])
+    name = StringField('Name', validators=[DataRequired(message='Please input a product name.')])
+    price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
+    description = TextAreaField('Description', validators=[validators.Optional()])
+    quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
     add = SubmitField('Add')
 
 
 # edit product form
 
 class EditProductForm(Form):
-    name = StringField('Name', validators=[DataRequired(message='Quantity needs to be a number.')])
-    price = StringField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
-    description = TextAreaField('Remarks', validators=[validators.Optional()])
-    quantity = StringField('Price', validators=[DataRequired(message="Quantity needs to be a number.")])
+    name = StringField('Name', validators=[DataRequired(message='Please input a product name.')])
+    price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
+    description = TextAreaField('Description', validators=[validators.Optional()])
+    quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
     save = SubmitField('Save')
 
 
