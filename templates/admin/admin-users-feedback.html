@@ -12,18 +12,20 @@
                     <th>Message</th>
                     <th>Actions</th>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>bob</td>
-                    <td>91234567</td>
-                    <td>bob@email.com</td>
-                    <td>Insert feedback message here</td>
+                {% for feedback in feedbacks_list %}
+	            <tr>
+                    <td>{{ feedback.get_uid() }}</td>
+                    <td>{{ feedback.get_name() }}</td>
+                    <td>{{ feedback.get_phonenumber() }}</td>
+                    <td>{{ feedback.get_email() }}</td>
+                    <td>{{ feedback.get_message() }}</td>
                     <td>
                         <a href="#">
                             <button class="delete-btn">Delete</button>
                         </a>
                     </td>
                 </tr>
+                {% endfor %}
             </table>
         </div>
     </div>
