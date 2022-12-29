@@ -4,6 +4,8 @@ from user import *
 from feedback import *
 import shelve
 from flask_wtf.csrf import CSRFProtect  # up for debate
+from Product import *
+
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
@@ -221,21 +223,98 @@ def delete_user(id):
 # Admin Product View
 @app.route('/admin/product')
 def products():
+    products_dict = {}
+    db = shelve.open('Products', 'c')
+    try:
+        if 'Product' in db:
+            products_dict = db['Product']
+        else:
+            db['Products'] = products_dict
+    except:
+        print("Error in retrieving Products from storage.")
+    db.close()
+
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        products_list.append(product)
     return render_template('admin/admin-products.html')
 
 
 # Admin Product Edit
 @app.route('/admin/product/edit')
 def edit_products():
-    form = EditProductForm(request.form)
-    return render_template('admin/admin-products-edit.html', form=form)
+    EditProductForm = CreateProductForm(request.form)
+    if request.method == 'POST' and EditProductForm.validate():
+        products_dict = {}
+        db = shelve.open('product.db', 'w')
+        products_dict = db['Products']
+
+        product = products_dict.get(id)
+        product.set_name(EditProductForm.name.data)
+        product.set_price(EditProductForm.price.data)
+        product.set_description(EditProductForm.description.data)
+        product.set_brand(EditProductForm.brand.data)
+        product.set_image(EditProductForm.image.data)
+
+        db['Products'] = products_dict
+        db.close()
+
+        return redirect(url_for('edit_products'))
+    else:
+        products_dict = {}
+        db = shelve.open('product.db', 'r')
+        products_dict = db['Products']
+        db.close()
+
+        product = products_dict.get(id)
+        EditProductForm.name.data = product.get_name()
+        EditProductForm.price.data = product.get_price()
+        EditProductForm.description.data = product.get_description()
+        EditProductForm.brand.data = product.get_brand()
+        EditProductForm.image.data = product.get_image()
+        return render_template('admin/admin-products-edit.html', form=EditProductForm)
 
 
 # Admin Add Product
 @app.route('/admin/product/add')
 def create_products():
     form = CreateProductForm(request.form)
+    if request.method == 'POST' and CreateProductForm.validate():
+        products_dict = {}
+        db = shelve.open('products.db', 'c')
+        try:
+            products_dict = db['Products']
+        except:
+            print('Error in retrieving Products from product.db')
+
+        product = Product.Product(CreateProductForm.name.data, CreateProductForm.price.data, CreateProductForm.description.data,
+                                  CreateProductForm.brand.data, CreateProductForm.quantity, CreateProductForm.image.data)
+        products_dict[product.get_user_id()] = product
+        db['Products'] = products_dict
+
+        db.close()
+        return redirect(url_for('edit_products'))
     return render_template('admin/admin-products-add.html', form=form)
+
+# Admin Delete Product
+@app.route('/deleteproduct/<int:id>', methods=['GET', 'POST'])
+def delete_product(id):
+    products_dict = {}
+    db = shelve.open('Products', 'c')
+    try:
+        if 'Product' in db:
+            products_dict = db['Product']
+        else:
+            db['Product'] = products_dict
+    except:
+        print("Error in retrieving Products from storage.")
+
+    products_dict.pop(id)
+    db['Product'] = products_dict
+    db.close()
+    flash('Deleted Successfully')
+    return redirect(url_for('product'))
 
 
 # Admin feedback View
@@ -278,6 +357,12 @@ def delete_feedback(id):
     db.close()
     flash('Deleted Successfully')
     return redirect(url_for('feedback'))
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
