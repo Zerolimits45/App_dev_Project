@@ -23,9 +23,11 @@ def home():
 def shop():
     return render_template('shop.html')
 
+
 @app.route('/profile')
 def profile():
     return render_template('profile/profile.html')
+
 
 @app.route('/profile/edit', methods=['GET', 'POST'])
 def profile_edit(id):
