@@ -24,9 +24,21 @@ def shop():
     return render_template('shop.html')
 
 
-@app.route('/profile')
-def profile():
-    return render_template('profile/profile.html')
+@app.route('/profile/<int:id>')
+def profile(id):
+    user_dict = {}
+    db = shelve.open('Users')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+
+    user = user_dict.get(id)
+
+    return render_template('profile/profile.html', user=user)
 
 
 @app.route('/profile/address')
@@ -34,8 +46,7 @@ def address():
     return render_template('profile/profile-addresses.html')
 
 
-
-@app.route('/profile/edit', methods=['GET', 'POST'])
+@app.route('/profile/edit/<int:id>', methods=['GET', 'POST'])
 def profile_edit(id):
     form = EditProfileForm(id, request.form)
     if request.method == 'POST' and form.validate():
@@ -55,7 +66,7 @@ def profile_edit(id):
 
         db['User'] = user_dict
         db.close()
-        return redirect(url_for('users'))
+        return redirect(url_for('profile', id=id))
     else:
         user_dict = {}
         db = shelve.open('Users')
@@ -73,7 +84,8 @@ def profile_edit(id):
 
         db.close()
         flash('Edit Successfully')
-        return render_template('profile/profile-user-edit.html', form=form)
+    return render_template('profile/profile-user-edit.html', form=form, id=id)
+
 
 # Contact
 @app.route('/contact', methods=['GET', 'POST'])
