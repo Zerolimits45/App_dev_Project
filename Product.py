@@ -1,13 +1,17 @@
 class Product:
-    count_id = 0
-    def __init__(self, name, price, description, brand, quantity, image):
-        Product.count_id += 1
+    def __init__(self, name, price, description, brand, quantity, image, count):
+        self.__count = count
+        self.__count += 1
+        self.__product_id = self.__count
         self.__name = name
         self.__price = price
         self.__description = description
         self.__brand = brand
         self.__quantity = quantity
         self.__image = image
+
+    def get_product_id(self):
+        return self.__product_id
 
     def get_name(self):
         return self.__name
@@ -26,6 +30,9 @@ class Product:
 
     def get_image(self):
         return self.__image
+
+    def set_product_id(self, pid):
+        self.__product_id = pid
 
     def set_name(self, name):
         self.__name = name

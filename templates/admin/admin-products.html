@@ -11,27 +11,53 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Price</th>
+                    <th>Brand</th>
                     <th>Description</th>
                     <th>Image</th>
                     <th>Qty</th>
                     <th>Actions</th>
                 </tr>
+                {% for product in products_list %}
                 <tr>
-                    <td>1</td>
-                    <td>product name</td>
-                    <td>$120</td>
-                    <td>A long description about a watch</td>
+                    <td>{{ product.get_product_id() }}</td>
+                    <td>{{ product.get_name() }}</td>
+                    <td>{{ product.get_price() }}</td>
+                    <td>{{ product.get_brand() }}</td>
+                    <td>{{ product.get_description() }}</td>
                     <td>img</td>
-                    <td>40</td>
+                    <td>{{ product.get_quantity() }}</td>
                     <td>
-                        <a href="{{ url_for('edit_products') }}" class="me-1">
+                        <a href="{{ url_for('edit_products', id=product.get_product_id()) }}" class="me-1">
                             <button class="edit-btn">Edit</button>
                         </a>
-                        <a href="#">
-                            <button class="delete-btn">Delete</button>
-                        </a>
+                        <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#myModal_{{ product.get_product_id() }}">Delete</button>
+
+                        <!-- The Modal -->
+                        <div class="modal" id="myModal_{{ product.get_product_id() }}">
+                            <div class="modal-dialog">
+                                <div class="modal-content text-black">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Delete Confirmation</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                    Are you sure you want to delete {{product.get_name()}}
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <a href="{{url_for('delete_product', id=product.get_product_id())}}" class="me-1">
+                                            <button class="delete-btn">Delete</button>
+                                        </a>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
+                {% endfor %}
             </table>
         </div>
     </div>
