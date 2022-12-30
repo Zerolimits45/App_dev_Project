@@ -302,7 +302,7 @@ def products():
         if 'Product' in db:
             products_dict = db['Product']
         else:
-            db['Products'] = products_dict
+            db['Product'] = products_dict
     except:
         print("Error in retrieving Products from storage.")
     db.close()
@@ -311,64 +311,89 @@ def products():
     for key in products_dict:
         product = products_dict.get(key)
         products_list.append(product)
-    return render_template('admin/admin-products.html')
+
+    return render_template('admin/admin-products.html', products_list=products_list)
 
 
 # Admin Product Edit
-@app.route('/admin/product/edit')
-def edit_products():
-    EditProductForm = CreateProductForm(request.form)
-    if request.method == 'POST' and EditProductForm.validate():
+@app.route('/admin/product/edit/<int:id>', methods=['GET', 'POST'])
+def edit_products(id):
+    form = CreateProductForm(request.form)
+    if request.method == 'POST' and form.validate():
         products_dict = {}
-        db = shelve.open('product.db', 'w')
-        products_dict = db['Products']
+        db = shelve.open('Products', 'c')
+        try:
+            if 'Product' in db:
+                products_dict = db['Product']
+            else:
+                db['Product'] = products_dict
+        except:
+            print("Error in retrieving Products from storage.")
 
         product = products_dict.get(id)
-        product.set_name(EditProductForm.name.data)
-        product.set_price(EditProductForm.price.data)
-        product.set_description(EditProductForm.description.data)
-        product.set_brand(EditProductForm.brand.data)
-        product.set_image(EditProductForm.image.data)
+        product.set_name(form.name.data)
+        product.set_price(form.price.data)
+        product.set_quantity(form.quantity.data)
+        product.set_description(form.description.data)
+        product.set_brand(form.brand.data)
 
-        db['Products'] = products_dict
+        db['Product'] = products_dict
         db.close()
 
-        return redirect(url_for('edit_products'))
+        return redirect(url_for('products'))
     else:
         products_dict = {}
-        db = shelve.open('product.db', 'r')
-        products_dict = db['Products']
-        db.close()
+        db = shelve.open('Products', 'c')
+        try:
+            if 'Product' in db:
+                products_dict = db['Product']
+            else:
+                db['Product'] = products_dict
+        except:
+            print("Error in retrieving Products from storage.")
 
         product = products_dict.get(id)
-        EditProductForm.name.data = product.get_name()
-        EditProductForm.price.data = product.get_price()
-        EditProductForm.description.data = product.get_description()
-        EditProductForm.brand.data = product.get_brand()
-        EditProductForm.image.data = product.get_image()
-        return render_template('admin/admin-products-edit.html', form=EditProductForm)
+        form.name.data = product.get_name()
+        form.price.data = product.get_price()
+        form.description.data = product.get_description()
+        form.quantity.data = product.get_quantity()
+        form.brand.data = product.get_brand()
+
+        db.close()
+
+        return render_template('admin/admin-products-edit.html', form=form)
 
 
 # Admin Add Product
-@app.route('/admin/product/add')
+@app.route('/admin/product/add', methods=['GET', 'POST'])
 def create_products():
     form = CreateProductForm(request.form)
-    if request.method == 'POST' and CreateProductForm.validate():
+    if request.method == 'POST' and form.validate():
         products_dict = {}
-        db = shelve.open('products.db', 'c')
+        db = shelve.open('Products', 'c')
         try:
-            products_dict = db['Products']
+            if 'Product' in db:
+                products_dict = db['Product']
+            else:
+                db['Product'] = products_dict
         except:
-            print('Error in retrieving Products from product.db')
+            print("Error in retrieving Products from storage.")
 
-        product = Product.Product(CreateProductForm.name.data, CreateProductForm.price.data, CreateProductForm.description.data,
-                                  CreateProductForm.brand.data, CreateProductForm.quantity, CreateProductForm.image.data)
-        products_dict[product.get_user_id()] = product
-        db['Products'] = products_dict
+        name = form.name.data
+        price = form.price.data
+        description = form.description.data
+        brand = form.brand.data
+        quantity = form.quantity.data
+        count = len(products_dict)
+
+        product = Product(name, price, description, brand, quantity, None, count)
+        products_dict[product.get_product_id()] = product
+        db['Product'] = products_dict
 
         db.close()
-        return redirect(url_for('edit_products'))
+        return redirect(url_for('products'))
     return render_template('admin/admin-products-add.html', form=form)
+
 
 # Admin Delete Product
 @app.route('/deleteproduct/<int:id>', methods=['GET', 'POST'])
@@ -387,7 +412,7 @@ def delete_product(id):
     db['Product'] = products_dict
     db.close()
     flash('Deleted Successfully')
-    return redirect(url_for('product'))
+    return redirect(url_for('products'))
 
 
 # Admin feedback View

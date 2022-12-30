@@ -80,6 +80,8 @@ class CreateProductForm(Form):
     name = StringField('Name', validators=[DataRequired(message='Please input a product name.')])
     price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
     description = TextAreaField('Description', validators=[validators.Optional()])
+    brand = SelectField('Brand', validators=[DataRequired()],
+                        choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'), ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
     quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
     add = SubmitField('Add')
 
@@ -90,6 +92,8 @@ class EditProductForm(Form):
     name = StringField('Name', validators=[DataRequired(message='Please input a product name.')])
     price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
     description = TextAreaField('Description', validators=[validators.Optional()])
+    brand = SelectField('Brand', validators=[DataRequired()],
+                        choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'), ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
     quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
     save = SubmitField('Save')
 
