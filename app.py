@@ -198,15 +198,19 @@ def logout():
     session.pop('Admin', None)
     return redirect(url_for('home'))
 
+
 @app.route('/profile/address/add')
 def add_address():
     form = addAddressForm(request.form)
     return render_template('profile/profile-address-add.html', form=form)
 
+
 @app.route('/profile/address/edit')
 def edit_address():
     form = editAddressForm(request.form)
     return render_template('profile/profile-address-edit.html', form=form)
+
+
 # Admin side
 # ====================================================================================================================
 # Admin user view
@@ -339,7 +343,7 @@ def edit_products(id):
 
         db['Product'] = products_dict
         db.close()
-
+        flash('Edit Successfully')
         return redirect(url_for('products'))
     else:
         products_dict = {}
