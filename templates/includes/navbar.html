@@ -27,7 +27,7 @@
                 </li>
                 {% elif 'CurrentUser' in session %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
+                    <a class="nav-link" href="{{ url_for('profile', id=session['CurrentUser']) }}">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Rewards</a>
@@ -37,10 +37,12 @@
                 </li>
                 {% endif %}
             </ul>
+        {%if 'CurrentUser' in session %}
             <div class="d-flex align-items-center">
-                <img src="{{ url_for('static', filename='images/profilelogo.png') }}" style="width:30px;" class="me-3">
+                <img src="{{ url_for('static', filename='images/profile icon.png') }}" style="width:40px;" class="me-3">
                 <img src="{{ url_for('static', filename='images/cart.png') }}" style="width:30px;" class="me-3">
             </div>
+        {% endif %}
         </div>
     </div>
 </nav>

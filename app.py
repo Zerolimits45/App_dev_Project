@@ -26,6 +26,69 @@ def shop():
     return render_template('shop.html')
 
 
+@app.route('/profile/<int:id>')
+def profile(id):
+    user_dict = {}
+    db = shelve.open('Users')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+
+    user = user_dict.get(id)
+
+    return render_template('profile/profile.html', user=user)
+
+
+@app.route('/profile/address')
+def address():
+    return render_template('profile/profile-addresses.html')
+
+
+@app.route('/profile/edit/<int:id>', methods=['GET', 'POST'])
+def profile_edit(id):
+    form = EditProfileForm(id, request.form)
+    if request.method == 'POST' and form.validate():
+        user_dict = {}
+        db = shelve.open('Users')
+        try:
+            if 'User' in db:
+                user_dict = db['User']
+            else:
+                db['User'] = user_dict
+        except:
+            print("Error in retrieving Users from storage.")
+
+        user = user_dict.get(id)
+        user.set_email(form.email.data)
+        user.set_name(form.name.data)
+
+        db['User'] = user_dict
+        db.close()
+        return redirect(url_for('profile', id=id))
+    else:
+        user_dict = {}
+        db = shelve.open('Users')
+        try:
+            if 'User' in db:
+                user_dict = db['User']
+            else:
+                db['User'] = user_dict
+        except:
+            print("Error in retrieving Users from storage.")
+
+        user = user_dict.get(id)
+        form.email.data = user.get_email()
+        form.name.data = user.get_name()
+
+        db.close()
+        flash('Edit Successfully')
+    return render_template('profile/profile-user-edit.html', form=form, id=id)
+
+
 # Contact
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -78,6 +141,8 @@ def login():
                 if form.email.data == user_dict[key].get_email():
                     user = user_dict[key]
                     session['CurrentUser'] = user.get_uid()
+                    session['CurrentUsername'] = user.get_name()
+                    session['CurrentUserEmail'] = user.get_email()
                     session.pop('Admin', None)
                     flash('Logged In Successfully')
                     return redirect(url_for('home'))
@@ -133,7 +198,15 @@ def logout():
     session.pop('Admin', None)
     return redirect(url_for('home'))
 
+@app.route('/profile/address/add')
+def add_address():
+    form = addAddressForm(request.form)
+    return render_template('profile/profile-address-add.html', form=form)
 
+@app.route('/profile/address/edit')
+def edit_address():
+    form = editAddressForm(request.form)
+    return render_template('profile/profile-address-edit.html', form=form)
 # Admin side
 # ====================================================================================================================
 # Admin user view
