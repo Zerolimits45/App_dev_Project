@@ -23,6 +23,49 @@ def home():
 def shop():
     return render_template('shop.html')
 
+@app.route('/profile')
+def profile():
+    return render_template('profile/profile.html')
+
+@app.route('/profile/edit', methods=['GET', 'POST'])
+def profile_edit(id):
+    form = EditProfileForm(id, request.form)
+    if request.method == 'POST' and form.validate():
+        user_dict = {}
+        db = shelve.open('Users')
+        try:
+            if 'User' in db:
+                user_dict = db['User']
+            else:
+                db['User'] = user_dict
+        except:
+            print("Error in retrieving Users from storage.")
+
+        user = user_dict.get(id)
+        user.set_email(form.email.data)
+        user.set_name(form.name.data)
+
+        db['User'] = user_dict
+        db.close()
+        return redirect(url_for('users'))
+    else:
+        user_dict = {}
+        db = shelve.open('Users')
+        try:
+            if 'User' in db:
+                user_dict = db['User']
+            else:
+                db['User'] = user_dict
+        except:
+            print("Error in retrieving Users from storage.")
+
+        user = user_dict.get(id)
+        form.email.data = user.get_email()
+        form.name.data = user.get_name()
+
+        db.close()
+        flash('Edit Successfully')
+        return render_template('profile/profile-user-edit.html', form=form)
 
 # Contact
 @app.route('/contact', methods=['GET', 'POST'])
@@ -76,6 +119,8 @@ def login():
                 if form.email.data == user_dict[key].get_email():
                     user = user_dict[key]
                     session['CurrentUser'] = user.get_uid()
+                    session['CurrentUsername'] = user.get_name()
+                    session['CurrentUserEmail'] = user.get_email()
                     session.pop('Admin', None)
                     flash('Logged In Successfully')
                     return redirect(url_for('home'))

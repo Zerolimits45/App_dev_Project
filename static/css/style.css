@@ -108,14 +108,36 @@ a {
     background-color: #2280ff;
     color: white;
 }
+
 .contact-image {
     object-fit: contain;
 }
-.screen-center{
+
+.screen-center {
     position: absolute;
     top: 50%;
     left: 50%;
     -moz-transform: translateX(-50%) translateY(-50%);
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
+}
+
+.nav-fill {
+    border-radius: 10px;
+}
+
+.nav-pills {
+    background-color: #686b68;
+}
+
+.edit-profile-btn {
+    padding: 5px 50px;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+}
+
+.edit-profile-btn:hover {
+    background-color: #7fff88;
+    color: white;
 }
