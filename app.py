@@ -29,6 +29,12 @@ def profile():
     return render_template('profile/profile.html')
 
 
+@app.route('/profile/address')
+def address():
+    return render_template('profile/profile-addresses.html')
+
+
+
 @app.route('/profile/edit', methods=['GET', 'POST'])
 def profile_edit(id):
     form = EditProfileForm(id, request.form)

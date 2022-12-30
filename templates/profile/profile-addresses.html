@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+     <div class="row">
+        <div class="col-md-12">
+            <div class="card card-border background" style="width: 100%;">
+                <div class="card-body">
+                    <div class="d-flex flex-column justify-content-center">
+                        <img src="{{ url_for('static', filename='images/profile icon.png') }}" class="image-size">
+                        <p class="card-text text-colour text-centre mt-3">{{ session['CurrentUsername'] }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="row">
+        <div class="col-md-4">
+            <div class="card card-border background" style="width: 100%;">
+                <div class="card-body">
+                    {% include "includes/profile_navbar/profile-navbar-addresses.html" %}
+                </div>
+            </div>
+        </div>
+     </div>
+{% endblock %}
