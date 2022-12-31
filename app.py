@@ -5,6 +5,7 @@ from feedback import *
 import shelve
 from flask_wtf.csrf import CSRFProtect  # up for debate
 from Product import *
+from Address import *
 
 
 app = Flask(__name__)
@@ -37,15 +38,46 @@ def profile(id):
             db['User'] = user_dict
     except:
         print("Error in retrieving Users from storage.")
+    db.close()
 
     user = user_dict.get(id)
 
     return render_template('profile/profile.html', user=user)
 
 
+# View Address
 @app.route('/profile/address')
 def address():
-    return render_template('profile/profile-addresses.html')
+    addresses_dict = {}
+    db = shelve.open('Addresses')
+    try:
+        if 'Address' in db:
+            addresses_dict = db['Address']
+        else:
+            db['Address'] = addresses_dict
+    except:
+        print("Error in retrieving Addresses from storage.")
+    db.close()
+
+    user_dict = {}
+    db = shelve.open('Users')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+    db.close()
+
+    addresses_list = []
+    for key in addresses_dict:
+        address = addresses_dict.get(key)
+        addresses_list.append(address)
+
+    user = user_dict.get(session['CurrentUser'])
+
+    return render_template('profile/profile-addresses.html', addresses_list=addresses_list, user=user)
 
 
 @app.route('/profile/edit/<int:id>', methods=['GET', 'POST'])
@@ -199,16 +231,96 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route('/profile/address/add')
+#Add Address
+@app.route('/profile/address/add', methods=['GET', 'POST'])
 def add_address():
     form = addAddressForm(request.form)
+    if request.method == 'POST' and form.validate():
+        addresses_dict = {}
+        db = shelve.open('Addresses')
+        try:
+            if 'Address' in db:
+                addresses_dict = db['Address']
+            else:
+                db['Address'] = addresses_dict
+        except:
+            print("Error in retrieving Addresses from storage.")
+
+        name = form.name.data
+        location = form.location.data
+        count = len(addresses_dict)
+
+        address = Address(session['CurrentUser'], name, location, count)
+
+        addresses_dict[address.getlocationid()] = address
+        db['Address'] = addresses_dict
+
+        db.close()
+        flash('Added Successfully')
+        return redirect(url_for('address'))
     return render_template('profile/profile-address-add.html', form=form)
 
 
-@app.route('/profile/address/edit')
-def edit_address():
+# Edit Address
+@app.route('/profile/address/edit/<int:id>', methods=['GET', 'POST'])
+def edit_address(id):
     form = editAddressForm(request.form)
+    if request.method == 'POST' and form.validate():
+        addresses_dict = {}
+        db = shelve.open('Addresses')
+        try:
+            if 'Address' in db:
+                addresses_dict = db['Address']
+            else:
+                db['Address'] = addresses_dict
+        except:
+            print("Error in retrieving Addresses from storage.")
+
+        address = addresses_dict.get(id)
+        address.setname(form.name.data)
+        address.setlocation(form.location.data)
+
+        db['Address'] = addresses_dict
+        db.close()
+        return redirect(url_for('address', id=id))
+    else:
+        addresses_dict = {}
+        db = shelve.open('Addresses')
+        try:
+            if 'Address' in db:
+                addresses_dict = db['Address']
+            else:
+                db['Address'] = addresses_dict
+        except:
+            print("Error in retrieving Addresses from storage.")
+
+        address = addresses_dict.get(id)
+        form.name.data = address.getname()
+        form.location.data = address.getlocation()
+
+        db.close()
+        flash('Edit Successfully')
     return render_template('profile/profile-address-edit.html', form=form)
+
+
+# Delete Address
+@app.route('/deleteaddress/<int:id>', methods=['GET', 'POST'])
+def delete_address(id):
+    addresses_dict = {}
+    db = shelve.open('Addresses')
+    try:
+        if 'Address' in db:
+            addresses_dict = db['Address']
+        else:
+            db['Address'] = addresses_dict
+    except:
+        print("Error in retrieving Addresses from storage.")
+
+    addresses_dict.pop(id)
+    db['Address'] = addresses_dict
+    db.close()
+    flash('Deleted Successfully')
+    return redirect(url_for('address'))
 
 
 # Admin side

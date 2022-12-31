@@ -2,6 +2,7 @@ from wtforms import Form, BooleanField, PasswordField, StringField, SelectField,
     validators, IntegerField, DateField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length, regexp
 import shelve
+import geocoder
 
 
 # Login for users
@@ -171,10 +172,16 @@ class addAddressForm(Form):
         validators.DataRequired(message="Please enter a nickname")
     ])
     location = StringField("Location", [
-        validators.Length(16, 256, message="Location must be between 16 to 256 characters"),
+        validators.Length(8, 256, message="Location must be between 16 to 256 characters"),
         validators.DataRequired(message="Please enter a location")
     ])
     submit = SubmitField("Add Address")
+
+    def validate_location(self, location):
+        g = geocoder.osm(self.location.data)
+        if not g.ok:
+            raise ValidationError('This Location Does Not Exist')
+
 
 class editAddressForm(Form):
     name = StringField("Address Nickname", [
@@ -182,7 +189,12 @@ class editAddressForm(Form):
         validators.DataRequired(message="Please enter a nickname")
     ])
     location = StringField("Location", [
-        validators.Length(16, 256, message="Location must be between 16 to 256 characters"),
+        validators.Length(8, 256, message="Location must be between 16 to 256 characters"),
         validators.DataRequired(message="Please enter a location")
     ])
     submit = SubmitField("Save")
+
+    def validate_location(self, location):
+        g = geocoder.osm(self.location.data)
+        if not g.ok:
+            raise ValidationError('This Location Does Not Exist')
