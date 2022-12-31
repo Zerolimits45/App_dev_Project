@@ -82,7 +82,8 @@ class CreateProductForm(Form):
     price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
     description = TextAreaField('Description', validators=[validators.Optional()])
     brand = SelectField('Brand', validators=[DataRequired()],
-                        choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'), ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
+                        choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'),
+                                 ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
     quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
     add = SubmitField('Add')
 
@@ -94,7 +95,8 @@ class EditProductForm(Form):
     price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
     description = TextAreaField('Description', validators=[validators.Optional()])
     brand = SelectField('Brand', validators=[DataRequired()],
-                        choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'), ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
+                        choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'),
+                                 ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
     quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
     save = SubmitField('Save')
 
@@ -178,7 +180,7 @@ class addAddressForm(Form):
     submit = SubmitField("Add Address")
 
     def validate_location(self, location):
-        g = geocoder.osm(self.location.data)
+        g = geocoder.arcgis(self.location.data)
         if not g.ok:
             raise ValidationError('This Location Does Not Exist')
 
@@ -198,3 +200,8 @@ class editAddressForm(Form):
         g = geocoder.osm(self.location.data)
         if not g.ok:
             raise ValidationError('This Location Does Not Exist')
+
+
+class quantityForm(Form):
+    quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
+    submit = SubmitField("Add To Cart")
