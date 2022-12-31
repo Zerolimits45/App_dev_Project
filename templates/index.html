@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% block content_fluid %}
     <div class="container-fluid" style="min-height:100%">
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          {% for message in messages %}
-          <div class="alert alert-warning mt-3 alert-dismissible" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning mt-3 alert-dismissible" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     </div>
     <div class="row card-animation">
         <div class="col-md-12">
@@ -29,8 +29,8 @@
                 <div class="card-body">
                     <div class="d-flex flex-column justify-content-center">
                         <img src="{{ url_for('static', filename='images/seiko/watch1.png') }}" class="image-size">
-                        <p class="card-text text-colour text-centre">Seiko Chronograph Quartz Watch</p>
                     </div>
+                    <p class="card-text text-colour text-centre">Seiko Chronograph Quartz Watch</p>
                 </div>
             </div>
         </div>

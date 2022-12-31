@@ -141,6 +141,31 @@ a {
     background-color: #7fff88;
     color: white;
 }
-.border{
+
+.border {
     border: 1px solid white;
 }
+
+.shop-image {
+    height: 250px;
+    object-fit: contain;
+}
+
+.bigger-font {
+    font-size: large;
+}
+
+.price {
+    font-size: 200%;
+    margin-right: 165px;
+    margin-top: 20px;
+}
+
+.qty {
+    font-size: 150%;
+    margin-right: 250px;
+}
+.product-title {
+    font-size: 120%;
+}
+

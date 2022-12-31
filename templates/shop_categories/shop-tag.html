@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1 class="text-centre text-colour mt-5">Shop</h1>
+    <hr class="text-colour">
+    {% include "includes/shop/shop-navbar-tag.html" %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-border background" style="width: 100%;">
+                <div class="card-body">
+                    <div class="d-flex flex-column justify-content-center">
+                        <img src="{{ url_for('static', filename='images/seiko/watch1.png') }}" class="shop-image">
+                        <a class="card-text text-colour text-centre" href="{{ url_for('product_description') }}">Seiko Chronograph Quartz Watch</a>
+                        <p class="card-text text-colour text-centre bigger-font">$100</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

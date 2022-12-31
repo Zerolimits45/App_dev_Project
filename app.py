@@ -7,7 +7,6 @@ from flask_wtf.csrf import CSRFProtect  # up for debate
 from Product import *
 from Address import *
 
-
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 app.secret_key = 'jiceuiruineruiferuifbwneionweicbuivbruinewicwebvuierniwndiwebciuevbiuerdniweoncueivbuiecbwuicbewui'
@@ -24,7 +23,7 @@ def home():
 # Shop
 @app.route('/shop')
 def shop():
-    return render_template('shop.html')
+    return render_template('shop_categories/shop.html')
 
 
 @app.route('/profile/<int:id>')
@@ -231,7 +230,7 @@ def logout():
     return redirect(url_for('home'))
 
 
-#Add Address
+# Add Address
 @app.route('/profile/address/add', methods=['GET', 'POST'])
 def add_address():
     form = addAddressForm(request.form)
@@ -321,6 +320,32 @@ def delete_address(id):
     db.close()
     flash('Deleted Successfully')
     return redirect(url_for('address'))
+
+
+@app.route('/shop/productdescription')
+def product_description():
+    form = quantityForm(request.form)
+    return render_template('shop_categories/product-description.html',form=form)
+
+
+@app.route('/shop/casio')
+def casio():
+    return render_template('shop_categories/shop-casio.html')
+
+
+@app.route('/shop/orient')
+def orient():
+    return render_template('shop_categories/shop-orient.html')
+
+
+@app.route('/shop/tag')
+def tag():
+    return render_template('shop_categories/shop-tag.html')
+
+
+@app.route('/shop/rolex')
+def rolex():
+    return render_template('shop_categories/shop-rolex.html')
 
 
 # Admin side
@@ -571,12 +596,6 @@ def delete_feedback(id):
     db.close()
     flash('Deleted Successfully')
     return redirect(url_for('feedback'))
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
