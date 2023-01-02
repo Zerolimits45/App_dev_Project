@@ -5,7 +5,7 @@
         <div class="col-md-12 d-flex justify-content-center">
             <div class="card card-border login-background">
                 <div class="card-body">
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data">
                         <div class="mb-3">
                             {{ formHelper.renderField(form.name) }}
                         </div>
@@ -23,6 +23,11 @@
                         <div class="mb-3">
                             {{ formHelper.renderField(form.description) }}
                         </div>
+                        {% if product.get_image() %}
+                        <p class="text-white">Current Image: <img style="height:10%; width:10%;" src="{{ url_for('static', filename='uploads/' + product.get_image()) }}"></p>
+                        {% endif %}
+                        <label>Upload File</label><br>
+                        <input type='file' name='file[]' multiple=''/>
                         <div class="d-flex justify-content-center">
                             <input type="submit" value="Save" class="login-btn">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

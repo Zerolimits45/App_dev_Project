@@ -36,7 +36,11 @@
                     <td>{{ product.get_price() }}</td>
                     <td>{{ product.get_brand() }}</td>
                     <td>{{ product.get_description() }}</td>
-                    <td>img</td>
+                    {% if product.get_image() == None %}
+                    <td></td>
+                    {% else %}
+                    <td><img style="height:30%; width:30%;" src="{{ url_for('static', filename='uploads/' + product.get_image()) }}"></td>
+                    {% endif %}
                     <td>{{ product.get_quantity() }}</td>
                     <td>
                         <a href="{{ url_for('edit_products', id=product.get_product_id()) }}" class="me-1">

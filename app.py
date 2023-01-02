@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.utils import secure_filename
+import os
 from forms import *
 from user import *
 from feedback import *
@@ -10,6 +12,8 @@ from Address import *
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 app.secret_key = 'jiceuiruineruiferuifbwneionweicbuivbruinewicwebvuierniwndiwebciuevbiuerdniweoncueivbuiecbwuicbewui'
+UPLOAD_FOLDER = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 # Home
@@ -478,6 +482,12 @@ def edit_products(id):
         product.set_description(form.description.data)
         product.set_brand(form.brand.data)
 
+        file = request.files['file[]']
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            product.set_image(filename)
+
         db['Product'] = products_dict
         db.close()
         flash('Edit Successfully')
@@ -502,7 +512,7 @@ def edit_products(id):
 
         db.close()
 
-        return render_template('admin/admin-products-edit.html', form=form)
+        return render_template('admin/admin-products-edit.html', form=form, product=product)
 
 
 # Admin Add Product
@@ -525,9 +535,17 @@ def create_products():
         description = form.description.data
         brand = form.brand.data
         quantity = form.quantity.data
+
+        file = request.files['file[]']
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        else:
+            filename = None
+
         count = len(products_dict)
 
-        product = Product(name, price, description, brand, quantity, None, count)
+        product = Product(name, price, description, brand, quantity, filename, count)
         products_dict[product.get_product_id()] = product
         db['Product'] = products_dict
 
