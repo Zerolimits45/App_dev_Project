@@ -1,6 +1,8 @@
 from wtforms import Form, BooleanField, PasswordField, StringField, SelectField, SubmitField, TextAreaField, TelField, \
     validators, IntegerField, DateField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length, regexp
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 import shelve
 import geocoder
 
@@ -77,7 +79,7 @@ class SignUpForm(Form):
 
 
 # add product form
-class CreateProductForm(Form):
+class CreateProductForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(message='Please input a product name.')])
     price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
     description = TextAreaField('Description', validators=[validators.Optional()])
@@ -85,12 +87,13 @@ class CreateProductForm(Form):
                         choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'),
                                  ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
     quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
+    image = FileField('Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
     add = SubmitField('Add')
 
 
 # edit product form
 
-class EditProductForm(Form):
+class EditProductForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(message='Please input a product name.')])
     price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
     description = TextAreaField('Description', validators=[validators.Optional()])
@@ -98,6 +101,7 @@ class EditProductForm(Form):
                         choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'),
                                  ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
     quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
+    image = FileField('Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
     save = SubmitField('Save')
 
 
