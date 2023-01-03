@@ -23,8 +23,9 @@
                         <div class="mb-3">
                             {{ formHelper.renderField(form.description) }}
                         </div>
-                        <label>Upload File</label><br>
-                        <input type='file' name='file[]' multiple=''/>
+                        <label class="mb-3">Upload File</label>
+                        <br>
+                        <input type='file' name='file[]' multiple='' class="mt-1 mb-5 ">
                         <div class="d-flex justify-content-center">
                             <input type="submit" value="Add Product" class="login-btn">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
