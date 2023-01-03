@@ -463,7 +463,7 @@ def products():
 # Admin Product Edit
 @app.route('/admin/product/edit/<int:id>', methods=['GET', 'POST'])
 def edit_products(id):
-    form = CreateProductForm(request.form)
+    form = EditProductForm()
     if request.method == 'POST' and form.validate():
         products_dict = {}
         db = shelve.open('Products', 'c')
@@ -482,7 +482,7 @@ def edit_products(id):
         product.set_description(form.description.data)
         product.set_brand(form.brand.data)
 
-        file = request.files['file[]']
+        file = form.image.data
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -518,7 +518,7 @@ def edit_products(id):
 # Admin Add Product
 @app.route('/admin/product/add', methods=['GET', 'POST'])
 def create_products():
-    form = CreateProductForm(request.form)
+    form = CreateProductForm()
     if request.method == 'POST' and form.validate():
         products_dict = {}
         db = shelve.open('Products', 'c')
@@ -530,22 +530,27 @@ def create_products():
         except:
             print("Error in retrieving Products from storage.")
 
-        name = form.name.data
-        price = form.price.data
-        description = form.description.data
-        brand = form.brand.data
-        quantity = form.quantity.data
-
-        file = request.files['file[]']
+        file = form.image.data
         if file:
+            name = form.name.data
+            price = form.price.data
+            description = form.description.data
+            brand = form.brand.data
+            quantity = form.quantity.data
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            count = len(products_dict)
+            product = Product(name, price, description, brand, quantity, filename, count)
         else:
+            name = form.name.data
+            price = form.price.data
+            description = form.description.data
+            brand = form.brand.data
+            quantity = form.quantity.data
             filename = None
+            count = len(products_dict)
+            product = Product(name, price, description, brand, quantity, filename, count)
 
-        count = len(products_dict)
-
-        product = Product(name, price, description, brand, quantity, filename, count)
         products_dict[product.get_product_id()] = product
         db['Product'] = products_dict
 
