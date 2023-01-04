@@ -329,7 +329,7 @@ def delete_address(id):
 @app.route('/shop/productdescription')
 def product_description():
     form = quantityForm(request.form)
-    return render_template('shop_categories/product-description.html',form=form)
+    return render_template('shop_categories/product-description.html', form=form)
 
 
 @app.route('/shop/casio')
@@ -351,7 +351,9 @@ def tag():
 def rolex():
     return render_template('shop_categories/shop-rolex.html')
 
-
+@app.route('/cart')
+def cart():
+    return render_template('cart.html')
 # Admin side
 # ====================================================================================================================
 # Admin user view

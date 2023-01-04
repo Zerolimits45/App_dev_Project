@@ -16,33 +16,38 @@
                     <a class="nav-link " href="{{ url_for('contact') }}">Contact</a>
                 </li>
                 {% if 'Admin' not in session and 'CurrentUser' not in session %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">Log In
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ url_for('login') }}">Log In</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('signup') }}">Sign Up</a></li>
-                    </ul>
-                </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">Log In
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('login') }}">Log In</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('signup') }}">Sign Up</a></li>
+                        </ul>
+                    </li>
                 {% elif 'CurrentUser' in session %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('profile', id=session['CurrentUser']) }}">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Rewards</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{{ url_for('logout') }}">Log Out</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('profile', id=session['CurrentUser']) }}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Rewards</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="{{ url_for('logout') }}">Log Out</a>
+                    </li>
                 {% endif %}
             </ul>
-        {%if 'CurrentUser' in session %}
-            <div class="d-flex align-items-center">
-                <img src="{{ url_for('static', filename='images/profile icon.png') }}" style="width:40px;" class="me-3">
-                <img src="{{ url_for('static', filename='images/cart.png') }}" style="width:30px;" class="me-3">
-            </div>
-        {% endif %}
+            {% if 'CurrentUser' in session %}
+                <div class="d-flex align-items-center">
+                    <a href="{{ url_for('profile', id=session['CurrentUser']) }}">
+                        <img src="{{ url_for('static', filename='images/profile icon.png') }}" style="width:40px;"
+                             class="me-3">
+                    </a>
+                    <a href="{{ url_for('cart') }}">
+                        <img src="{{ url_for('static', filename='images/cart.png') }}" style="width:30px;" class="me-3">
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
 </nav>
