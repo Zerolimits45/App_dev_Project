@@ -448,6 +448,9 @@ def rolex():
             products_list.append(product)
 
     return render_template('shop_categories/shop-rolex.html', products_list=products_list)
+@app.route('/cart')
+def cart():
+    return render_template('cart.html')
 
 
 # Admin side

@@ -169,3 +169,17 @@ a {
     font-size: 120%;
 }
 
+.add-img-btn{
+    background-color: white;
+    border-radius: 10px;
+}
+
+.cart-background{
+    background-color: #D5D5D5;
+}
+.cart-image {
+    height: 150px;
+    object-fit: contain;
+}
+
+
