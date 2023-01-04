@@ -7,10 +7,10 @@
             <div class="card card-border background" style="width: 100%;">
                 <div class="card-body">
                     <div class="d-flex flex-column justify-content-center">
-                        <img src="{{ url_for('static', filename='images/seiko/watch1.png') }}" class="image-size">
-                        <a class="card-text text-colour text-centre product-title" href="">Seiko Chronograph Quartz Watch</a>
-                        <p class="card-text text-colour text-centre price">Price: $100</p>
-                        <p class="card-text text-colour text-centre qty">Qty: 45</p>
+                        <img src="{{ url_for('static', filename='uploads/' + product.get_image() ) }}" class="image-size">
+                        <a class="card-text text-colour text-centre product-title" href="">{{ product.get_name() }}</a>
+                        <p class="card-text text-colour text-centre price">Price: ${{ product.get_price() }}</p>
+                        <p class="card-text text-colour text-centre qty">Qty: {{ product.get_quantity() }}</p>
                     </div>
                 </div>
             </div>
@@ -20,11 +20,7 @@
                 <div class="card-body">
                     <div class="d-flex flex-column justify-content-center">
                         <h2 class="text-colour">Product Description</h2>
-                        <p class="text-colour">Combining affordability and style, these watches really hit the mark and
-                            offer an impressive
-                            selection of men’s and ladies’ classic analogue and sports chronograph options. They feature
-                            either solar or quartz movement for time accuracy, offering a wide choice of hard-wearing
-                            fabric, durable silicone, or stainless steel bracelet.</p>
+                        <p class="text-colour">{{ product.get_description() }}</p>
                     </div>
                     {{ formHelper.renderField(form.quantity) }}
                     <div class="d-flex justify-content-center mt-4">

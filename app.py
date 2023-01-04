@@ -24,12 +24,6 @@ def home():
     return render_template('index.html')
 
 
-# Shop
-@app.route('/shop')
-def shop():
-    return render_template('shop_categories/shop.html')
-
-
 @app.route('/profile/<int:id>')
 def profile(id):
     user_dict = {}
@@ -326,30 +320,134 @@ def delete_address(id):
     return redirect(url_for('address'))
 
 
-@app.route('/shop/productdescription')
-def product_description():
+@app.route('/shop/productdescription/<int:id>', methods=['GET', 'POST'])
+def product_description(id):
     form = quantityForm(request.form)
-    return render_template('shop_categories/product-description.html',form=form)
+    products_dict = {}
+    db = shelve.open('Products', 'c')
+    try:
+        if 'Product' in db:
+            products_dict = db['Product']
+        else:
+            db['Product'] = products_dict
+    except:
+        print("Error in retrieving Products from storage.")
+    db.close()
+
+    product = products_dict.get(id)
+
+    return render_template('shop_categories/product-description.html', form=form, product=product)
+
+
+# Shop
+@app.route('/shop')
+def shop():
+    products_dict = {}
+    db = shelve.open('Products', 'c')
+    try:
+        if 'Product' in db:
+            products_dict = db['Product']
+        else:
+            db['Product'] = products_dict
+    except:
+        print("Error in retrieving Products from storage.")
+    db.close()
+
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        if product.get_brand() == 'Seiko':
+            products_list.append(product)
+
+    return render_template('shop_categories/shop.html', products_list=products_list)
 
 
 @app.route('/shop/casio')
 def casio():
-    return render_template('shop_categories/shop-casio.html')
+    products_dict = {}
+    db = shelve.open('Products', 'c')
+    try:
+        if 'Product' in db:
+            products_dict = db['Product']
+        else:
+            db['Product'] = products_dict
+    except:
+        print("Error in retrieving Products from storage.")
+    db.close()
+
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        if product.get_brand() == 'Casio':
+            products_list.append(product)
+
+    return render_template('shop_categories/shop-casio.html', products_list=products_list)
 
 
 @app.route('/shop/orient')
 def orient():
-    return render_template('shop_categories/shop-orient.html')
+    products_dict = {}
+    db = shelve.open('Products', 'c')
+    try:
+        if 'Product' in db:
+            products_dict = db['Product']
+        else:
+            db['Product'] = products_dict
+    except:
+        print("Error in retrieving Products from storage.")
+    db.close()
+
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        if product.get_brand() == 'Orient':
+            products_list.append(product)
+
+    return render_template('shop_categories/shop-orient.html', products_list=products_list)
 
 
 @app.route('/shop/tag')
 def tag():
-    return render_template('shop_categories/shop-tag.html')
+    products_dict = {}
+    db = shelve.open('Products', 'c')
+    try:
+        if 'Product' in db:
+            products_dict = db['Product']
+        else:
+            db['Product'] = products_dict
+    except:
+        print("Error in retrieving Products from storage.")
+    db.close()
+
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        if product.get_brand() == 'TAG Heuer':
+            products_list.append(product)
+
+    return render_template('shop_categories/shop-tag.html', products_list=products_list)
 
 
 @app.route('/shop/rolex')
 def rolex():
-    return render_template('shop_categories/shop-rolex.html')
+    products_dict = {}
+    db = shelve.open('Products', 'c')
+    try:
+        if 'Product' in db:
+            products_dict = db['Product']
+        else:
+            db['Product'] = products_dict
+    except:
+        print("Error in retrieving Products from storage.")
+    db.close()
+
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        if product.get_brand() == 'Rolex':
+            products_list.append(product)
+
+    return render_template('shop_categories/shop-rolex.html', products_list=products_list)
 
 
 # Admin side

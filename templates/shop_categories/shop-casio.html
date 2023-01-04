@@ -8,9 +8,11 @@
             <div class="card card-border background" style="width: 100%;">
                 <div class="card-body">
                     <div class="d-flex flex-column justify-content-center">
-                        <img src="{{ url_for('static', filename='images/seiko/watch1.png') }}" class="shop-image">
-                        <a class="card-text text-colour text-centre" href="{{ url_for('product_description') }}">Seiko Chronograph Quartz Watch</a>
-                        <p class="card-text text-colour text-centre bigger-font">$100</p>
+                        {% for product in products_list %}
+                        <img src="{{ url_for('static', filename='uploads/' + product.get_image()) }}" class="shop-image">
+                        <a class="card-text text-colour text-centre" href="{{ url_for('product_description', id=product.get_product_id() ) }}">{{ product.get_name() }}</a>
+                        <p class="card-text text-colour text-centre bigger-font">${{ product.get_price() }}</p>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
