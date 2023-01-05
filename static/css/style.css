@@ -181,5 +181,11 @@ a {
     height: 150px;
     object-fit: contain;
 }
-
+.remove-item-btn{
+    padding: 10px 40px;
+    border-radius: 10px;
+    border: none;
+    background-color: #ff5261;
+    color: white;
+}
 
