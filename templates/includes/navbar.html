@@ -37,17 +37,17 @@
                     </li>
                 {% endif %}
             </ul>
-            {% if 'CurrentUser' in session %}
                 <div class="d-flex align-items-center">
+                    {% if 'CurrentUser' in session %}
                     <a href="{{ url_for('profile', id=session['CurrentUser']) }}">
                         <img src="{{ url_for('static', filename='images/profile icon.png') }}" style="width:40px;"
                              class="me-3">
                     </a>
+                    {% endif %}
                     <a href="{{ url_for('cart') }}">
                         <img src="{{ url_for('static', filename='images/cart.png') }}" style="width:30px;" class="me-3">
                     </a>
                 </div>
-            {% endif %}
         </div>
     </div>
 </nav>
