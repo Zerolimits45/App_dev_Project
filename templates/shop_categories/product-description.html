@@ -22,11 +22,13 @@
                         <h2 class="text-colour">Product Description</h2>
                         <p class="text-colour">{{ product.get_description() }}</p>
                     </div>
-                    {{ formHelper.renderField(form.quantity) }}
-                    <div class="d-flex justify-content-center mt-4">
-                            <input type="submit" value="Add To Cart" class="login-btn">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    </div>
+                    <form method="post" novalidate>
+                        {{ formHelper.renderField(form.quantity) }}
+                        <div class="d-flex justify-content-center mt-4">
+                                <input type="submit" value="Add To Cart" class="login-btn">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

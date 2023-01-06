@@ -4,16 +4,17 @@
     <hr class="text-colour">
     <div class="row">
         <div class="col-md-12">
+            {% for product in session['Cart'] %}
             <div class="card card-border cart-background" style="width: 100%;">
                 <div class="card-body">
                     <div class="d-flex">
                         <div class="ms-5 flex-grow-1">
-                            <h3>Product title</h3>
-                            <h5>Price</h5>
-                            <h5>QTY</h5>
+                            <h3>Product Title: {{ product[0] }}</h3>
+                            <h5>Price: {{ product[1] }}</h5>
+                            <h5>Quantity: {{ product[2] }}</h5>
                         </div>
                         <div class="me-5">
-                            <img src="{{ url_for('static', filename='images/seiko/watch1.png') }}" class="cart-image">
+                            <img src="{{ url_for('static', filename='uploads/' + product[3]) }}" class="cart-image">
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
@@ -23,6 +24,7 @@
                     </div>
                 </div>
             </div>
+            {% endfor %}
             <div class="d-flex justify-content-center mt-5">
                 <a>
                     <button class="back-btn">Proceed to Checkout</button>

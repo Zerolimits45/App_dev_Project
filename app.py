@@ -336,6 +336,13 @@ def product_description(id):
 
     product = products_dict.get(id)
 
+    if request.method == 'POST' and form.validate():
+        session['Cart'] = []
+        cart = [product.get_name(), product.get_price(), form.quantity.data, product.get_image()]
+        session['Cart'].append(cart)
+        flash('Added to Cart Successfully')
+        return redirect(url_for('shop'))
+
     return render_template('shop_categories/product-description.html', form=form, product=product)
 
 
@@ -448,6 +455,8 @@ def rolex():
             products_list.append(product)
 
     return render_template('shop_categories/shop-rolex.html', products_list=products_list)
+
+
 @app.route('/cart')
 def cart():
     return render_template('cart.html')

@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
+    <div class="container-fluid" style="min-height:100%">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-warning mt-3 alert-dismissible" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
     <h1 class="text-centre text-colour mt-5">Shop</h1>
     <hr class="text-colour">
     {% include "includes/shop/shop-navbar-seiko.html" %}
