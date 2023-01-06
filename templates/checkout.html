@@ -20,7 +20,7 @@
                                     <td>{{ address.getname() }}</td>
                                     <td>{{ address.getlocation() }}</td>
                                     <td>
-                                        <a>
+                                        <a href="{{ url_for('payment', id=address.getlocationid() ) }}">
                                             <button class="edit-btn">Select address</button>
                                         </a>
                                     </td>
