@@ -1,18 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1 class="text-centre text-colour mt-5">Checkout</h1>
+    <h2 class="text-centre text-colour mt-1">Shipping Information</h2>
+    <h4 class="text-centre text-colour mt-1 mb-5">Please select the address you want to ship to</h4>
+    <hr class="text-colour">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card card-border background" style="width: 100%;">
                 <div class="card-body">
-
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card card-border background" style="width: 100%;">
-                <div class="card-body ">
-
+                    <table class="w-100">
+                        <tr>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Actions</th>
+                        </tr>
+                        {% for address in addresses_list %}
+                            {% if address.getid() == session['CurrentUser'] %}
+                                <tr>
+                                    <td>{{ address.getname() }}</td>
+                                    <td>{{ address.getlocation() }}</td>
+                                    <td>
+                                        <a>
+                                            <button class="edit-btn">Select address</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
                 </div>
             </div>
         </div>

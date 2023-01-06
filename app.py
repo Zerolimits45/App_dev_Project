@@ -462,7 +462,7 @@ def cart():
     return render_template('cart.html')
 
 
-# Delete Address
+# Remove cart item
 @app.route('/removeitem/<int:id>', methods=['GET', 'POST'])
 def remove_item(id):
     session['Cart'].pop(id)
@@ -470,6 +470,42 @@ def remove_item(id):
     return redirect(url_for('cart'))
 
 
+@app.route('/checkout')
+def checkout():
+    addresses_dict = {}
+    db = shelve.open('Addresses')
+    try:
+        if 'Address' in db:
+            addresses_dict = db['Address']
+        else:
+            db['Address'] = addresses_dict
+    except:
+        print("Error in retrieving Addresses from storage.")
+    db.close()
+
+    user_dict = {}
+    db = shelve.open('Users')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+    db.close()
+
+    addresses_list = []
+    for key in addresses_dict:
+        address = addresses_dict.get(key)
+        addresses_list.append(address)
+
+    user = user_dict.get(session['CurrentUser'])
+
+    return render_template('checkout.html', addresses_list=addresses_list, user=user)
+
+@app.route('/payment')
+def payment():
+    return render_template('payment.html')
 # Admin side
 # ====================================================================================================================
 # Admin user view

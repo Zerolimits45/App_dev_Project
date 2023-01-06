@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="text-colour text-centre mt-5">Payment</h1>
+    <hr class="text-colour">
+    <h2 class="text-colour text-centre">Order Details</h2>
+    <div class="row">
+        <div class="col-md-12">
+            {% for product in session['Cart'] %}
+            <div class="card card-border cart-background" style="width: 100%;">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div class="ms-5 flex-grow-1">
+                            <h3>Product Title: {{ product[0] }}</h3>
+                            <h5>Price: {{ product[1] }}</h5>
+                            <h5>Quantity: {{ product[2] }}</h5>
+                        </div>
+                        <div class="me-5">
+                            <img src="{{ url_for('static', filename='uploads/' + product[3]) }}"
+                                 class="cart-image-payment">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="text-centre text-colour mt-1">Shipping Information</h2>
+    <hr class="text-colour">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-border cart-background" style="width: 100%;">
+                <div class="card-body">
+                    <p class="text-colour text-centre">Address Nickname</p>
+                    <br>
+                    <p class="text-colour text-centre">Address selected</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

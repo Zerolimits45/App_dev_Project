@@ -165,27 +165,35 @@ a {
     font-size: 150%;
     margin-right: 250px;
 }
+
 .product-title {
     font-size: 120%;
 }
 
-.add-img-btn{
+.add-img-btn {
     background-color: white;
     border-radius: 10px;
 }
 
-.cart-background{
+.cart-background {
     background-color: #D5D5D5;
 }
+
 .cart-image {
     height: 150px;
     object-fit: contain;
 }
-.remove-item-btn{
+
+.remove-item-btn {
     padding: 10px 40px;
     border-radius: 10px;
     border: none;
     background-color: #ff5261;
     color: white;
+}
+
+.cart-image-payment {
+    height: 100px;
+    object-fit: contain;
 }
 
