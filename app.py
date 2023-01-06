@@ -462,6 +462,14 @@ def cart():
     return render_template('cart.html')
 
 
+# Delete Address
+@app.route('/removeitem/<int:id>', methods=['GET', 'POST'])
+def remove_item(id):
+    session['Cart'].pop(id)
+    flash('Removed Item')
+    return redirect(url_for('cart'))
+
+
 # Admin side
 # ====================================================================================================================
 # Admin user view
