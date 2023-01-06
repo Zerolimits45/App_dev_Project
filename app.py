@@ -172,6 +172,7 @@ def login():
                     session['CurrentUser'] = user.get_uid()
                     session['CurrentUsername'] = user.get_name()
                     session['CurrentUserEmail'] = user.get_email()
+                    session['Cart'] = []
                     session.pop('Admin', None)
                     flash('Logged In Successfully')
                     return redirect(url_for('home'))
@@ -337,7 +338,6 @@ def product_description(id):
     product = products_dict.get(id)
 
     if request.method == 'POST' and form.validate():
-        session['Cart'] = []
         cart = [product.get_name(), product.get_price(), form.quantity.data, product.get_image()]
         session['Cart'].append(cart)
         flash('Added to Cart Successfully')
@@ -470,7 +470,7 @@ def remove_item(id):
     return redirect(url_for('cart'))
 
 
-@app.route('/checkout')
+@app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     addresses_dict = {}
     db = shelve.open('Addresses')
@@ -503,9 +503,25 @@ def checkout():
 
     return render_template('checkout.html', addresses_list=addresses_list, user=user)
 
-@app.route('/payment')
-def payment():
-    return render_template('payment.html')
+
+@app.route('/payment/<int:id>', methods=['GET', 'POST'])
+def payment(id):
+    addresses_dict = {}
+    db = shelve.open('Addresses')
+    try:
+        if 'Address' in db:
+            addresses_dict = db['Address']
+        else:
+            db['Address'] = addresses_dict
+    except:
+        print("Error in retrieving Addresses from storage.")
+    db.close()
+
+    address = addresses_dict.get(id)
+
+    return render_template('payment.html', address=address)
+
+
 # Admin side
 # ====================================================================================================================
 # Admin user view
