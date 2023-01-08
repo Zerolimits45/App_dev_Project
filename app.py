@@ -514,6 +514,11 @@ def rewards():
     return render_template('rewards.html')
 
 
+@app.route('/rewards/redeem')
+def redeem():
+    return render_template('rewards-redeem.html')
+
+
 # Admin side
 # ====================================================================================================================
 # Admin user view

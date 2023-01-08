@@ -12,21 +12,18 @@
         </div>
     </div>
     <p class="text-centre text-colour mb-5"><img src="{{ url_for('static', filename='images/info_icon.png') }}"
-                                            class="me-3 info-icon">10 points earned every $20 spent</p>
-    {% include 'includes/rewards/reward-navbar.html' %}
+                                                 class="me-3 info-icon">10 points earned every $20 spent</p>
+    {% include 'includes/rewards/reward-wallet-navbar.html' %}
     <div class="row justify-content-center mt-5">
         <div class="col-md-9">
-            <div class="card reward-border points-image" style="width: 100%;">
+            <div class="card reward-border redeem-image" style="width: 100%;">
                 <div class="card-body">
-                    <div class="d-flex">
-                        <h2 class="text-colour me-5 mt-2">15%</h2>
-                        <div>
-                            <h4>Redeem 15% OFF your next order!</h4>
-                            <a href="#" class="mt-5">
-                                <button class="redeem-btn">Redeem this</button>
-                            </a>
-                        </div>
-                    </div>
+                    <h2 class="text-colour ms-4">5% OFF your next order!</h2>
+                </div>
+                <div class="card-body">
+                    <a href="#" class="ms-4">
+                        <button class="redeem">Redeem for 20 points</button>
+                    </a>
                 </div>
             </div>
         </div>
