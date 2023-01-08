@@ -197,3 +197,52 @@ a {
     object-fit: contain;
 }
 
+.points-image {
+    width: 75%;
+    padding: 15px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("../images/rewards-icon/rewards-bg.png");
+}
+
+.reward-border {
+    border-radius: 25px;
+    border: 5px solid #1D1C1B;
+}
+
+.info-icon {
+    height: 25px;
+    object-fit: contain;
+}
+
+.redeem-btn {
+    padding: 10px 40px;
+    border-radius: 20px;
+    border: none;
+    background-color: white;
+}
+
+.redeem-btn:hover {
+    color: white;
+    background-color: #7fff88;
+}
+
+.redeem-image {
+    width: 75%;
+    padding: 15px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("../images/rewards-icon/10%.png");
+}
+
+.redeem {
+    padding: 10px 40px;
+    border-radius: 10px;
+    border: 2px solid white;
+    background-color: #95E5FF;
+    color: white;
+}
+
+.redeem:hover {
+    border: 3px solid #7fff88;
+}
