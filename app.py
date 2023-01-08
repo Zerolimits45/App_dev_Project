@@ -522,6 +522,16 @@ def payment(id):
     return render_template('payment.html', address=address)
 
 
+@app.route('/rewards')
+def rewards():
+    return render_template('rewards.html')
+
+
+@app.route('/rewards/redeem')
+def redeem():
+    return render_template('rewards-redeem.html')
+
+
 # Admin side
 # ====================================================================================================================
 # Admin user view
@@ -789,6 +799,28 @@ def delete_feedback(id):
     db.close()
     flash('Deleted Successfully')
     return redirect(url_for('feedback'))
+
+
+@app.route('/admin/coupons')
+def coupons():
+    return render_template('admin/admin-coupons.html')
+
+
+@app.route('/admin/coupons/edit')
+def edit_coupon():
+    form = editCouponForm()
+    return render_template('admin/admin-coupons-edit.html', form=form)
+
+
+@app.route('/admin/coupons/add')
+def add_coupon():
+    form = addCouponForm()
+    return render_template('admin/admin-coupons-add.html', form=form)
+
+
+@app.route('/admin/deletecoupon')
+def delete_coupon():
+    return
 
 
 if __name__ == '__main__':
