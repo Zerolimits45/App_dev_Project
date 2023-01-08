@@ -8,6 +8,7 @@ import shelve
 from flask_wtf.csrf import CSRFProtect  # up for debate
 from Product import *
 from Address import *
+from Coupon import *
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
@@ -803,24 +804,114 @@ def delete_feedback(id):
 
 @app.route('/admin/coupons')
 def coupons():
-    return render_template('admin/admin-coupons.html')
+    coupons_dict = {}
+    db = shelve.open('Coupons', 'c')
+    try:
+        if 'Coupon' in db:
+            coupons_dict = db['Coupon']
+        else:
+            db['Coupon'] = coupons_dict
+    except:
+        print("Error in retrieving Coupons from Storage")
+    db.close()
+
+    coupons_list = []
+    for key in coupons_dict:
+        coupon = coupons_dict.get(key)
+        coupons_list.append(coupon)
+
+    return render_template('admin/admin-coupons.html', coupons_list=coupons_list)
 
 
-@app.route('/admin/coupons/edit')
-def edit_coupon():
-    form = editCouponForm()
+@app.route('/admin/coupons/edit/<int:id>', methods=['GET', 'POST'])
+def edit_coupon(id):
+    form = editCouponForm(request.form)
+    if request.method == "POST" and form.validate():
+        coupons_dict = {}
+        db = shelve.open('Coupons', 'c')
+        try:
+            if 'Coupon' in db:
+                coupons_dict = db['Coupon']
+            else:
+                db['Coupon'] = coupons_dict
+        except:
+            print("Error in retrieving Coupons from Storage")
+
+        coupon = coupons_dict.get(id)
+        coupon.set_name(form.name.data)
+        coupon.set_price(form.price.data)
+
+        db['Coupon'] = coupons_dict
+        db.close()
+        return redirect(url_for('coupons'))
+    else:
+        coupons_dict = {}
+        db = shelve.open('Coupons', 'c')
+        try:
+            if 'Coupon' in db:
+                coupons_dict = db['Coupon']
+            else:
+                db['Coupon'] = coupons_dict
+        except:
+            print("Error in retrieving Coupons from Storage")
+
+        coupon = coupons_dict.get(id)
+        form.name.data = coupon.get_name()
+        form.price.data = coupon.get_price()
+
+        db.close()
+        flash('Edit Successfully')
     return render_template('admin/admin-coupons-edit.html', form=form)
 
 
-@app.route('/admin/coupons/add')
+@app.route('/admin/coupons/add', methods=['GET', 'POST'])
 def add_coupon():
-    form = addCouponForm()
+    form = addCouponForm(request.form)
+    if request.method == "POST" and form.validate():
+        coupons_dict = {}
+        db = shelve.open('Coupons', 'c')
+        try:
+            if 'Coupon' in db:
+                coupons_dict = db['Coupon']
+            else:
+                db['Coupon'] = coupons_dict
+        except:
+            print("Error in retrieving Coupons from Storage")
+
+        name = form.name.data
+        price = form.price.data
+        count = len(coupons_dict)
+
+        coupon = Coupon(name, price, count)
+
+        coupons_dict[coupon.get_id()] = coupon
+        db['Coupon'] = coupons_dict
+
+        db.close()
+        flash('Added Successfully')
+        return redirect(url_for('coupons'))
+
     return render_template('admin/admin-coupons-add.html', form=form)
 
 
-@app.route('/admin/deletecoupon')
-def delete_coupon():
-    return
+@app.route('/admin/deletecoupon/<int:id>', methods=['GET', 'POST'])
+def delete_coupon(id):
+    coupons_dict = {}
+    db = shelve.open('Coupons', 'c')
+    try:
+        if 'Coupon' in db:
+            coupons_dict = db['Coupon']
+        else:
+            db['Coupon'] = coupons_dict
+    except:
+        print("Error in retrieving Coupons from Storage")
+
+    coupons_dict.pop(id)
+    db['Coupon'] = coupons_dict
+    db.close()
+    flash('Deleted Successfully')
+
+    return redirect(url_for('coupons'))
 
 
 if __name__ == '__main__':
