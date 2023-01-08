@@ -503,9 +503,17 @@ def checkout():
 
     return render_template('checkout.html', addresses_list=addresses_list, user=user)
 
+
 @app.route('/payment')
 def payment():
     return render_template('payment.html')
+
+
+@app.route('/rewards')
+def rewards():
+    return render_template('rewards.html')
+
+
 # Admin side
 # ====================================================================================================================
 # Admin user view
