@@ -1,5 +1,17 @@
 {% extends 'admin/adminbase.html' %}
 {% block content %}
+    <div class="container-fluid" style="min-height:100%">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-warning mt-3 alert-dismissible" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
     <h3 class="text-centre text-colour mt-5">Coupons</h3>
     <a href="{{ url_for('add_coupon') }}">
         <button class="add-btn mb-4 mt-5">Add Coupons +</button>
@@ -13,19 +25,44 @@
                     <th>Coupon Price</th>
                     <th>Actions</th>
                 </tr>
+                {% for coupon in coupons_list %}
                 <tr>
-                    <td>01</td>
-                    <td>5% OFF your next order!</td>
-                    <td>Redeem for 20 points</td>
+                    <td>{{ coupon.get_id() }}</td>
+                    <td>{{ coupon.get_name() }}</td>
+                    <td>{{ coupon.get_price() }}</td>
                     <td>
-                        <a href="{{ url_for('edit_coupon') }}" class="me-1">
+                        <a href="{{ url_for('edit_coupon', id=coupon.get_id()) }}" class="me-1">
                             <button class="edit-btn">Edit</button>
                         </a>
-                        <a href="{{ url_for('delete_coupon') }}" class="me-1">
-                            <button class="delete-btn">Delete</button>
-                        </a>
+
+                        <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#myModal_{{coupon.get_id()}}">Delete</button>
+
+                        <!-- The Modal -->
+                        <div class="modal" id="myModal_{{coupon.get_id()}}">
+                            <div class="modal-dialog">
+                                <div class="modal-content text-black">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Delete Confirmation</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                    Are you sure you want to delete {{coupon.get_name()}}
+                                    </div>
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <a href="{{url_for('delete_coupon', id=coupon.get_id())}}" class="me-1">
+                                            <button class="delete-btn">Delete</button>
+                                        </a>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
+                {% endfor %}
             </table>
         </div>
     </div>
