@@ -21,6 +21,7 @@
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
     <h2 class="text-centre text-colour mt-1">Shipping Information</h2>
@@ -29,9 +30,9 @@
         <div class="col-md-12">
             <div class="card card-border cart-background" style="width: 100%;">
                 <div class="card-body">
-                    <p class="text-colour text-centre">Address Nickname</p>
+                    <p class="text-colour text-centre">{{ address.getname() }}</p>
                     <br>
-                    <p class="text-colour text-centre">Address selected</p>
+                    <p class="text-colour text-centre">{{ address.getlocation() }}</p>
                 </div>
             </div>
         </div>
