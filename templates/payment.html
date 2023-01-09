@@ -10,8 +10,8 @@
                 <div class="card-body">
                     <div class="d-flex">
                         <div class="ms-5 flex-grow-1">
-                            <h3>Product Title: {{ product[0] }}</h3>
-                            <h5>Price: {{ product[1] }}</h5>
+                            <h3>{{ product[0] }}</h3>
+                            <h5>Price: ${{ product[1] }}</h5>
                             <h5>Quantity: {{ product[2] }}</h5>
                         </div>
                         <div class="me-5">
@@ -24,15 +24,29 @@
             {% endfor %}
         </div>
     </div>
-    <h2 class="text-centre text-colour mt-1">Shipping Information</h2>
+    <h2 class="text-centre text-colour mt-4">Shipping Information</h2>
     <hr class="text-colour">
     <div class="row">
         <div class="col-md-12">
             <div class="card card-border cart-background" style="width: 100%;">
                 <div class="card-body">
-                    <p class="text-colour text-centre">{{ address.getname() }}</p>
+                    <p class="text-centre enlarge cart-address">{{ address.getname() }}</p>
                     <br>
-                    <p class="text-colour text-centre">{{ address.getlocation() }}</p>
+                    <p class="text-centre enlarge">{{ address.getlocation() }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="text-centre text-colour mt-4">Checkout</h2>
+    <hr class="text-colour">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-border cart-background" style="width: 100%;">
+                <div class="card-body">
+                    <h2 class="text-centre">Total Amount: $</h2>
+                    <a>
+                        <button class="add-btn mt-5">Pay</button>
+                    </a>
                 </div>
             </div>
         </div>
