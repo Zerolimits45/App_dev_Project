@@ -5,7 +5,7 @@
         <div class="col-md-3">
             <div class="card reward-border points-image" style="width: 100%;">
                 <div class="card-body d-flex justify-content-center">
-                    <h3>260</h3>
+                    <h3>{{ user.get_points() }}</h3>
                     <h4 class="ms-2 mt-1">Points</h4>
                 </div>
             </div>
@@ -14,14 +14,15 @@
     <p class="text-centre text-colour mb-5"><img src="{{ url_for('static', filename='images/info_icon.png') }}"
                                             class="me-3 info-icon">10 points earned every $20 spent</p>
     {% include 'includes/rewards/reward-navbar.html' %}
+    {% for coupon in coupons_list %}
     <div class="row justify-content-center mt-5">
         <div class="col-md-9">
             <div class="card reward-border points-image" style="width: 100%;">
                 <div class="card-body">
                     <div class="d-flex">
-                        <h2 class="text-colour me-5 mt-2">15%</h2>
+                        <h2 class="text-colour me-5 mt-2">{{ coupon.get_price() }}</h2>
                         <div>
-                            <h4>Redeem 15% OFF your next order!</h4>
+                            <h4>{{ coupon.get_name() }}</h4>
                             <a href="#" class="mt-5">
                                 <button class="redeem-btn">Redeem this</button>
                             </a>
@@ -31,4 +32,5 @@
             </div>
         </div>
     </div>
+    {% endfor %}
 {% endblock %}

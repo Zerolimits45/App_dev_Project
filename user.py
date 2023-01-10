@@ -7,6 +7,12 @@ class User:
         self.__email = email
         self.__password = password
         self.__name = name
+        self.__money_spent = 1000  # TESTING
+        if self.__money_spent == 0:
+            self.__points = 0
+        else:
+            self.__points = (self.__money_spent/20)*10
+        self.__coupons = []
 
     def set_uid(self, uid):
         self.__user_id = uid
@@ -20,6 +26,15 @@ class User:
     def set_name(self, name):
         self.__name = name
 
+    def set_money_spent(self, money_spent):
+        self.__money_spent = money_spent
+
+    def set_points(self, points):
+        self.__points = points
+
+    def set_coupons(self, coupon):
+        self.__coupons.append(coupon)
+
     def get_uid(self):
         return self.__user_id
 
@@ -32,3 +47,11 @@ class User:
     def get_name(self):
         return self.__name
 
+    def get_money_spent(self):
+        return self.__money_spent
+
+    def get_points(self):
+        return self.__points
+
+    def get_coupons(self):
+        return self.__coupons

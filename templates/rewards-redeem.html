@@ -5,7 +5,7 @@
         <div class="col-md-3">
             <div class="card reward-border points-image" style="width: 100%;">
                 <div class="card-body d-flex justify-content-center">
-                    <h3>260</h3>
+                    <h3>{{ user.get_points() }}</h3>
                     <h4 class="ms-2 mt-1">Points</h4>
                 </div>
             </div>
@@ -14,18 +14,22 @@
     <p class="text-centre text-colour mb-5"><img src="{{ url_for('static', filename='images/info_icon.png') }}"
                                                  class="me-3 info-icon">10 points earned every $20 spent</p>
     {% include 'includes/rewards/reward-wallet-navbar.html' %}
+    {% for coupon in coupons_list %}
+    {% if user.get_points() >= coupon.get_price() %}
     <div class="row justify-content-center mt-5">
         <div class="col-md-9">
             <div class="card reward-border redeem-image" style="width: 100%;">
                 <div class="card-body">
-                    <h2 class="text-colour ms-4">5% OFF your next order!</h2>
+                    <h2 class="text-colour ms-4">{{ coupon.get_name() }}</h2>
                 </div>
                 <div class="card-body">
-                    <a href="#" class="ms-4">
-                        <button class="redeem">Redeem for 20 points</button>
+                    <a href="{{ url_for('redeem_reward', id=session['CurrentUser'], cid=coupon.get_id())}}" class="ms-4">
+                        <button class="redeem">Redeem for {{ coupon.get_price() }} points</button>
                     </a>
                 </div>
             </div>
         </div>
     </div>
+    {% endif %}
+    {% endfor %}
 {% endblock %}
