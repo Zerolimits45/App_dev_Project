@@ -523,14 +523,109 @@ def payment(id):
     return render_template('payment.html', address=address)
 
 
-@app.route('/rewards')
-def rewards():
-    return render_template('rewards.html')
+@app.route('/rewards/<int:id>')
+def rewards(id):
+    user_dict = {}
+    db = shelve.open('Users', 'c')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+
+    user = user_dict.get(id)
+    db['User'] = user_dict
+    db.close()
+
+    coupons_dict = {}
+    db = shelve.open('Coupons', 'c')
+    try:
+        if 'Coupon' in db:
+            coupons_dict = db['Coupon']
+        else:
+            db['Coupon'] = coupons_dict
+    except:
+        print("Error in retrieving Coupons from Storage")
+    db.close()
+
+    coupons_list = []
+    for key in coupons_dict:
+        coupon = coupons_dict.get(key)
+        for i in user.get_coupons():
+            if coupon.get_id() == i:
+                coupons_list.append(coupon)
+
+    return render_template('rewards.html', user=user, coupons_list=coupons_list)
 
 
-@app.route('/rewards/redeem')
-def redeem():
-    return render_template('rewards-redeem.html')
+@app.route('/rewards/redeem/<int:id>')
+def redeem(id):
+    user_dict = {}
+    db = shelve.open('Users', 'c')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+    db.close()
+
+    user = user_dict.get(id)
+
+    coupons_dict = {}
+    db = shelve.open('Coupons', 'c')
+    try:
+        if 'Coupon' in db:
+            coupons_dict = db['Coupon']
+        else:
+            db['Coupon'] = coupons_dict
+    except:
+        print("Error in retrieving Coupons from Storage")
+    db.close()
+
+    coupons_list = []
+    for key in coupons_dict:
+        coupon = coupons_dict.get(key)
+        if coupon.get_id() not in user.get_coupons():
+            coupons_list.append(coupon)
+
+    return render_template('rewards-redeem.html', user=user, coupons_list=coupons_list)
+
+
+@app.route('/rewards/redeem-reward/<int:id>/<int:cid>', methods=['GET', 'POST'])
+def redeem_reward(id, cid):
+    coupons_dict = {}
+    db = shelve.open('Coupons', 'c')
+    try:
+        if 'Coupon' in db:
+            coupons_dict = db['Coupon']
+        else:
+            db['Coupon'] = coupons_dict
+    except:
+        print("Error in retrieving Coupons from Storage")
+    db.close()
+
+    user_dict = {}
+    db = shelve.open('Users', 'c')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+
+    user = user_dict.get(id)
+    coupon = coupons_dict.get(cid)
+    user.set_coupons(cid)
+    user.set_points(user.get_points() - coupon.get_price())
+    db['User'] = user_dict
+    db.close()
+
+    return redirect(url_for('rewards', id=id))
 
 
 # Admin side
