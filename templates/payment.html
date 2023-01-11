@@ -21,6 +21,7 @@
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
     <h2 class="text-centre text-colour mt-4">Shipping Information</h2>
@@ -42,8 +43,7 @@
         <div class="col-md-12">
             <div class="card card-border cart-background" style="width: 100%;">
                 <div class="card-body">
-                    {% set total = [product[1]] %}
-                    <h2 class="text-centre">Total Amount: ${{ total|sum() }}</h2>
+                    <h2 class="text-centre">Total Amount: ${{ total_amount|sum() }}</h2>
                     <a>
                         <button class="add-btn mt-5">Pay</button>
                     </a>
@@ -51,5 +51,4 @@
             </div>
         </div>
     </div>
-    {% endfor %}
 {% endblock %}

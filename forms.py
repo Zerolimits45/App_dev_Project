@@ -214,10 +214,12 @@ class quantityForm(Form):
 class addCouponForm(Form):
     name = StringField('Coupon title', validators=[DataRequired()])
     price = IntegerField('Points needed', validators=[DataRequired(message="Points needs to be a number.")])
+    effect = IntegerField('Percentage', validators=[DataRequired(message='Percentage needs to be a number.')])
     submit = SubmitField("Add Coupon")
 
 
 class editCouponForm(Form):
     name = StringField('Coupon title', validators=[DataRequired()])
     price = IntegerField('Points needed', validators=[DataRequired(message="Points needs to be a number.")])
+    effect = IntegerField('Percentage', validators=[DataRequired(message='Percentage needs to be a number.')])
     submit = SubmitField("Save")

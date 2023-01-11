@@ -525,7 +525,11 @@ def payment(id):
 
     address = addresses_dict.get(id)
 
-    return render_template('payment.html', address=address)
+    total_amount = []
+    for product in session['Cart']:
+        total_amount.append(product[1])
+
+    return render_template('payment.html', address=address, total_amount=total_amount)
 
 
 @app.route('/rewards/<int:id>')
@@ -940,6 +944,7 @@ def edit_coupon(id):
         coupon = coupons_dict.get(id)
         coupon.set_name(form.name.data)
         coupon.set_price(form.price.data)
+        coupon.set_effect(form.effect.data)
 
         db['Coupon'] = coupons_dict
         db.close()
@@ -958,6 +963,7 @@ def edit_coupon(id):
         coupon = coupons_dict.get(id)
         form.name.data = coupon.get_name()
         form.price.data = coupon.get_price()
+        form.effect.data = coupon.get_effect()
 
         db.close()
         flash('Edit Successfully')
@@ -980,9 +986,10 @@ def add_coupon():
 
         name = form.name.data
         price = form.price.data
+        effect = form.effect.data
         count = len(coupons_dict)
 
-        coupon = Coupon(name, price, count)
+        coupon = Coupon(name, price, effect, count)
 
         coupons_dict[coupon.get_id()] = coupon
         db['Coupon'] = coupons_dict
