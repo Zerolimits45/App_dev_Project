@@ -12,6 +12,9 @@
                         <div class="mb-3">
                             {{ formHelper.renderField(form.price) }}
                         </div>
+                        <div class="mb-3">
+                            {{ formHelper.renderField(form.effect) }}
+                        </div>
                         <div class="d-flex justify-content-center">
                             <input type="submit" value="Save" class="login-btn">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
