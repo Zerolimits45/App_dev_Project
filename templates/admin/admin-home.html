@@ -13,6 +13,18 @@
         {% endif %}
       {% endwith %}
     </div>
+    <form method="post" style="display: inline;">
+        <div class="mb-3" style="display: inline-block;">
+            {{ formHelper.renderField(form.sort) }}
+        </div>
+        <div style="display: inline-block;">
+            <input type="submit" value="Update">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        </div>
+    </form>
+        <a href="{{ url_for('users') }}">
+            <button>Reset</button>
+        </a>
     <div class="row">
         <div class="col-12">
             <div class="text-white">
@@ -35,7 +47,7 @@
                     <td>{{ user.get_uid() }}</td>
                     <td>{{ user.get_name() }}</td>
                     <td>{{ user.get_email() }}</td>
-                    <td>0</td>
+                    <td>{{ user.get_points() }}</td>
                     <td>
                         <a href="{{url_for('editUsers', id=user.get_uid())}}" class="me-1">
                             <button class="edit-btn">Edit</button>

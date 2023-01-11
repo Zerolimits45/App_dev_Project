@@ -640,7 +640,7 @@ def redeem_reward(id, cid):
 # Admin side
 # ====================================================================================================================
 # Admin user view
-@app.route('/admin/users')
+@app.route('/admin/users', methods=['GET', 'POST'])
 def users():
     user_dict = {}
     db = shelve.open('Users', 'c')
@@ -658,7 +658,14 @@ def users():
         user = user_dict.get(key)
         users_list.append(user)
 
-    return render_template('admin/admin-home.html', count=len(users_list), users_list=users_list)
+    form = SortUserForm(request.form)
+    if request.method == "POST" and form.validate():
+        if form.sort.data == "Ascending":
+            users_list.sort(key=lambda x: x.get_points())
+        elif form.sort.data == "Descending":
+            users_list.sort(key=lambda x: x.get_points(), reverse=True)
+
+    return render_template('admin/admin-home.html', count=len(users_list), users_list=users_list, form=form)
 
 
 # Admin edit users
@@ -724,7 +731,7 @@ def delete_user(id):
 
 
 # Admin Product View
-@app.route('/admin/product')
+@app.route('/admin/product', methods=['GET', 'POST'])
 def products():
     products_dict = {}
     db = shelve.open('Products', 'c')
@@ -742,7 +749,20 @@ def products():
         product = products_dict.get(key)
         products_list.append(product)
 
-    return render_template('admin/admin-products.html', products_list=products_list)
+    form = SortProductForm(request.form)
+    if request.method == "POST" and form.validate():
+        if form.sort.data == "Price":
+            if form.direction.data == "Ascending":
+                products_list.sort(key=lambda x: x.get_price())
+            elif form.direction.data == "Descending":
+                products_list.sort(key=lambda x: x.get_price(), reverse=True)
+        elif form.sort.data == "Quantity":
+            if form.direction.data == "Ascending":
+                products_list.sort(key=lambda x: x.get_quantity())
+            elif form.direction.data == "Descending":
+                products_list.sort(key=lambda x: x.get_quantity(), reverse=True)
+
+    return render_template('admin/admin-products.html', products_list=products_list, form=form)
 
 
 # Admin Product Edit
@@ -906,7 +926,7 @@ def delete_feedback(id):
     return redirect(url_for('feedback'))
 
 
-@app.route('/admin/coupons')
+@app.route('/admin/coupons', methods=['GET', 'POST'])
 def coupons():
     coupons_dict = {}
     db = shelve.open('Coupons', 'c')
@@ -924,7 +944,20 @@ def coupons():
         coupon = coupons_dict.get(key)
         coupons_list.append(coupon)
 
-    return render_template('admin/admin-coupons.html', coupons_list=coupons_list)
+    form = SortCouponForm(request.form)
+    if request.method == "POST" and form.validate():
+        if form.sort.data == "Price":
+            if form.direction.data == "Ascending":
+                coupons_list.sort(key=lambda x: x.get_price())
+            elif form.direction.data == "Descending":
+                coupons_list.sort(key=lambda x: x.get_price(), reverse=True)
+        elif form.sort.data == "Effect":
+            if form.direction.data == "Ascending":
+                coupons_list.sort(key=lambda x: x.get_effect())
+            elif form.direction.data == "Descending":
+                coupons_list.sort(key=lambda x: x.get_effect(), reverse=True)
+
+    return render_template('admin/admin-coupons.html', coupons_list=coupons_list, form=form)
 
 
 @app.route('/admin/coupons/edit/<int:id>', methods=['GET', 'POST'])

@@ -223,3 +223,21 @@ class editCouponForm(Form):
     price = IntegerField('Points needed', validators=[DataRequired(message="Points needs to be a number.")])
     effect = IntegerField('Percentage', validators=[DataRequired(message='Percentage needs to be a number.')])
     submit = SubmitField("Save")
+
+
+# Sort Functions
+class SortUserForm(Form):
+    sort = SelectField('Sort By', choices=[('', 'Select'), ('Ascending', 'Ascending'), ('Descending', 'Descending')], default='')
+    submit = SubmitField('Update')
+
+
+class SortProductForm(Form):
+    sort = SelectField('Filter By', validators=[DataRequired()], choices=[('', 'Select'), ('Price', 'Price'), ('Quantity', 'Quantity')])
+    direction = SelectField('Sort By', validators=[DataRequired()], choices=[('', 'Select'), ('Ascending', 'Ascending'), ('Descending', 'Descending')], default='')
+    submit = SubmitField('Update')
+
+
+class SortCouponForm(Form):
+    sort = SelectField('Filter By', validators=[DataRequired()], choices=[('', 'Select'), ('Price', 'Price'), ('Effect', 'Effect')])
+    direction = SelectField('Sort By', validators=[DataRequired()], choices=[('', 'Select'), ('Ascending', 'Ascending'), ('Descending', 'Descending')], default='')
+    submit = SubmitField('Update')

@@ -13,6 +13,21 @@
       {% endwith %}
     </div>
     <h3 class="text-centre text-colour mt-5">Coupons</h3>
+    <form method="post" style="display: inline;">
+        <div style="display: inline-block;">
+            {{ formHelper.renderField(form.sort) }}
+        </div>
+        <div style="display: inline-block;">
+            {{ formHelper.renderField(form.direction) }}
+        </div>
+        <div style="display: inline-block;">
+            <input type="submit" value="Update">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        </div>
+    </form>
+        <a href="{{ url_for('coupons') }}">
+            <button>Reset</button>
+        </a>
     <a href="{{ url_for('add_coupon') }}">
         <button class="add-btn mb-4 mt-5">Add Coupons +</button>
     </a>
