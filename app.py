@@ -339,7 +339,7 @@ def product_description(id):
     product = products_dict.get(id)
 
     if request.method == 'POST' and form.validate():
-        cart = [product.get_name(), product.get_price(), form.quantity.data, product.get_image()]
+        cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image()]
         session['Cart'].append(cart)
         flash('Added to Cart Successfully')
         return redirect(url_for('shop'))
@@ -473,6 +473,11 @@ def remove_item(id):
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
+
+    if len(session['Cart']) == 0:
+        flash('Cart is Empty')
+        return redirect(url_for('cart'))
+
     addresses_dict = {}
     db = shelve.open('Addresses')
     try:
