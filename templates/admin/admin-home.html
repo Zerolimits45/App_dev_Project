@@ -2,37 +2,41 @@
 {% block content %}
     <h3 class="text-centre text-colour mt-5">Users</h3>
     <div class="container-fluid" style="min-height:100%">
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          {% for message in messages %}
-          <div class="alert alert-warning mt-3 alert-dismissible" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning mt-3 alert-dismissible" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     </div>
-    <form method="post" style="display: inline;">
-        <div class="mb-3" style="display: inline-block;">
-            {{ formHelper.renderField(form.sort) }}
-        </div>
-        <div style="display: inline-block;">
-            <input type="submit" value="Update">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <form method="post">
+        <div class="d-flex justify-content-center">
+            <div>
+                {{ formHelper.renderField(form.sort) }}
+            </div>
+            <div class="mt-4 ms-3">
+                <input type="submit" class="update-btn" value="Update">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            </div>
         </div>
     </form>
+    <div class="d-flex justify-content-center mt-5 me-2">
         <a href="{{ url_for('users') }}">
-            <button>Reset</button>
+            <button class="reset-btn">Reset</button>
         </a>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="text-white">
-            {% if count == 0 %}
-            <p>There are no users.</p>
-            {% else %}
-            <p>There are {{ count }} user/users.</p>
-            {% endif %}
+                {% if count == 0 %}
+                    <p>There are no users.</p>
+                {% else %}
+                    <p>There are {{ count }} user/users.</p>
+                {% endif %}
             </div>
             <table class="table w-100">
                 <tr>
@@ -43,42 +47,46 @@
                     <th>Actions</th>
                 </tr>
                 {% for user in users_list %}
-                <tr>
-                    <td>{{ user.get_uid() }}</td>
-                    <td>{{ user.get_name() }}</td>
-                    <td>{{ user.get_email() }}</td>
-                    <td>{{ user.get_points() }}</td>
-                    <td>
-                        <a href="{{url_for('editUsers', id=user.get_uid())}}" class="me-1">
-                            <button class="edit-btn">Edit</button>
-                        </a>
-                        <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#myModal_{{user.get_uid()}}">Delete</button>
+                    <tr>
+                        <td>{{ user.get_uid() }}</td>
+                        <td>{{ user.get_name() }}</td>
+                        <td>{{ user.get_email() }}</td>
+                        <td>{{ user.get_points() }}</td>
+                        <td>
+                            <a href="{{ url_for('editUsers', id=user.get_uid()) }}" class="me-1">
+                                <button class="edit-btn">Edit</button>
+                            </a>
+                            <button class="delete-btn" data-bs-toggle="modal"
+                                    data-bs-target="#myModal_{{ user.get_uid() }}">Delete
+                            </button>
 
-                        <!-- The Modal -->
-                        <div class="modal" id="myModal_{{user.get_uid()}}">
-                            <div class="modal-dialog">
-                                <div class="modal-content text-black">
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Delete Confirmation</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <!-- Modal body -->
-                                    <div class="modal-body">
-                                    Are you sure you want to delete {{user.get_email()}}
-                                    </div>
-                                    <!-- Modal footer -->
-                                    <div class="modal-footer">
-                                        <a href="{{url_for('delete_user', id=user.get_uid())}}" class="me-1">
-                                            <button class="delete-btn">Delete</button>
-                                        </a>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <!-- The Modal -->
+                            <div class="modal" id="myModal_{{ user.get_uid() }}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content text-black">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Delete Confirmation</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            Are you sure you want to delete {{ user.get_email() }}
+                                        </div>
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <a href="{{ url_for('delete_user', id=user.get_uid()) }}" class="me-1">
+                                                <button class="delete-btn">Delete</button>
+                                            </a>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Cancel
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 {% endfor %}
             </table>
         </div>

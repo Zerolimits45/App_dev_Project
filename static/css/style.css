@@ -250,6 +250,29 @@ a {
 .enlarge {
     font-size: 150%;
 }
-.cart-address{
+
+.cart-address {
     text-decoration: underline;
+}
+
+.update-btn {
+    padding: 7px 40px;
+    border-radius: 5px;
+    border: none;
+    background-color: white;
+}
+
+.update-btn:hover {
+    background-color: #7fff88;
+}
+
+.reset-btn {
+    padding: 7px 40px;
+    border-radius: 5px;
+    border: none;
+    background-color: white;
+}
+
+.reset-btn:hover {
+    background-color: #2280ff;
 }
