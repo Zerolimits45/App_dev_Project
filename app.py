@@ -473,7 +473,6 @@ def remove_item(id):
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
-
     if len(session['Cart']) == 0:
         flash('Cart is Empty')
         return redirect(url_for('cart'))
@@ -1052,6 +1051,11 @@ def delete_coupon(id):
     flash('Deleted Successfully')
 
     return redirect(url_for('coupons'))
+
+
+@app.route('/admin/users/address')
+def user_address():
+    return render_template('admin/admin-user-address.html')
 
 
 if __name__ == '__main__':
