@@ -241,3 +241,8 @@ class SortCouponForm(Form):
     sort = SelectField('Filter By', validators=[DataRequired()], choices=[('', 'Select'), ('Price', 'Price'), ('Effect', 'Effect')])
     direction = SelectField('Sort By', validators=[DataRequired()], choices=[('', 'Select'), ('Ascending', 'Ascending'), ('Descending', 'Descending')], default='')
     submit = SubmitField('Update')
+
+
+class ChangeQuantityForm(Form):
+    quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
+    submit = SubmitField('Edit Quantity')
