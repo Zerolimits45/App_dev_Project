@@ -276,3 +276,9 @@ a {
 .reset-btn:hover {
     background-color: #2280ff;
 }
+
+.edit-qty-btn {
+    padding: 10px 40px;
+    border-radius: 10px;
+    border: none;
+}
