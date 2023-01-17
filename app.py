@@ -458,8 +458,9 @@ def rolex():
     return render_template('shop_categories/shop-rolex.html', products_list=products_list)
 
 
-@app.route('/cart')
+@app.route('/cart', methods=['GET', 'POST'])
 def cart():
+    form = ChangeQuantityForm(request.form)
     return render_template('cart.html')
 
 
