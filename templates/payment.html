@@ -10,9 +10,9 @@
                 <div class="card-body">
                     <div class="d-flex">
                         <div class="ms-5 flex-grow-1">
-                            <h3>{{ product[0] }}</h3>
-                            <h5>Price: ${{ product[1] }}</h5>
-                            <h5>Quantity: {{ product[2] }}</h5>
+                            <h3 class="text-colour">{{ product[0] }}</h3>
+                            <h5 class="text-colour">Price: ${{ product[1] }}</h5>
+                            <h5 class="text-colour">Quantity: {{ product[2] }}</h5>
                         </div>
                         <div class="me-5">
                             <img src="{{ url_for('static', filename='uploads/' + product[3]) }}"
@@ -30,9 +30,9 @@
         <div class="col-md-12">
             <div class="card card-border cart-background" style="width: 100%;">
                 <div class="card-body">
-                    <p class="text-centre enlarge cart-address">{{ address.getname() }}</p>
+                    <p class="text-centre text-colour enlarge cart-address">{{ address.getname() }}</p>
                     <br>
-                    <p class="text-centre enlarge">{{ address.getlocation() }}</p>
+                    <p class="text-centre text-colour enlarge">{{ address.getlocation() }}</p>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="col-md-12">
             <div class="card card-border cart-background" style="width: 100%;">
                 <div class="card-body">
-                    <h2 class="text-centre">Total Amount: ${{ total_amount|sum() }}</h2>
+                    <h2 class="text-centre text-colour">Total Amount: ${{ total_amount|sum() }}</h2>
                     <a>
                         <button class="add-btn mt-5">Pay</button>
                     </a>

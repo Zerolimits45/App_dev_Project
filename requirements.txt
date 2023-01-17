@@ -2,3 +2,4 @@ Flask~=2.2.2
 WTForms~=3.0.1
 geopy~=2.3.0
 geocoder~=1.38.1
+Werkzeug~=2.2.2

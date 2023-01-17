@@ -461,7 +461,7 @@ def rolex():
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
     form = ChangeQuantityForm(request.form)
-    return render_template('cart.html')
+    return render_template('cart.html', form=form)
 
 
 # Remove cart item
