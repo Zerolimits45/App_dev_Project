@@ -339,6 +339,11 @@ def product_description(id):
     product = products_dict.get(id)
 
     if request.method == 'POST' and form.validate():
+        for i in session['Cart']:
+            if i[0] == product.get_name():
+                flash('Item Already In Cart')
+                return redirect(url_for('product_description', id=id))
+
         cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image()]
         session['Cart'].append(cart)
         flash('Added to Cart Successfully')
