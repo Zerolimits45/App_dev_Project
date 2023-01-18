@@ -42,12 +42,15 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="mb-5">
+                            <div class=" col-lg-6 mb-5">
                                 {{ formHelper.renderField(form.email) }}
                             </div>
-                            <div class="mb-5">
-                                {{ formHelper.renderField(form.message) }}
+                            <div class=" col-lg-6 mb-5">
+                                {{ formHelper.renderField(form.reason) }}
                             </div>
+                        </div>
+                        <div class="mb-5">
+                            {{ formHelper.renderField(form.message) }}
                         </div>
                         <div class="d-flex justify-content-center">
                             <input type="submit" value="Send Feedback" class="login-btn">
