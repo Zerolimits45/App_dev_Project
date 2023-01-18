@@ -278,9 +278,18 @@ a {
 }
 
 .edit-qty-btn {
-    padding: 10px 40px;
+    padding: 8px 30px;
     border-radius: 10px;
     border: none;
+}
+
+.edit-qty-btn:hover {
+    background-color: #2280ff;
+    color: white;
+}
+
+.remove-item-btn:hover {
+    text-decoration: underline;
 }
 
 

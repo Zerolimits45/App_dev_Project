@@ -1,63 +1,69 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="container-fluid" style="min-height:100%">
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          {% for message in messages %}
-          <div class="alert alert-warning mt-3 alert-dismissible" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning mt-3 alert-dismissible" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     </div>
     <h1 class="text-centre text-colour mt-5">Your Cart</h1>
     <hr class="text-colour">
     <div class="row">
         <div class="col-md-12">
             {% for product in session['Cart'] %}
-            <div class="card card-border cart-background" style="width: 100%;">
-                <div class="card-body">
-                    <div class="d-flex">
-                        <div class="ms-5 flex-grow-1">
-                            <h3 class="text-colour">{{ product[0] }}</h3>
-                            <h5 class="text-colour">Price: ${{ product[1] }}</h5>
-                            <h5 class="col-md-4 change-update-text">{{ formHelper.renderField(form.quantity) }}</h5>
+                <div class="card card-border cart-background" style="width: 100%;">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="ms-5 flex-grow-1">
+                                <h3 class="text-colour">{{ product[0] }}</h3>
+                                <h5 class="text-colour">Price: ${{ product[1] }}</h5>
+                                <h5 class="col-md-4 change-update-text">{{ formHelper.renderField(form.quantity) }}</h5>
+                                <input type="submit" value="Edit Quantity" class="edit-qty-btn">
+                            </div>
+                            <div class=" ms-5 me-5 mb-4">
+                                <img src="{{ url_for('static', filename='uploads/' + product[3]) }}" class="cart-image">
+                            </div>
                         </div>
-                        <div class="me-5">
-                            <img src="{{ url_for('static', filename='uploads/' + product[3]) }}" class="cart-image">
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="remove-item-btn" data-bs-toggle="modal" data-bs-target="#myModal_{{ product[0] }}">Remove Item</button>
+                        <div class="d-flex justify-content-center">
+                            <button class="remove-item-btn mt-5" data-bs-toggle="modal"
+                                    data-bs-target="#myModal_{{ product[0] }}">Remove Item
+                            </button>
 
-                        <!-- The Modal -->
-                        <div class="modal" id="myModal_{{ product[0] }}">
-                            <div class="modal-dialog">
-                                <div class="modal-content text-black">
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Remove Item Confirmation</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <!-- Modal body -->
-                                    <div class="modal-body">
-                                    Are you sure you want to delete {{ product[0] }}
-                                    </div>
-                                    <!-- Modal footer -->
-                                    <div class="modal-footer">
-                                        <a href="{{ url_for('remove_item', id=session['Cart'].index(product)) }}" class="me-1">
-                                            <button class="remove-item-btn">Remove</button>
-                                        </a>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <!-- The Modal -->
+                            <div class="modal" id="myModal_{{ product[0] }}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content text-black">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Remove Item Confirmation</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            Are you sure you want to delete {{ product[0] }}
+                                        </div>
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <a href="{{ url_for('remove_item', id=session['Cart'].index(product)) }}"
+                                               class="me-1">
+                                                <button class="remove-item-btn">Remove</button>
+                                            </a>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Cancel
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             {% endfor %}
             <div class="d-flex justify-content-center mt-5">
                 <a href="{{ url_for('checkout') }}">
