@@ -23,8 +23,7 @@
                             <div class="ms-5 flex-grow-1">
                                 <h3 class="text-colour">{{ product[0] }}</h3>
                                 <h5 class="text-colour">Price: ${{ product[1] }}</h5>
-                                <h5 class="col-md-4 change-update-text">{{ formHelper.renderField(form.quantity) }}</h5>
-                                <input type="submit" value="Edit Quantity" class="edit-qty-btn">
+                                <h5 class="text-colour">Quantity: {{ product[2] }}</h5>
                             </div>
                             <div class=" ms-5 me-5 mb-4">
                                 <img src="{{ url_for('static', filename='uploads/' + product[3]) }}" class="cart-image">
