@@ -111,6 +111,9 @@ class ContactForm(Form):
     email = StringField('Email', validators=[DataRequired(), Email()])
     phonenumber = StringField("Phone Number",
                               validators=[regexp("^[689]\d{7}$", message="Please enter a valid phone number")])
+    reason = SelectField('Reason', validators=[DataRequired()],
+                        choices=[('', 'Select'), ('General Inquiry', 'General Inquiry'), ('Complaint', 'Complaint'),
+                                 ('Feedback', 'Feedback'), ], default='')
     message = TextAreaField('Explain your Problem', validators=[DataRequired(), Length(min=1, max=1024,
                                                                                        message="Please leave a message within 1024 characters")])
     submit = SubmitField('Send Feedback')
@@ -227,19 +230,26 @@ class editCouponForm(Form):
 
 # Sort Functions
 class SortUserForm(Form):
-    sort = SelectField('Sort By', choices=[('', 'Select'), ('Ascending', 'Ascending'), ('Descending', 'Descending')], default='')
+    sort = SelectField('Sort By', choices=[('', 'Select'), ('Ascending', 'Ascending'), ('Descending', 'Descending')],
+                       default='')
     submit = SubmitField('Update')
 
 
 class SortProductForm(Form):
-    sort = SelectField('Filter By', validators=[DataRequired()], choices=[('', 'Select'), ('Price', 'Price'), ('Quantity', 'Quantity')])
-    direction = SelectField('Sort By', validators=[DataRequired()], choices=[('', 'Select'), ('Ascending', 'Ascending'), ('Descending', 'Descending')], default='')
+    sort = SelectField('Filter By', validators=[DataRequired()],
+                       choices=[('', 'Select'), ('Price', 'Price'), ('Quantity', 'Quantity')])
+    direction = SelectField('Sort By', validators=[DataRequired()],
+                            choices=[('', 'Select'), ('Ascending', 'Ascending'), ('Descending', 'Descending')],
+                            default='')
     submit = SubmitField('Update')
 
 
 class SortCouponForm(Form):
-    sort = SelectField('Filter By', validators=[DataRequired()], choices=[('', 'Select'), ('Price', 'Price'), ('Effect', 'Effect')])
-    direction = SelectField('Sort By', validators=[DataRequired()], choices=[('', 'Select'), ('Ascending', 'Ascending'), ('Descending', 'Descending')], default='')
+    sort = SelectField('Filter By', validators=[DataRequired()],
+                       choices=[('', 'Select'), ('Price', 'Price'), ('Effect', 'Effect')])
+    direction = SelectField('Sort By', validators=[DataRequired()],
+                            choices=[('', 'Select'), ('Ascending', 'Ascending'), ('Descending', 'Descending')],
+                            default='')
     submit = SubmitField('Update')
 
 
