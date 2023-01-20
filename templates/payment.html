@@ -44,7 +44,7 @@
             <div class="card card-border cart-background" style="width: 100%;">
                 <div class="card-body">
                     <h2 class="text-centre text-colour">Total Amount: ${{ total_amount|sum() }}</h2>
-                    <a>
+                    <a href="{{ url_for('stripe_payment') }}">
                         <button class="add-btn mt-5">Pay</button>
                     </a>
                 </div>

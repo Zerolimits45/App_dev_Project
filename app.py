@@ -9,12 +9,14 @@ from flask_wtf.csrf import CSRFProtect  # up for debate
 from Product import *
 from Address import *
 from Coupon import *
+import stripe
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 app.secret_key = 'jiceuiruineruiferuifbwneionweicbuivbruinewicwebvuierniwndiwebciuevbiuerdniweoncueivbuiecbwuicbewui'
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+stripe.api_key = 'sk_test_51MSFehKSkL6RrOAvS5lokJt7PBUqBlC9WgCtuePGfPi2vImYZBjm9lHqUCt2AuI84C3Vrcvyz7NogfT0CJxhYOUO00jDUeYaD4'
 
 
 # Home
@@ -348,7 +350,8 @@ def product_description(id):
                 flash('Item Changed In Cart')
                 return redirect(url_for('cart'))
 
-        cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(), product.get_product_id()]
+        cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(),
+                product.get_product_id()]
         session['Cart'].append(cart)
         flash('Added to Cart Successfully')
         return redirect(url_for('shop'))
@@ -471,10 +474,9 @@ def rolex():
     return render_template('shop_categories/shop-rolex.html', products_list=products_list)
 
 
-@app.route('/cart', methods=['GET', 'POST'])
+@app.route('/cart')
 def cart():
-    form = ChangeQuantityForm(request.form)
-    return render_template('cart.html', form=form)
+    return render_template('cart.html')
 
 
 # Remove cart item
@@ -543,6 +545,37 @@ def payment(id):
         total_amount.append(product[1])
 
     return render_template('payment.html', address=address, total_amount=total_amount)
+
+
+@app.route('/stripe_payment', methods=['GET', 'POST'])
+def stripe_payment():
+    line_items_list = []
+    for item in session['Cart']:
+        if item[2] > 1:
+            item[1] = int(item[1] / item[2])
+            line_item = {"price_data": {"product_data": {"name": item[0]}, "currency": 'sgd', "unit_amount": item[1]*100}, "quantity": item[2]}
+        else:
+            line_item = {"price_data": {"product_data": {"name": item[0]}, "currency": 'sgd', "unit_amount": item[1]*100}, "quantity": item[2]}
+        line_items_list.append(dict(line_item))
+
+    checkout_session = stripe.checkout.Session.create(
+        line_items=line_items_list,
+        payment_method_types=['card'],
+        mode='payment',
+        success_url=request.host_url + '/stripe-success',
+        cancel_url=request.host_url + '/stripe-cancel',
+    )
+    return redirect(checkout_session.url)
+
+
+@app.route('/stripe-success')
+def stripe_success():
+    return render_template('stripe_success.html')
+
+
+@app.route('/stripe-cancel')
+def stripe_cancel():
+    return render_template('stripe_cancel.html')
 
 
 @app.route('/rewards/<int:id>')
