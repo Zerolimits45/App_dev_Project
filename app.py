@@ -16,7 +16,7 @@ csrf = CSRFProtect(app)
 app.secret_key = 'jiceuiruineruiferuifbwneionweicbuivbruinewicwebvuierniwndiwebciuevbiuerdniweoncueivbuiecbwuicbewui'
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-stripe.api_key = 'sk_test_51MSFehKSkL6RrOAvS5lokJt7PBUqBlC9WgCtuePGfPi2vImYZBjm9lHqUCt2AuI84C3Vrcvyz7NogfT0CJxhYOUO00jDUeYaD4'
+stripe.api_key = 'sk_test_51MSMj1Lg2iGcn067n1XTyiS8D8RgdUAL5Q6f8do538VuAejaeW1njfn1sBwSGquDR1O4OdtdkYWy7JdUq7WocQKQ006lGoXUiC'
 
 
 # Home
