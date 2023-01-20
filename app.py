@@ -337,19 +337,27 @@ def product_description(id):
     db.close()
 
     product = products_dict.get(id)
+    cart_list = session['Cart']
 
     if request.method == 'POST' and form.validate():
-        for i in session['Cart']:
+        for i in cart_list:
             if i[0] == product.get_name():
-                flash('Item Already In Cart')
-                return redirect(url_for('shop'))
+                i[1] = form.quantity.data * product.get_price()
+                i[2] = form.quantity.data
+                session['Cart'] = cart_list
+                flash('Item Changed In Cart')
+                return redirect(url_for('cart'))
 
-        cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image()]
+        cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(), product.get_product_id()]
         session['Cart'].append(cart)
         flash('Added to Cart Successfully')
         return redirect(url_for('shop'))
+    else:
+        for i in cart_list:
+            if i[4] == id:
+                form.quantity.data = i[2]
 
-    return render_template('shop_categories/product-description.html', form=form, product=product)
+        return render_template('shop_categories/product-description.html', form=form, product=product)
 
 
 # Shop
