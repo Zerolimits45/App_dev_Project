@@ -1,20 +1,25 @@
 {% extends "admin/adminbase.html" %}
 {% block content %}
-    <h3 class="text-centre text-colour mt-5">Feedbacks</h3>
+    <h3 class="text-centre text-colour mt-5">{{ user.get_email() }} Addresses</h3>
         <div class="row">
         <div class="col-12">
             <table class="table w-100">
                 <tr>
-                    <th>Email</th>
                     <th>Address Nickname</th>
                     <th>Address</th>
                 </tr>
+                {% for address in addresses_list %}
+                {% if address.getid() == user.get_uid() %}
 	            <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ address.getname() }}</td>
+                    <td>{{ address.getlocation() }}</td>
                 </tr>
+                {% endif %}
+                {% endfor %}
             </table>
+            <a href="{{ url_for('users', id=user.get_uid()) }}" class="d-flex justify-content-center">
+                <button class="back-btn">Back To Users</button>
+            </a>
         </div>
     </div>
 {% endblock %}

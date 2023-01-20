@@ -53,6 +53,9 @@
                         <td>{{ user.get_email() }}</td>
                         <td>{{ user.get_points() }}</td>
                         <td>
+                            <a href="{{ url_for('user_address', id=user.get_uid()) }}" class="me-1">
+                                <button class="edit-qty-btn">Show User Addresses</button>
+                            </a>
                             <a href="{{ url_for('editUsers', id=user.get_uid()) }}" class="me-1">
                                 <button class="edit-btn">Edit</button>
                             </a>
