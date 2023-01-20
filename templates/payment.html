@@ -44,8 +44,17 @@
             <div class="card card-border cart-background" style="width: 100%;">
                 <div class="card-body">
                     <h2 class="text-centre text-colour">Total Amount: ${{ total_amount|sum() }}</h2>
+                    <form method="post" novalidate>
+                        <div class="mb-2">
+                            {{ formHelper.renderField(form.coupons) }}
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <input type="submit" value="Apply" class="login-btn">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        </div>
+                    </form>
                     <a href="{{ url_for('stripe_payment') }}">
-                        <button class="add-btn mt-5">Pay</button>
+                        <button class="add-btn mt-3">Pay</button>
                     </a>
                 </div>
             </div>

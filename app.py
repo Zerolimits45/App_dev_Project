@@ -347,11 +347,11 @@ def product_description(id):
                 i[1] = form.quantity.data * product.get_price()
                 i[2] = form.quantity.data
                 session['Cart'] = cart_list
+                session['PreviousPrice'] = [i[1]]
                 flash('Item Changed In Cart')
                 return redirect(url_for('cart'))
 
-        cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(),
-                product.get_product_id()]
+        cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(), product.get_product_id()]
         session['Cart'].append(cart)
         flash('Added to Cart Successfully')
         return redirect(url_for('shop'))
@@ -476,6 +476,11 @@ def rolex():
 
 @app.route('/cart')
 def cart():
+    session.pop('CouponApplied', None)
+    cart_list = session['Cart']
+    for i, j in zip(cart_list, session['PreviousPrice']):
+        i[1] = j
+        session['Cart'] = cart_list
     return render_template('cart.html')
 
 
@@ -538,13 +543,63 @@ def payment(id):
         print("Error in retrieving Addresses from storage.")
     db.close()
 
+    coupons_dict = {}
+    db = shelve.open('Coupons', 'c')
+    try:
+        if 'Coupon' in db:
+            coupons_dict = db['Coupon']
+        else:
+            db['Coupon'] = coupons_dict
+    except:
+        print("Error in retrieving Coupons from Storage")
+    db.close()
+
+    user_dict = {}
+    db = shelve.open('Users', 'c')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+
     address = addresses_dict.get(id)
+    user = user_dict.get(id)
+    coupons_list = []
+    for i in user.get_coupons():
+        coupons_list.append(coupons_dict.get(i))
 
     total_amount = []
     for product in session['Cart']:
         total_amount.append(product[1])
 
-    return render_template('payment.html', address=address, total_amount=total_amount)
+    cart_list = session['Cart']
+    form = ApplyCouponForm(request.form)
+    form.coupons.choices = [('0', 'Select')] + [(i.get_id(), i.get_name()) for i in coupons_list]
+    if request.method == "POST" and form.validate():
+        for coupon in coupons_list:
+            if int(form.coupons.data) == coupon.get_id():
+                for i, j in zip(cart_list, session['PreviousPrice']):
+                    i[1] = j
+                    i[1] *= (1-coupon.get_effect())
+                    i[1] = int(i[1])
+                    session['Cart'] = cart_list
+                    session['CouponApplied'] = coupon.get_id()
+                    return redirect(url_for('payment', id=id))
+
+            elif int(form.coupons.data) == 0:
+                for i, j in zip(cart_list, session['PreviousPrice']):
+                    i[1] = j
+                    session['Cart'] = cart_list
+                    session['CouponApplied'] = 0
+                    return redirect(url_for('payment', id=id))
+    else:
+        if 'CouponApplied' in session:
+            form.coupons.default = str(session['CouponApplied'])
+            form.process()
+
+    return render_template('payment.html', address=address, total_amount=total_amount, form=form)
 
 
 @app.route('/stripe_payment', methods=['GET', 'POST'])
