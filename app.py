@@ -342,7 +342,7 @@ def product_description(id):
         for i in session['Cart']:
             if i[0] == product.get_name():
                 flash('Item Already In Cart')
-                return redirect(url_for('product_description', id=id))
+                return redirect(url_for('shop'))
 
         cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image()]
         session['Cart'].append(cart)
@@ -1059,9 +1059,38 @@ def delete_coupon(id):
     return redirect(url_for('coupons'))
 
 
-@app.route('/admin/users/address')
-def user_address():
-    return render_template('admin/admin-user-address.html')
+@app.route('/admin/users/address/<int:id>', methods=['GET', 'POST'])
+def user_address(id):
+    addresses_dict = {}
+    db = shelve.open('Addresses')
+    try:
+        if 'Address' in db:
+            addresses_dict = db['Address']
+        else:
+            db['Address'] = addresses_dict
+    except:
+        print("Error in retrieving Addresses from storage.")
+    db.close()
+
+    user_dict = {}
+    db = shelve.open('Users')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+    db.close()
+
+    addresses_list = []
+    for key in addresses_dict:
+        address = addresses_dict.get(key)
+        addresses_list.append(address)
+
+    user = user_dict.get(id)
+
+    return render_template('admin/admin-user-address.html', user=user, addresses_list=addresses_list)
 
 
 if __name__ == '__main__':
