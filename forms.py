@@ -253,6 +253,6 @@ class SortCouponForm(Form):
     submit = SubmitField('Update')
 
 
-class ChangeQuantityForm(Form):
-    quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
-    submit = SubmitField('Edit Quantity')
+class ApplyCouponForm(Form):
+    coupons = SelectField('Coupons')
+    submit = SubmitField('Apply')
