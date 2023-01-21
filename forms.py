@@ -2,7 +2,7 @@ from wtforms import Form, BooleanField, PasswordField, StringField, SelectField,
     validators, IntegerField, DateField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length, regexp
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 import shelve
 import geocoder
 
@@ -87,7 +87,7 @@ class CreateProductForm(FlaskForm):
                         choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'),
                                  ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
     quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
-    image = FileField('Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
+    image = FileField('Image', validators=[FileRequired(), FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
     add = SubmitField('Add')
 
 
@@ -101,7 +101,7 @@ class EditProductForm(FlaskForm):
                         choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'),
                                  ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
     quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
-    image = FileField('Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
+    image = FileField('Image', validators=[FileRequired(), FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
     save = SubmitField('Save')
 
 

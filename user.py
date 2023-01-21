@@ -7,7 +7,7 @@ class User:
         self.__email = email
         self.__password = password
         self.__name = name
-        self.__money_spent = 1000  # TESTING
+        self.__money_spent = 0
         if self.__money_spent == 0:
             self.__points = 0
         else:
@@ -29,8 +29,8 @@ class User:
     def set_money_spent(self, money_spent):
         self.__money_spent = money_spent
 
-    def set_points(self, points):
-        self.__points = points
+    def set_points(self):
+        self.__points = (self.__money_spent/20)*10
 
     def set_coupons(self, coupon):
         self.__coupons.append(coupon)

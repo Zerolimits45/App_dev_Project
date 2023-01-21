@@ -176,6 +176,7 @@ def login():
                     session['CurrentUsername'] = user.get_name()
                     session['CurrentUserEmail'] = user.get_email()
                     session['Cart'] = []
+                    session['PreviousPrice'] = []
                     session.pop('Admin', None)
                     flash('Logged In Successfully')
                     return redirect(url_for('home'))
@@ -347,7 +348,6 @@ def product_description(id):
                 i[1] = form.quantity.data * product.get_price()
                 i[2] = form.quantity.data
                 session['Cart'] = cart_list
-                session['PreviousPrice'] = [i[1]]
                 flash('Item Changed In Cart')
                 return redirect(url_for('cart'))
 
@@ -476,18 +476,25 @@ def rolex():
 
 @app.route('/cart')
 def cart():
-    session.pop('CouponApplied', None)
     cart_list = session['Cart']
-    for i, j in zip(cart_list, session['PreviousPrice']):
-        i[1] = j
-        session['Cart'] = cart_list
+
+    if len(session['PreviousPrice']) > 0:
+        if 'CouponApplied' in session:
+            for i, j in zip(cart_list, session['PreviousPrice']):
+                i[1] = j
+                session['Cart'] = cart_list
+            session.pop('CouponApplied', None)
+
+    if len(cart_list) > 0:
+        session['PreviousPrice'] = [i[1] for i in cart_list]
+
     return render_template('cart.html')
 
 
 # Remove cart item
 @app.route('/removeitem/<int:id>', methods=['GET', 'POST'])
 def remove_item(id):
-    session['Cart'].pop(id)
+    session['Cart'].pop(id - 1)
     flash('Removed Item')
     return redirect(url_for('cart'))
 
@@ -530,8 +537,8 @@ def checkout():
     return render_template('checkout.html', addresses_list=addresses_list, user=user)
 
 
-@app.route('/payment/<int:id>', methods=['GET', 'POST'])
-def payment(id):
+@app.route('/payment/<int:lid>/<int:id>', methods=['GET', 'POST'])
+def payment(lid, id):
     addresses_dict = {}
     db = shelve.open('Addresses')
     try:
@@ -564,7 +571,7 @@ def payment(id):
     except:
         print("Error in retrieving Users from storage.")
 
-    address = addresses_dict.get(id)
+    address = addresses_dict.get(lid)
     user = user_dict.get(id)
     coupons_list = []
     for i in user.get_coupons():
@@ -586,14 +593,14 @@ def payment(id):
                     i[1] = int(i[1])
                     session['Cart'] = cart_list
                     session['CouponApplied'] = coupon.get_id()
-                    return redirect(url_for('payment', id=id))
+                return redirect(url_for('payment', id=id))
 
             elif int(form.coupons.data) == 0:
                 for i, j in zip(cart_list, session['PreviousPrice']):
                     i[1] = j
                     session['Cart'] = cart_list
                     session['CouponApplied'] = 0
-                    return redirect(url_for('payment', id=id))
+                return redirect(url_for('payment', id=id))
     else:
         if 'CouponApplied' in session:
             form.coupons.default = str(session['CouponApplied'])
@@ -602,8 +609,8 @@ def payment(id):
     return render_template('payment.html', address=address, total_amount=total_amount, form=form)
 
 
-@app.route('/stripe_payment', methods=['GET', 'POST'])
-def stripe_payment():
+@app.route('/stripe_payment/<int:lid>/<int:id>', methods=['GET', 'POST'])
+def stripe_payment(lid, id):
     line_items_list = []
     for item in session['Cart']:
         if item[2] > 1:
@@ -617,20 +624,55 @@ def stripe_payment():
         line_items=line_items_list,
         payment_method_types=['card'],
         mode='payment',
-        success_url=request.host_url + '/stripe-success',
-        cancel_url=request.host_url + '/stripe-cancel',
+        success_url=request.host_url + 'stripe-success/' + str(id),
+        cancel_url=request.host_url + 'payment/' + str(lid) + '/' + str(id),
     )
     return redirect(checkout_session.url)
 
 
-@app.route('/stripe-success')
-def stripe_success():
+@app.route('/stripe-success/<int:id>')
+def stripe_success(id):
+    user_dict = {}
+    db = shelve.open('Users', 'c')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+
+    user = user_dict.get(id)
+    total_amount = []
+    for product in session['Cart']:
+        total_amount.append(product[1])
+
+    user.set_money_spent(sum(total_amount))
+    user.set_points()
+    if 'CouponApplied' in session:
+        user.get_coupons().pop(session['CouponApplied'], None)
+
+    db['User'] = user_dict
+    db.close()
+
+    products_dict = {}
+    db = shelve.open('Products', 'c')
+    try:
+        if 'Product' in db:
+            products_dict = db['Product']
+        else:
+            db['Product'] = products_dict
+    except:
+        print("Error in retrieving Products from storage.")
+
+    for item in session['Cart']:
+        product = products_dict.get(item[4])
+        product.set_quantity((product.get_quantity() - int(item[2])))
+
+    db['Product'] = products_dict
+    db.close()
+
     return render_template('stripe_success.html')
-
-
-@app.route('/stripe-cancel')
-def stripe_cancel():
-    return render_template('stripe_cancel.html')
 
 
 @app.route('/rewards/<int:id>')
