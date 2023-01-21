@@ -327,6 +327,10 @@ def delete_address(id):
 
 @app.route('/shop/productdescription/<int:id>', methods=['GET', 'POST'])
 def product_description(id):
+    if 'CurrentUser' not in session:
+        flash('Login Or Sign Up To Shop Our Products')
+        return redirect(url_for('login'))
+
     form = quantityForm(request.form)
     products_dict = {}
     db = shelve.open('Products', 'c')
@@ -671,6 +675,10 @@ def stripe_success(id):
 
     db['Product'] = products_dict
     db.close()
+
+    session['Cart'].clear()
+    session.pop('CouponApplied', None)
+    session['PreviousPrice'].clear()
 
     return render_template('stripe_success.html')
 
