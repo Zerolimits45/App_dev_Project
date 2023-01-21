@@ -23,7 +23,6 @@
                     <th>Email</th>
                     <th>Reason</th>
                     <th>Message</th>
-                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
                 {% for feedback in feedbacks_list %}
@@ -32,7 +31,6 @@
                     <td>{{ feedback.get_name() }}</td>
                     <td>{{ feedback.get_phonenumber() }}</td>
                     <td>{{ feedback.get_email() }}</td>
-                    <td></td>
                     <td>{{ feedback.get_message() }}</td>
                     <td></td>
                     <td>
