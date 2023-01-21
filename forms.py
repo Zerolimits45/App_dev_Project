@@ -87,7 +87,8 @@ class CreateProductForm(FlaskForm):
                         choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'),
                                  ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
     quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
-    image = FileField('Image', validators=[FileRequired(), FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
+    image = FileField('Image', validators=[FileRequired(),
+                                           FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
     add = SubmitField('Add')
 
 
@@ -101,7 +102,8 @@ class EditProductForm(FlaskForm):
                         choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'),
                                  ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
     quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
-    image = FileField('Image', validators=[FileRequired(), FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
+    image = FileField('Image', validators=[FileRequired(),
+                                           FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
     save = SubmitField('Save')
 
 
@@ -112,8 +114,8 @@ class ContactForm(Form):
     phonenumber = StringField("Phone Number",
                               validators=[regexp("^[689]\d{7}$", message="Please enter a valid phone number")])
     reason = SelectField('Reason', validators=[DataRequired()],
-                        choices=[('', 'Select'), ('General Inquiry', 'General Inquiry'), ('Complaint', 'Complaint'),
-                                 ('Feedback', 'Feedback'), ], default='')
+                         choices=[('', 'Select'), ('General Inquiry', 'General Inquiry'), ('Complaint', 'Complaint'),
+                                  ('Feedback', 'Feedback'), ], default='')
     message = TextAreaField('Explain your Problem', validators=[DataRequired(), Length(min=1, max=1024,
                                                                                        message="Please leave a message within 1024 characters")])
     submit = SubmitField('Send Feedback')
@@ -256,3 +258,13 @@ class SortCouponForm(Form):
 class ApplyCouponForm(Form):
     coupons = SelectField('Coupons')
     submit = SubmitField('Apply')
+
+
+class EditOrderForm(Form):
+    name = StringField('Customer Name', validators=[DataRequired()])
+    address = StringField('Address', validators=[DataRequired()])
+    status = SelectField('Order Status', validators=[DataRequired()],
+                         choices=[('', 'Select'), ('Processing', 'Processing'),
+                                  ('Out For Delivery', 'Out For Delivery'),
+                                  ('Delivered', 'Delivered'), ], default='Processing')
+    save = SubmitField('Save')

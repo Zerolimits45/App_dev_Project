@@ -1,0 +1,17 @@
+{% extends "admin/adminbase.html" %}
+{% block content %}
+    <h3 class="text-centre text-colour mt-5">Order Details</h3>
+    <a href="{{ url_for('orders') }}">
+        <button class="back-btn mb-4"><- Back</button>
+    </a>
+    <table class="table w-100">
+        <tr>
+            <th>Product Name</th>
+            <th>Qty</th>
+        </tr>
+        <tr>
+            <td>Watch Name</td>
+            <td>12</td>
+        </tr>
+    </table>
+{% endblock %}

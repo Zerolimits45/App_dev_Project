@@ -355,7 +355,8 @@ def product_description(id):
                 flash('Item Changed In Cart')
                 return redirect(url_for('cart'))
 
-        cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(), product.get_product_id()]
+        cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(),
+                product.get_product_id()]
         session['Cart'].append(cart)
         flash('Added to Cart Successfully')
         return redirect(url_for('shop'))
@@ -593,7 +594,7 @@ def payment(lid, id):
             if int(form.coupons.data) == coupon.get_id():
                 for i, j in zip(cart_list, session['PreviousPrice']):
                     i[1] = j
-                    i[1] *= (1-coupon.get_effect())
+                    i[1] *= (1 - coupon.get_effect())
                     i[1] = int(i[1])
                     session['Cart'] = cart_list
                     session['CouponApplied'] = coupon.get_id()
@@ -619,9 +620,13 @@ def stripe_payment(lid, id):
     for item in session['Cart']:
         if item[2] > 1:
             item[1] = int(item[1] / item[2])
-            line_item = {"price_data": {"product_data": {"name": item[0]}, "currency": 'sgd', "unit_amount": item[1]*100}, "quantity": item[2]}
+            line_item = {
+                "price_data": {"product_data": {"name": item[0]}, "currency": 'sgd', "unit_amount": item[1] * 100},
+                "quantity": item[2]}
         else:
-            line_item = {"price_data": {"product_data": {"name": item[0]}, "currency": 'sgd', "unit_amount": item[1]*100}, "quantity": item[2]}
+            line_item = {
+                "price_data": {"product_data": {"name": item[0]}, "currency": 'sgd', "unit_amount": item[1] * 100},
+                "quantity": item[2]}
         line_items_list.append(dict(line_item))
 
     checkout_session = stripe.checkout.Session.create(
@@ -786,6 +791,22 @@ def redeem_reward(id, cid):
     db.close()
 
     return redirect(url_for('rewards', id=id))
+
+
+@app.route('/admin/orders')
+def orders():
+    return render_template('admin/admin-orders.html')
+
+
+@app.route('/admin/orders/details')
+def order_details():
+    return render_template('admin/admin-orders-view.html')
+
+
+@app.route('/admin/orders/edit')
+def orders_edit():
+    form = EditOrderForm()
+    return render_template('admin/admin-orders-edit.html', form=form)
 
 
 # Admin side
