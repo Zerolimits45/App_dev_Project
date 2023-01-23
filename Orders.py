@@ -1,3 +1,33 @@
 class Orders:
-    def __init__(self,id):
+    def __init__(self, id, customer_name, total, status, count):
         self.id = id
+        self.customer_name = customer_name
+        self.total = total
+        self.status = status
+        self.count = count
+        self.count += 1
+        self.order_id = self.count
+
+    def get_id(self):
+        return self.id
+
+    def get_customer_name(self):
+        return self.customer_name
+
+    def get_total(self):
+        return self.total
+
+    def get_status(self):
+        return self.status
+
+    def set_id(self, id):
+        self.id = id
+
+    def set_customer_name(self, customer_name):
+        self.customer_name = customer_name
+
+    def set_total(self, total):
+        self.total = total
+
+    def set_status(self, status):
+        self.status = status
