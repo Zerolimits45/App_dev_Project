@@ -858,7 +858,10 @@ def customer_order():
             orders_list.append(order)
             items_list[order.get_order_id()] = order.get_items()
 
-    return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list)
+    order1 = orders_list[0]
+    orders_list = orders_list[1::]
+
+    return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list, order1=order1)
 
 
 @app.route('/profile/orders/details/<int:id>', methods=['GET', 'POST'])
@@ -891,7 +894,7 @@ def customer_order_details(id):
         print("Error in retrieving Users from storage.")
     db.close()
 
-    user = user_dict.get(id)
+    user = user_dict.get(session['CurrentUser'])
 
     return render_template('profile/profile-order-details.html', items=items, total=sum(total), user=user, order=order)
 
