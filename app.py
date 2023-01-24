@@ -829,6 +829,11 @@ def customer_order():
     return render_template('profile/profile-orders.html')
 
 
+@app.route('/profile/orders/details')
+def customer_order_details():
+    return render_template('profile/profile-order-details.html')
+
+
 # Admin side
 # ====================================================================================================================
 # Admin user view
