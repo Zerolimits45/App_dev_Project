@@ -660,7 +660,7 @@ def stripe_success(id):
         total_amount.append(product[1])
 
     user.set_money_spent(sum(total_amount))
-    user.set_points()
+    user.set_points(sum(total_amount))
     if 'CouponApplied' in session:
         user.get_coupons().pop(session['CouponApplied'], None)
 
@@ -824,14 +824,76 @@ def redeem_reward(id, cid):
     return redirect(url_for('rewards', id=id))
 
 
-@app.route('/profile/orders')
+@app.route('/profile/orders', methods=['GET', 'POST'])
 def customer_order():
-    return render_template('profile/profile-orders.html')
+    user_dict = {}
+    db = shelve.open('Users', 'c')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+    db.close()
+
+    user = user_dict.get(session['CurrentUser'])
+
+    orders_dict = {}
+    db = shelve.open('Orders', 'c')
+    try:
+        if 'Order' in db:
+            orders_dict = db['Order']
+        else:
+            db['Order'] = orders_dict
+    except:
+        print('Error in retrieving Orders from database')
+    db.close()
+
+    orders_list = []
+    items_list = {}
+    for key in orders_dict:
+        order = orders_dict.get(key)
+        if order.get_id() == user.get_uid():
+            orders_list.append(order)
+            items_list[order.get_order_id()] = order.get_items()
+
+    return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list)
 
 
-@app.route('/profile/orders/details')
-def customer_order_details():
-    return render_template('profile/profile-order-details.html')
+@app.route('/profile/orders/details/<int:id>', methods=['GET', 'POST'])
+def customer_order_details(id):
+    orders_dict = {}
+    db = shelve.open('Orders', 'c')
+    try:
+        if 'Order' in db:
+            orders_dict = db['Order']
+        else:
+            db['Order'] = orders_dict
+    except:
+        print('Error in retrieving Orders from database')
+    db.close()
+
+    order = orders_dict.get(id)
+    items = order.get_items()
+    total = []
+    for i in items:
+        total.append(i[1])
+
+    user_dict = {}
+    db = shelve.open('Users', 'c')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+    db.close()
+
+    user = user_dict.get(id)
+
+    return render_template('profile/profile-order-details.html', items=items, total=sum(total), user=user, order=order)
 
 
 # Admin side
