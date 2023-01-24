@@ -1,5 +1,5 @@
 class Feedback:
-    def __init__(self,  email, phonenumber, name, message, count):
+    def __init__(self,  email, phonenumber, name, message, reason, count):
         self.__count = count
         self.__count += 1
         self.__user_id = self.__count
@@ -7,6 +7,7 @@ class Feedback:
         self.__phonenumber = phonenumber
         self.__name = name
         self.__message = message
+        self.__reason = reason
 
     def set_uid(self, uid):
         self.__user_id = uid
@@ -23,6 +24,9 @@ class Feedback:
     def set_message(self, message):
         self.__name = message
 
+    def set_reason(self, reason):
+        self.__reason = reason
+
     def get_uid(self):
         return self.__user_id
 
@@ -37,3 +41,6 @@ class Feedback:
 
     def get_message(self):
         return self.__message
+
+    def get_reason(self):
+        return self.__reason
