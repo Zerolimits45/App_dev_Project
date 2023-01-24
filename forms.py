@@ -280,3 +280,37 @@ class EditOrderForm(Form):
         g = geocoder.osm(self.address.data)
         if not g.ok:
             raise ValidationError('This Location Does Not Exist')
+
+
+# Forget Password
+class ForgetPassword(Form):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Submit')
+
+    def validate_email(self, email):
+        user_dict = {}
+        db = shelve.open('Users')
+        try:
+            if 'User' in db:
+                user_dict = db['User']
+            else:
+                db['User'] = user_dict
+        except:
+            print("Error in retrieving Users from storage.")
+        db.close()
+
+        email_list = []
+        for key in user_dict:
+            user = user_dict.get(key)
+            email_list.append(user.get_email())
+
+        if self.email.data not in email_list:
+            raise ValidationError('Email Does Not Exist')
+
+
+# Change Password
+class ChangePassword(Form):
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=64,
+                                                                            message="Password needs to be at least 6 characters long.")])
+    confirmPassword = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Change')

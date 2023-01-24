@@ -11,8 +11,16 @@ from Address import *
 from Coupon import *
 from Orders import *
 import stripe
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
+app.config['MAIL_SERVER'] = 'smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USERNAME'] = 'a4789bb86df61a'
+app.config['MAIL_PASSWORD'] = '1712eab7008b1f'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+mail = Mail(app)
 csrf = CSRFProtect(app)
 app.secret_key = 'jiceuiruineruiferuifbwneionweicbuivbruinewicwebvuierniwndiwebciuevbiuerdniweoncueivbuiecbwuicbewui'
 UPLOAD_FOLDER = 'static/uploads'
@@ -233,6 +241,52 @@ def logout():
     session.pop('CurrentUser', None)
     session.pop('Admin', None)
     return redirect(url_for('home'))
+
+
+# Forget Password
+@app.route('/forgetpassword', methods=['GET', 'POST'])
+def forget_password():
+    form = ForgetPassword(request.form)
+    if request.method == 'POST' and form.validate():
+        msg = Message('Changing Password', sender='admin@mailtrap.io', recipients=[form.email.data])
+        link = url_for('change_password', email=form.email.data, _external=True)
+        msg.body = "Click On The Link To Change Password. Your Link is {}".format(link)
+        mail.send(msg)
+        flash('Email Has Been Sent')
+        return redirect(url_for('home'))
+    return render_template('forgetpassword.html', form=form)
+
+
+# Change Password
+@app.route('/changepassword/<email>', methods=['GET', 'POST'])
+def change_password(email):
+    user_dict = {}
+    db = shelve.open('Users')
+    try:
+        if 'User' in db:
+            user_dict = db['User']
+        else:
+            db['User'] = user_dict
+    except:
+        print("Error in retrieving Users from storage.")
+
+    id = None
+    for key in user_dict:
+        user = user_dict.get(key)
+        if user.get_email() == email:
+            id = key
+
+    form = ChangePassword(request.form)
+    if request.method == 'POST' and form.validate():
+
+        user = user_dict.get(id)
+
+        user.set_password(form.confirmPassword.data)
+        db['User'] = user_dict
+        db.close()
+        flash('Password Has Been Changed Successfully')
+        return redirect(url_for('home'))
+    return render_template('changepassword.html', form=form)
 
 
 # Add Address
