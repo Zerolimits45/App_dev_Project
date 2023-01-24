@@ -8,10 +8,7 @@ class User:
         self.__password = password
         self.__name = name
         self.__money_spent = 0
-        if self.__money_spent == 0:
-            self.__points = 0
-        else:
-            self.__points = (self.__money_spent/20)*10
+        self.__points = 0
         self.__coupons = []
 
     def set_uid(self, uid):
@@ -27,7 +24,7 @@ class User:
         self.__name = name
 
     def set_money_spent(self, money_spent):
-        self.__money_spent = money_spent
+        self.__money_spent += money_spent
 
     def set_points(self):
         self.__points = (self.__money_spent/20)*10

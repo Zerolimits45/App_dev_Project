@@ -9,6 +9,7 @@ from flask_wtf.csrf import CSRFProtect  # up for debate
 from Product import *
 from Address import *
 from Coupon import *
+from Orders import *
 import stripe
 
 app = Flask(__name__)
@@ -578,6 +579,7 @@ def payment(lid, id):
         print("Error in retrieving Users from storage.")
 
     address = addresses_dict.get(lid)
+    session['Address'] = address.getlocation()
     user = user_dict.get(id)
     coupons_list = []
     for i in user.get_coupons():
@@ -680,6 +682,32 @@ def stripe_success(id):
         product.set_quantity((product.get_quantity() - int(item[2])))
 
     db['Product'] = products_dict
+    db.close()
+
+    orders_dict = {}
+    db = shelve.open('Orders', 'c')
+    try:
+        if 'Order' in db:
+            orders_dict = db['Order']
+        else:
+            db['Order'] = orders_dict
+    except:
+        print('Error in retrieving Orders from database')
+
+    id = user.get_uid()
+    name = user.get_name()
+    total = sum(total_amount)
+    status = 'Processing'
+    address = session['Address']
+    count = len(orders_dict)
+
+    order = Order(id, name, total, status, address, count)
+
+    order.set_items(session['Cart'])         # cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(), product.get_product_id()]
+
+    orders_dict[order.get_order_id()] = order
+    db['Order'] = orders_dict
+
     db.close()
 
     session['Cart'].clear()
@@ -792,22 +820,6 @@ def redeem_reward(id, cid):
     db.close()
 
     return redirect(url_for('rewards', id=id))
-
-
-@app.route('/admin/orders')
-def orders():
-    return render_template('admin/admin-orders.html')
-
-
-@app.route('/admin/orders/details')
-def order_details():
-    return render_template('admin/admin-orders-view.html')
-
-
-@app.route('/admin/orders/edit')
-def orders_edit():
-    form = EditOrderForm()
-    return render_template('admin/admin-orders-edit.html', form=form)
 
 
 # Admin side
@@ -1268,6 +1280,91 @@ def user_address(id):
     user = user_dict.get(id)
 
     return render_template('admin/admin-user-address.html', user=user, addresses_list=addresses_list)
+
+
+@app.route('/admin/orders', methods=['GET', 'POST'])
+def orders():
+    orders_dict = {}
+    db = shelve.open('Orders', 'c')
+    try:
+        if 'Order' in db:
+            orders_dict = db['Order']
+        else:
+            db['Order'] = orders_dict
+    except:
+        print('Error in retrieving Orders from database')
+
+    orders_list = []
+    for key in orders_dict:
+        order = orders_dict.get(key)
+        orders_list.append(order)
+
+    return render_template('admin/admin-orders.html', orders_list=orders_list)
+
+
+@app.route('/admin/orders/details/<int:id>', methods=['GET', 'POST'])
+def order_details(id):
+    orders_dict = {}
+    db = shelve.open('Orders', 'c')
+    try:
+        if 'Order' in db:
+            orders_dict = db['Order']
+        else:
+            db['Order'] = orders_dict
+    except:
+        print('Error in retrieving Orders from database')
+    db.close()
+
+    order = orders_dict.get(id)
+    items = order.get_items()
+
+    return render_template('admin/admin-orders-view.html', items=items)
+
+
+@app.route('/admin/orders/edit/<int:id>', methods=['GET', 'POST'])
+def orders_edit(id):
+    form = EditOrderForm(request.form)
+    if request.method == 'POST' and form.validate():
+        orders_dict = {}
+        db = shelve.open('Orders', 'c')
+        try:
+            if 'Order' in db:
+                orders_dict = db['Order']
+            else:
+                db['Order'] = orders_dict
+        except:
+            print('Error in retrieving Orders from database')
+
+        order = orders_dict.get(id)
+        order.set_customer_name(form.name.data)
+        order.set_address(form.address.data)
+        order.set_status(form.status.data)
+
+        flash('Edit Successfully')
+        db['Order'] = orders_dict
+        db.close()
+
+        return redirect(url_for('orders'))
+    else:
+        orders_dict = {}
+        db = shelve.open('Orders', 'c')
+        try:
+            if 'Order' in db:
+                orders_dict = db['Order']
+            else:
+                db['Order'] = orders_dict
+        except:
+            print('Error in retrieving Orders from database')
+
+        order = orders_dict.get(id)
+
+        form.name.data = order.get_customer_name()
+        form.address.data = order.get_address()
+        form.status.data = order.get_status()
+
+        db.close()
+
+        return render_template('admin/admin-orders-edit.html', form=form)
 
 
 if __name__ == '__main__':

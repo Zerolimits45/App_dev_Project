@@ -275,3 +275,8 @@ class EditOrderForm(Form):
                                   ('Out For Delivery', 'Out For Delivery'),
                                   ('Delivered', 'Delivered'), ], default='Processing')
     save = SubmitField('Save')
+
+    def validate_address(self, address):
+        g = geocoder.osm(self.address.data)
+        if not g.ok:
+            raise ValidationError('This Location Does Not Exist')
