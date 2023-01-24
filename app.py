@@ -710,6 +710,7 @@ def stripe_success(id):
 
     db.close()
 
+    session.pop('Address', None)
     session['Cart'].clear()
     session.pop('CouponApplied', None)
     session['PreviousPrice'].clear()
