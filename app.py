@@ -139,9 +139,10 @@ def contact():
         phonenumber = form.phonenumber.data
         name = form.name.data
         message = form.message.data
+        reason = form.reason.data
         count = len(feedback_dict)
 
-        feedback = Feedback(email, phonenumber, name, message, count)
+        feedback = Feedback(email, phonenumber, name, message, reason, count)
 
         feedback_dict[feedback.get_uid()] = feedback
         db['Feedback'] = feedback_dict
@@ -1057,7 +1058,7 @@ def delete_product(id):
 
 
 # Admin feedback View
-@app.route('/admin/feedback')
+@app.route('/admin/feedback', methods=['GET', 'POST'])
 def feedback():
     feedback_dict = {}
     db = shelve.open('Feedbacks', 'c')
@@ -1075,7 +1076,16 @@ def feedback():
         feedback = feedback_dict.get(key)
         feedbacks_list.append(feedback)
 
-    return render_template('admin/admin-users-feedback.html', count=len(feedbacks_list), feedbacks_list=feedbacks_list)
+    form = SortFeedbackForm(request.form)
+    if request.method == "POST" and form.validate():
+        feedbacks_list = []
+        for key in feedback_dict:
+            feedback = feedback_dict.get(key)
+            if feedback.get_reason() == form.sort.data:
+                feedbacks_list.append(feedback)
+        return render_template('admin/admin-users-feedback.html', count=len(feedbacks_list), feedbacks_list=feedbacks_list, form=form)
+
+    return render_template('admin/admin-users-feedback.html', count=len(feedbacks_list), feedbacks_list=feedbacks_list, form=form)
 
 
 # Admin Delete Feedback

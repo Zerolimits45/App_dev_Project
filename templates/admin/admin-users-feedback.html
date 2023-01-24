@@ -13,6 +13,22 @@
         {% endif %}
       {% endwith %}
     </div>
+    <form method="post">
+        <div class="d-flex justify-content-center">
+            <div>
+                {{ formHelper.renderField(form.sort) }}
+            </div>
+            <div class="mt-4 ms-3">
+                <input type="submit" class="update-btn" value="Update">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            </div>
+        </div>
+    </form>
+    <div class="d-flex justify-content-center mt-5 me-2">
+        <a href="{{ url_for('feedback') }}">
+            <button class="reset-btn mb-3">Reset</button>
+        </a>
+    </div>
     <div class="row">
         <div class="col-12">
             <table class="table w-100">
@@ -31,8 +47,8 @@
                     <td>{{ feedback.get_name() }}</td>
                     <td>{{ feedback.get_phonenumber() }}</td>
                     <td>{{ feedback.get_email() }}</td>
+                    <td>{{ feedback.get_reason() }}</td>
                     <td>{{ feedback.get_message() }}</td>
-                    <td></td>
                     <td>
                         <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#myModal_{{feedback.get_uid()}}">Delete</button>
 
