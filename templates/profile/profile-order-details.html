@@ -9,15 +9,17 @@
             <div class="d-flex">
                 <div class="card-body">
                     <h2 class="text-colour underline">Order Details</h2>
-                    <p class="text-colour">QTY & Product Title</p>
-                    <p class="text-colour">Total: $$$</p>
+                    {% for i in items %}
+                    <p class="text-colour">x{{ i[2] }} {{ i[0] }}</p>
+                    {% endfor %}
+                    <p class="text-colour">Total: ${{ total }}</p>
                     <p class="text-colour">Status: Processing</p>
                 </div>
                 <div class="card-body">
                     <h2 class="text-colour underline">Customer Details</h2>
-                    <p class="text-colour">Customer Name</p>
-                    <p class="text-colour">Customer Email</p>
-                    <p class="text-colour">Address</p>
+                    <p class="text-colour">{{ user.get_name() }}</p>
+                    <p class="text-colour">{{ user.get_email() }}</p>
+                    <p class="text-colour">{{ order.get_address() }}</p>
                 </div>
             </div>
         </div>
