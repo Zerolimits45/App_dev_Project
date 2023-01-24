@@ -21,12 +21,11 @@
             </div>
         </div>
         {% for order in orders_list %}
-        <div class="class-md-4"></div>
-        <div class="col-md-8">
+        <div class="col-md-8 offset-md-4 mb-4">
             <div class="card card-border-2 background" style="width: 100%;">
                 <div class="d-flex">
                     <div class="card-body ">
-                        <h5 class="text-colour mb-3">{{ order.get_order_id() }}</h5>
+                        <h5 class="text-colour mb-3">ORDER NO.{{ order.get_order_id() }}</h5>
                         {% for key in items_list %}
                         {% if order.get_order_id() == key %}
                         {% for i in items_list.get(key) %}
