@@ -1,9 +1,9 @@
 <ul class="nav flex-column nav-pills nav-fill border">
   <li class="nav-item">
-    <a class="nav-link active text-colour" aria-current="page" href="{{ url_for('profile', id=session['CurrentUser']) }}">Profile</a>
+    <a class="nav-link text-colour" aria-current="page" href="{{ url_for('profile', id=session['CurrentUser']) }}">Profile</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link text-colour" href="{{ url_for('customer_order') }}">Orders</a>
+    <a class="nav-link text-colour active" href="{{ url_for('customer_order') }}">Orders</a>
   </li>
   <li class="nav-item">
     <a class="nav-link text-colour" href="{{ url_for('address') }}">Addresses</a>
