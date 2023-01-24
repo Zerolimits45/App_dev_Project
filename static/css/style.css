@@ -17,6 +17,10 @@
     object-fit: contain;
 }
 
+.back-image{
+    height:30px;
+}
+
 .text-colour {
     color: white;
 }
@@ -24,6 +28,15 @@
 .card-border {
     border-radius: 10px;
     border: 5px solid #1D1C1B;
+}
+
+.card-border-2 {
+    border-radius: 10px;
+    border: 5px solid white;
+}
+
+.underline {
+    text-decoration: underline;
 }
 
 .login-background {
@@ -176,7 +189,7 @@ a {
 }
 
 .cart-background {
-    background-color: #0D7D89;
+    background-color: #606a9f;
 }
 
 .cart-image {

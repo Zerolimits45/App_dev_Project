@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+    <a href="{{ url_for('customer_order') }}">
+        <img src="{{ url_for('static', filename='images/back_icon.png') }}" class="back-image mt-5">
+    </a>
+    <h1 class="text-colour mt-1">Order ID</h1>
+    <div class="col-md-12">
+        <div class="card card-border-2 background" style="width: 100%;">
+            <div class="d-flex">
+                <div class="card-body">
+                    <h2 class="text-colour underline">Order Details</h2>
+                    <p class="text-colour">QTY & Product Title</p>
+                    <p class="text-colour">Total: $$$</p>
+                    <p class="text-colour">Status: Processing</p>
+                </div>
+                <div class="card-body">
+                    <h2 class="text-colour underline">Customer Details</h2>
+                    <p class="text-colour">Customer Name</p>
+                    <p class="text-colour">Customer Email</p>
+                    <p class="text-colour">Address</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

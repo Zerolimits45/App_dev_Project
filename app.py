@@ -703,7 +703,8 @@ def stripe_success(id):
 
     order = Order(id, name, total, status, address, count)
 
-    order.set_items(session['Cart'])         # cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(), product.get_product_id()]
+    order.set_items(session[
+                        'Cart'])  # cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(), product.get_product_id()]
 
     orders_dict[order.get_order_id()] = order
     db['Order'] = orders_dict
@@ -821,6 +822,16 @@ def redeem_reward(id, cid):
     db.close()
 
     return redirect(url_for('rewards', id=id))
+
+
+@app.route('/profile/orders')
+def customer_order():
+    return render_template('profile/profile-orders.html')
+
+
+@app.route('/profile/orders/details')
+def customer_order_details():
+    return render_template('profile/profile-order-details.html')
 
 
 # Admin side
@@ -1096,9 +1107,11 @@ def feedback():
             feedback = feedback_dict.get(key)
             if feedback.get_reason() == form.sort.data:
                 feedbacks_list.append(feedback)
-        return render_template('admin/admin-users-feedback.html', count=len(feedbacks_list), feedbacks_list=feedbacks_list, form=form)
+        return render_template('admin/admin-users-feedback.html', count=len(feedbacks_list),
+                               feedbacks_list=feedbacks_list, form=form)
 
-    return render_template('admin/admin-users-feedback.html', count=len(feedbacks_list), feedbacks_list=feedbacks_list, form=form)
+    return render_template('admin/admin-users-feedback.html', count=len(feedbacks_list), feedbacks_list=feedbacks_list,
+                           form=form)
 
 
 # Admin Delete Feedback
