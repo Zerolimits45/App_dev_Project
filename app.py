@@ -14,10 +14,10 @@ import stripe
 from flask_mail import Mail, Message
 
 app = Flask(__name__)
-app.config['MAIL_SERVER'] = 'smtp.mailtrap.io'
+app.config['MAIL_SERVER']='smtp.mailtrap.io'
 app.config['MAIL_PORT'] = 2525
-app.config['MAIL_USERNAME'] = 'a4789bb86df61a'
-app.config['MAIL_PASSWORD'] = '1712eab7008b1f'
+app.config['MAIL_USERNAME'] = 'ced52a46a5aace'
+app.config['MAIL_PASSWORD'] = '9225240df0ac9c'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 mail = Mail(app)
@@ -278,6 +278,7 @@ def change_password(email):
 
     form = ChangePassword(request.form)
     if request.method == 'POST' and form.validate():
+
         user = user_dict.get(id)
 
         user.set_password(form.confirmPassword.data)
@@ -538,15 +539,15 @@ def rolex():
 def cart():
     cart_list = session['Cart']
 
-    if len(session['PreviousPrice']) > 0:  # previous price is the org price
-        if 'CouponApplied' in session:  # check if the coupoun is applied
-            for i, j in zip(cart_list, session['PreviousPrice']):  # making sure the 2 list is the same
-                i[1] = j  # revert price
-                session['Cart'] = cart_list  # update cart
-            session.pop('CouponApplied', None)  # remove coupon applied
+    if len(session['PreviousPrice']) > 0:
+        if 'CouponApplied' in session:
+            for i, j in zip(cart_list, session['PreviousPrice']):
+                i[1] = j
+                session['Cart'] = cart_list
+            session.pop('CouponApplied', None)
 
     if len(cart_list) > 0:
-        session['PreviousPrice'] = [i[1] for i in cart_list]  # re updating the price
+        session['PreviousPrice'] = [i[1] for i in cart_list]
 
     return render_template('cart.html')
 
@@ -554,7 +555,7 @@ def cart():
 # Remove cart item
 @app.route('/removeitem/<int:id>', methods=['GET', 'POST'])
 def remove_item(id):
-    session['Cart'].pop(id - 1)  # remove item
+    session['Cart'].pop(id - 1)
     flash('Removed Item')
     return redirect(url_for('cart'))
 
@@ -563,10 +564,10 @@ def remove_item(id):
 def checkout():
     if len(session['Cart']) == 0:
         flash('Cart is Empty')
-        return redirect(url_for('cart'))  # checking if cart is empty
+        return redirect(url_for('cart'))
 
-    addresses_dict = {}  # address dict
-    db = shelve.open('Addresses')  # open address db
+    addresses_dict = {}
+    db = shelve.open('Addresses')
     try:
         if 'Address' in db:
             addresses_dict = db['Address']
@@ -577,7 +578,7 @@ def checkout():
     db.close()
 
     user_dict = {}
-    db = shelve.open('Users')  # open user db
+    db = shelve.open('Users')
     try:
         if 'User' in db:
             user_dict = db['User']
@@ -587,14 +588,14 @@ def checkout():
         print("Error in retrieving Users from storage.")
     db.close()
 
-    addresses_list = []  # append all addresses
+    addresses_list = []
     for key in addresses_dict:
-        address = addresses_dict.get(key)  # get the value associated with key
+        address = addresses_dict.get(key)
         addresses_list.append(address)
 
     user = user_dict.get(session['CurrentUser'])
 
-    return render_template('checkout.html', addresses_list=addresses_list, user=user)  # making it usable in html
+    return render_template('checkout.html', addresses_list=addresses_list, user=user)
 
 
 @app.route('/payment/<int:lid>/<int:id>', methods=['GET', 'POST'])
@@ -631,67 +632,66 @@ def payment(lid, id):
     except:
         print("Error in retrieving Users from storage.")
 
-    address = addresses_dict.get(lid)  # get the specific address
-    session['Address'] = address.getlocation()  # storing the addres in session
-    user = user_dict.get(id)  # get user specific user address
-    coupons_list = []  # coupns list
+    address = addresses_dict.get(lid)
+    session['Address'] = address.getlocation()
+    user = user_dict.get(id)
+    coupons_list = []
     for i in user.get_coupons():
-        coupons_list.append(coupons_dict.get(i))  # append into list
+        coupons_list.append(coupons_dict.get(i))
 
-    total_amount = []  # list for total amt
+    total_amount = []
     for product in session['Cart']:
-        total_amount.append(product[1])  # append product price into list
+        total_amount.append(product[1])
 
     cart_list = session['Cart']
     form = ApplyCouponForm(request.form)
-    form.coupons.choices = [('0', 'Select')] + [(i.get_id(), i.get_name()) for i in
-                                                coupons_list]  # get coupons that user have
+    form.coupons.choices = [('0', 'Select')] + [(i.get_id(), i.get_name()) for i in coupons_list]
     if request.method == "POST" and form.validate():
         for coupon in coupons_list:
             if int(form.coupons.data) == coupon.get_id():
-                for i, j in zip(cart_list, session['PreviousPrice']):  # comparing prices
+                for i, j in zip(cart_list, session['PreviousPrice']):
                     i[1] = j
-                    i[1] *= (1 - coupon.get_effect())  # getting the coupon effect of 15%
-                    i[1] = int(i[1])  # price = price
+                    i[1] *= (1 - coupon.get_effect())
+                    i[1] = int(i[1])
                     session['Cart'] = cart_list
-                    session['CouponApplied'] = coupon.get_id()  # get the specific coupon
+                    session['CouponApplied'] = coupon.get_id()
                 return redirect(url_for('payment', id=id))
 
-            elif int(form.coupons.data) == 0:  # empty form
+            elif int(form.coupons.data) == 0:
                 for i, j in zip(cart_list, session['PreviousPrice']):
                     i[1] = j
                     session['Cart'] = cart_list
                     session['CouponApplied'] = 0
-                return redirect(url_for('payment', id=id))  # user id
+                return redirect(url_for('payment', id=id))
     else:
         if 'CouponApplied' in session:
-            form.coupons.default = str(session['CouponApplied'])  # default choice or the coupon applied
-            form.process()  # process form doesnt submit it so just shows the effect
+            form.coupons.default = str(session['CouponApplied'])
+            form.process()
 
     return render_template('payment.html', address=address, total_amount=total_amount, form=form)
 
 
 @app.route('/stripe_payment/<int:lid>/<int:id>', methods=['GET', 'POST'])
 def stripe_payment(lid, id):
-    line_items_list = []  # list for items in the cart
+    line_items_list = []
     for item in session['Cart']:
-        if item[2] > 1:  # item qty more than 1
-            item[1] = int(item[1] / item[2])  # individual price of each thing
+        if item[2] > 1:
+            item[1] = int(item[1] / item[2])
             line_item = {
                 "price_data": {"product_data": {"name": item[0]}, "currency": 'sgd', "unit_amount": item[1] * 100},
-                "quantity": item[2]}  # create a line item
+                "quantity": item[2]}
         else:
             line_item = {
                 "price_data": {"product_data": {"name": item[0]}, "currency": 'sgd', "unit_amount": item[1] * 100},
-                "quantity": item[2]}  # just get the price
+                "quantity": item[2]}
         line_items_list.append(dict(line_item))
 
-    checkout_session = stripe.checkout.Session.create(  # creating checkout session
-        line_items=line_items_list,  # list of items in the cart
-        payment_method_types=['card'],  # payment type
-        mode='payment',  # mode payment not refund
-        success_url=request.host_url + 'stripe-success/' + str(id),  # send to success page
-        cancel_url=request.host_url + 'payment/' + str(lid) + '/' + str(id),  # send back to the payment page
+    checkout_session = stripe.checkout.Session.create(
+        line_items=line_items_list,
+        payment_method_types=['card'],
+        mode='payment',
+        success_url=request.host_url + 'stripe-success/' + str(id),
+        cancel_url=request.host_url + 'payment/' + str(lid) + '/' + str(id),
     )
     return redirect(checkout_session.url)
 
@@ -716,7 +716,7 @@ def stripe_success(id):
     user.set_money_spent(sum(total_amount))
     user.set_points(sum(total_amount))
     if 'CouponApplied' in session:
-        user.get_coupons().pop(session['CouponApplied'], None)  # remove used coupon
+        user.get_coupons().pop(session['CouponApplied'], None)
 
     db['User'] = user_dict
     db.close()
@@ -732,8 +732,8 @@ def stripe_success(id):
         print("Error in retrieving Products from storage.")
 
     for item in session['Cart']:
-        product = products_dict.get(item[4])  # product id
-        product.set_quantity((product.get_quantity() - int(item[2])))  # minus qty
+        product = products_dict.get(item[4])
+        product.set_quantity((product.get_quantity() - int(item[2])))
 
     db['Product'] = products_dict
     db.close()
@@ -752,20 +752,20 @@ def stripe_success(id):
     name = user.get_name()
     total = sum(total_amount)
     status = 'Processing'
-    address = session['Address']  # get address
+    address = session['Address']
     count = len(orders_dict)
 
-    order = Order(id, name, total, status, address, count)  # creating an order object
+    order = Order(id, name, total, status, address, count)
 
     order.set_items(session[
                         'Cart'])  # cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(), product.get_product_id()]
 
-    orders_dict[order.get_order_id()] = order  # appends all the items into a list
+    orders_dict[order.get_order_id()] = order
     db['Order'] = orders_dict
 
     db.close()
-    # clear all sessions
-    session.pop('Address', None)  #
+
+    session.pop('Address', None)
     session['Cart'].clear()
     session.pop('CouponApplied', None)
     session['PreviousPrice'].clear()
@@ -904,19 +904,21 @@ def customer_order():
         print('Error in retrieving Orders from database')
     db.close()
 
-    orders_list = []
-    items_list = {}
-    for key in orders_dict:
-        order = orders_dict.get(key)
-        if order.get_id() == user.get_uid():
-            orders_list.append(order)
-            items_list[order.get_order_id()] = order.get_items()
+    if len(orders_dict) > 0:
+        orders_list = []
+        items_list = {}
+        for key in orders_dict:
+            order = orders_dict.get(key)
+            if order.get_id() == user.get_uid():
+                orders_list.append(order)
+                items_list[order.get_order_id()] = order.get_items()
 
-    order1 = orders_list[0]
-    orders_list = orders_list[1::]
+        order1 = orders_list[0]
+        orders_list = orders_list[1::]
+        return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list, order1=order1)
 
-    return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list,
-                           order1=order1)
+    else:
+        return render_template('profile/profile-orders.html', user=user)
 
 
 @app.route('/profile/orders/details/<int:id>', methods=['GET', 'POST'])
