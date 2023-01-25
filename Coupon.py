@@ -5,7 +5,7 @@ class Coupon:
         self.__id = self.__count
         self.__name = name
         self.__price = price
-        self.__effect = effect/100
+        self.__effect = effect
 
     def set_name(self, name):
         self.__name = name

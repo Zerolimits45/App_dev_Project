@@ -20,12 +20,9 @@
             <div class="card reward-border points-image" style="width: 100%;">
                 <div class="card-body">
                     <div class="d-flex">
-                        <h2 class="text-colour me-5 mt-2">{{ coupon.get_effect()*100 }}%</h2>
+                        <h2 class="text-colour me-5 mt-2">{{ coupon.get_effect() }}%</h2>
                         <div>
                             <h4>{{ coupon.get_name() }}</h4>
-                            <a href="#" class="mt-5">
-                                <button class="redeem-btn">Redeem this</button>
-                            </a>
                         </div>
                     </div>
                 </div>

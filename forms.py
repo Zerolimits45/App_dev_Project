@@ -1,6 +1,6 @@
 from wtforms import Form, BooleanField, PasswordField, StringField, SelectField, SubmitField, TextAreaField, TelField, \
     validators, IntegerField, DateField
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length, regexp
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length, regexp, NumberRange
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 import shelve
@@ -212,7 +212,7 @@ class editAddressForm(Form):
 
 
 class quantityForm(Form):
-    quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
+    quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number."), NumberRange(min=0)])
     submit = SubmitField("Add To Cart")
 
 

@@ -387,7 +387,6 @@ def product_description(id):
         flash('Login Or Sign Up To Shop Our Products')
         return redirect(url_for('login'))
 
-    form = quantityForm(request.form)
     products_dict = {}
     db = shelve.open('Products', 'c')
     try:
@@ -401,6 +400,10 @@ def product_description(id):
 
     product = products_dict.get(id)
     cart_list = session['Cart']
+
+    form = quantityForm(request.form)
+    form.quantity.validators[1].max = product.get_quantity()
+    form.quantity.validators[1].message = "Not Enough In Stock"
 
     if request.method == 'POST' and form.validate():
         for i in cart_list:
@@ -651,7 +654,7 @@ def payment(lid, id):
             if int(form.coupons.data) == coupon.get_id():
                 for i, j in zip(cart_list, session['PreviousPrice']):
                     i[1] = j
-                    i[1] *= (1 - coupon.get_effect())
+                    i[1] *= ((100 - coupon.get_effect())/100)
                     i[1] = int(i[1])
                     session['Cart'] = cart_list
                     session['CouponApplied'] = coupon.get_id()
@@ -904,18 +907,19 @@ def customer_order():
         print('Error in retrieving Orders from database')
     db.close()
 
+    orders_list = []
+    items_list = {}
     if len(orders_dict) > 0:
-        orders_list = []
-        items_list = {}
         for key in orders_dict:
             order = orders_dict.get(key)
             if order.get_id() == user.get_uid():
                 orders_list.append(order)
                 items_list[order.get_order_id()] = order.get_items()
 
+        length = len(orders_list)
         order1 = orders_list[0]
         orders_list = orders_list[1::]
-        return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list, order1=order1)
+        return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list, order1=order1, l=length)
 
     else:
         return render_template('profile/profile-orders.html', user=user)
