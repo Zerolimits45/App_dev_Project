@@ -1,12 +1,12 @@
 class Order:
     def __init__(self, id, customer_name, total, status, address, count):
-        self.id = id
+        self.id = id #specify user
         self.customer_name = customer_name
         self.total = total
         self.status = status
         self.count = count
         self.count += 1
-        self.order_id = self.count
+        self.order_id = self.count #specify order
         self.address = address
         self.items = []
 
