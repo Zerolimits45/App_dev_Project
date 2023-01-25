@@ -14,10 +14,10 @@ import stripe
 from flask_mail import Mail, Message
 
 app = Flask(__name__)
-app.config['MAIL_SERVER'] = 'smtp.mailtrap.io'
+app.config['MAIL_SERVER']='smtp.mailtrap.io'
 app.config['MAIL_PORT'] = 2525
-app.config['MAIL_USERNAME'] = 'a4789bb86df61a'
-app.config['MAIL_PASSWORD'] = '1712eab7008b1f'
+app.config['MAIL_USERNAME'] = 'ced52a46a5aace'
+app.config['MAIL_PASSWORD'] = '9225240df0ac9c'
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 mail = Mail(app)
@@ -904,18 +904,21 @@ def customer_order():
         print('Error in retrieving Orders from database')
     db.close()
 
-    orders_list = []
-    items_list = {}
-    for key in orders_dict:
-        order = orders_dict.get(key)
-        if order.get_id() == user.get_uid():
-            orders_list.append(order)
-            items_list[order.get_order_id()] = order.get_items()
+    if len(orders_dict) > 0:
+        orders_list = []
+        items_list = {}
+        for key in orders_dict:
+            order = orders_dict.get(key)
+            if order.get_id() == user.get_uid():
+                orders_list.append(order)
+                items_list[order.get_order_id()] = order.get_items()
 
-    order1 = orders_list[0]
-    orders_list = orders_list[1::]
+        order1 = orders_list[0]
+        orders_list = orders_list[1::]
+        return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list, order1=order1)
 
-    return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list, order1=order1)
+    else:
+        return render_template('profile/profile-orders.html', user=user)
 
 
 @app.route('/profile/orders/details/<int:id>', methods=['GET', 'POST'])
