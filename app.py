@@ -278,6 +278,7 @@ def change_password(email):
 
     form = ChangePassword(request.form)
     if request.method == 'POST' and form.validate():
+
         user = user_dict.get(id)
 
         user.set_password(form.confirmPassword.data)
@@ -400,6 +401,10 @@ def product_description(id):
 
     product = products_dict.get(id)
     cart_list = session['Cart']
+
+    form = quantityForm(request.form)
+    form.quantity.validators[1].max = product.get_quantity()
+    form.quantity.validators[1].message = "Not Enough In Stock"
 
     if request.method == 'POST' and form.validate():
         for i in cart_list:
@@ -904,15 +909,16 @@ def customer_order():
         print('Error in retrieving Orders from database')
     db.close()
 
+    orders_list = []
+    items_list = {}
     if len(orders_dict) > 0:
-        orders_list = []
-        items_list = {}
         for key in orders_dict:
             order = orders_dict.get(key)
             if order.get_id() == user.get_uid():
                 orders_list.append(order)
                 items_list[order.get_order_id()] = order.get_items()
 
+        length = len(orders_list)
         order1 = orders_list[0]
         orders_list = orders_list[1::]
         return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list,
