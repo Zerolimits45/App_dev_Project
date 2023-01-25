@@ -81,12 +81,12 @@ class SignUpForm(Form):
 # add product form
 class CreateProductForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(message='Please input a product name.')])
-    price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
+    price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), NumberRange(min=0)])
     description = TextAreaField('Description', validators=[validators.Optional()])
     brand = SelectField('Brand', validators=[DataRequired()],
                         choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'),
                                  ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
-    quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
+    quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number."), NumberRange(min=0)])
     image = FileField('Image', validators=[FileRequired(),
                                            FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
     add = SubmitField('Add')
@@ -96,12 +96,12 @@ class CreateProductForm(FlaskForm):
 
 class EditProductForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired(message='Please input a product name.')])
-    price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), ])
+    price = IntegerField('Price', validators=[DataRequired(message="Price needs to be a number."), NumberRange(min=0)])
     description = TextAreaField('Description', validators=[validators.Optional()])
     brand = SelectField('Brand', validators=[DataRequired()],
                         choices=[('', 'Select'), ('Seiko', 'Seiko'), ('Orient', 'Orient'), ('Casio', 'Casio'),
                                  ('TAG Heuer', 'Tag Heuer'), ('Rolex', 'Rolex')], default='')
-    quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number.")])
+    quantity = IntegerField('Quantity', validators=[DataRequired(message="Quantity needs to be a number."), NumberRange(min=0)])
     image = FileField('Image', validators=[FileRequired(),
                                            FileAllowed(['jpg', 'png', 'jpeg'], 'File not Supported, Images Only')])
     save = SubmitField('Save')
@@ -218,15 +218,15 @@ class quantityForm(Form):
 
 class addCouponForm(Form):
     name = StringField('Coupon title', validators=[DataRequired()])
-    price = IntegerField('Points needed', validators=[DataRequired(message="Points needs to be a number.")])
-    effect = IntegerField('Percentage', validators=[DataRequired(message='Percentage needs to be a number.')])
+    price = IntegerField('Points needed', validators=[DataRequired(message="Points needs to be a number."), NumberRange(min=0)])
+    effect = IntegerField('Percentage', validators=[DataRequired(message='Percentage needs to be a number.'), NumberRange(min=0)])
     submit = SubmitField("Add Coupon")
 
 
 class editCouponForm(Form):
     name = StringField('Coupon title', validators=[DataRequired()])
-    price = IntegerField('Points needed', validators=[DataRequired(message="Points needs to be a number.")])
-    effect = IntegerField('Percentage', validators=[DataRequired(message='Percentage needs to be a number.')])
+    price = IntegerField('Points needed', validators=[DataRequired(message="Points needs to be a number."), NumberRange(min=0)])
+    effect = IntegerField('Percentage', validators=[DataRequired(message='Percentage needs to be a number.'), NumberRange(min=0)])
     submit = SubmitField("Save")
 
 
