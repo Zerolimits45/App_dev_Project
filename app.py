@@ -278,7 +278,6 @@ def change_password(email):
 
     form = ChangePassword(request.form)
     if request.method == 'POST' and form.validate():
-
         user = user_dict.get(id)
 
         user.set_password(form.confirmPassword.data)
@@ -539,15 +538,15 @@ def rolex():
 def cart():
     cart_list = session['Cart']
 
-    if len(session['PreviousPrice']) > 0:
-        if 'CouponApplied' in session:
-            for i, j in zip(cart_list, session['PreviousPrice']):
-                i[1] = j
-                session['Cart'] = cart_list
-            session.pop('CouponApplied', None)
+    if len(session['PreviousPrice']) > 0:  # previous price is the org price
+        if 'CouponApplied' in session:  # check if the coupoun is applied
+            for i, j in zip(cart_list, session['PreviousPrice']):  # making sure the 2 list is the same
+                i[1] = j  # revert price
+                session['Cart'] = cart_list  # update cart
+            session.pop('CouponApplied', None)  # remove coupon applied
 
     if len(cart_list) > 0:
-        session['PreviousPrice'] = [i[1] for i in cart_list]
+        session['PreviousPrice'] = [i[1] for i in cart_list]  # re updating the price
 
     return render_template('cart.html')
 
@@ -555,7 +554,7 @@ def cart():
 # Remove cart item
 @app.route('/removeitem/<int:id>', methods=['GET', 'POST'])
 def remove_item(id):
-    session['Cart'].pop(id - 1)
+    session['Cart'].pop(id - 1)  # remove item
     flash('Removed Item')
     return redirect(url_for('cart'))
 
@@ -564,10 +563,10 @@ def remove_item(id):
 def checkout():
     if len(session['Cart']) == 0:
         flash('Cart is Empty')
-        return redirect(url_for('cart'))
+        return redirect(url_for('cart'))  # checking if cart is empty
 
-    addresses_dict = {}
-    db = shelve.open('Addresses')
+    addresses_dict = {}  # address dict
+    db = shelve.open('Addresses')  # open address db
     try:
         if 'Address' in db:
             addresses_dict = db['Address']
@@ -578,7 +577,7 @@ def checkout():
     db.close()
 
     user_dict = {}
-    db = shelve.open('Users')
+    db = shelve.open('Users')  # open user db
     try:
         if 'User' in db:
             user_dict = db['User']
@@ -588,14 +587,14 @@ def checkout():
         print("Error in retrieving Users from storage.")
     db.close()
 
-    addresses_list = []
+    addresses_list = []  # append all addresses
     for key in addresses_dict:
-        address = addresses_dict.get(key)
+        address = addresses_dict.get(key)  # get the value associated with key
         addresses_list.append(address)
 
     user = user_dict.get(session['CurrentUser'])
 
-    return render_template('checkout.html', addresses_list=addresses_list, user=user)
+    return render_template('checkout.html', addresses_list=addresses_list, user=user)  # making it usable in html
 
 
 @app.route('/payment/<int:lid>/<int:id>', methods=['GET', 'POST'])
@@ -632,16 +631,16 @@ def payment(lid, id):
     except:
         print("Error in retrieving Users from storage.")
 
-    address = addresses_dict.get(lid)
-    session['Address'] = address.getlocation()
-    user = user_dict.get(id)
-    coupons_list = []
+    address = addresses_dict.get(lid)  # get the specific address
+    session['Address'] = address.getlocation()  # storing the addres in session
+    user = user_dict.get(id)  # get user specific user address
+    coupons_list = []  # coupns list
     for i in user.get_coupons():
-        coupons_list.append(coupons_dict.get(i))
+        coupons_list.append(coupons_dict.get(i))  # append into list
 
-    total_amount = []
+    total_amount = []  # list for total amt
     for product in session['Cart']:
-        total_amount.append(product[1])
+        total_amount.append(product[1]) # append product price into list
 
     cart_list = session['Cart']
     form = ApplyCouponForm(request.form)
@@ -915,7 +914,8 @@ def customer_order():
     order1 = orders_list[0]
     orders_list = orders_list[1::]
 
-    return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list, order1=order1)
+    return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list,
+                           order1=order1)
 
 
 @app.route('/profile/orders/details/<int:id>', methods=['GET', 'POST'])

@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <div class="d-flex">
                         <div class="ms-5 flex-grow-1">
-                            <h3 class="text-colour">{{ product[0] }}</h3>
+                            <h3 class="text-colour">{{ product[0] }}</h3> {# name #}
                             <h5 class="text-colour">Price: ${{ product[1] }}</h5>
                             <h5 class="text-colour">Quantity: {{ product[2] }}</h5>
                         </div>
@@ -43,7 +43,7 @@
         <div class="col-md-12">
             <div class="card card-border cart-background" style="width: 100%;">
                 <div class="card-body">
-                    <h2 class="text-centre text-colour">Total Amount: ${{ total_amount|sum() }}</h2>
+                    <h2 class="text-centre text-colour">Total Amount: ${{ total_amount|sum() }}</h2> {# sum of list #}
                     <form method="post" novalidate>
                         <div class="mb-2">
                             {{ formHelper.renderField(form.coupons) }}
