@@ -715,7 +715,7 @@ def stripe_success(id):
     user.set_money_spent(sum(total_amount))
     user.set_points(sum(total_amount))
     if 'CouponApplied' in session:
-        user.get_coupons().pop(session['CouponApplied'], None) # remove used coupon
+        user.get_coupons().pop(session['CouponApplied'], None)  # remove used coupon
 
     db['User'] = user_dict
     db.close()
