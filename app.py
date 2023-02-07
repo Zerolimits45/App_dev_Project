@@ -922,10 +922,11 @@ def customer_order():
         order1 = orders_list[0]
         orders_list = orders_list[1::]
         return render_template('profile/profile-orders.html', user=user, orders_list=orders_list, items_list=items_list,
-                               order1=order1)
+                               order1=order1, length=length)
 
     else:
-        return render_template('profile/profile-orders.html', user=user)
+        length = len(orders_list)
+        return render_template('profile/profile-orders.html', user=user, length=length)
 
 
 @app.route('/profile/orders/details/<int:id>', methods=['GET', 'POST'])
@@ -1511,14 +1512,14 @@ def orders_edit(id):
 
 
 # error pages
-@app.route('/error404')
-def error404():
-    return render_template('error/error404.html')
+@app.errorhandler(404)
+def error404(error):
+    return render_template('error/error404.html'), 404
 
 
-@app.route('/error500')
-def error500():
-    return render_template('error/error500.html')
+@app.errorhandler(500)
+def error500(error):
+    return render_template('error/error500.html'), 500
 
 
 if __name__ == '__main__':
