@@ -1,0 +1,6 @@
+    {% extends 'admin/adminbase-edit.html' %}
+    {% block content %}
+        <h1 class="text-colour text-centre  mt-5">Error 404</h1>
+        <p class="text-centre text-colour">This page does not exist</p>
+        <img src="{{ url_for('static', filename='images/404.png') }}" class="w-100">
+    {% endblock %}

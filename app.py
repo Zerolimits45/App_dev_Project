@@ -278,7 +278,6 @@ def change_password(email):
 
     form = ChangePassword(request.form)
     if request.method == 'POST' and form.validate():
-
         user = user_dict.get(id)
 
         user.set_password(form.confirmPassword.data)
@@ -545,13 +544,13 @@ def cart():
 
     if len(session['PreviousPrice']) > 0:  # previous price is the org price
         if 'CouponApplied' in session:  # check if the coupoun is applied
-            for i, j in zip(cart_list, session['PreviousPrice']): # making sure the 2 list is the same
-                i[1] = j # update cart
-                session['Cart'] = cart_list # update cart
+            for i, j in zip(cart_list, session['PreviousPrice']):  # making sure the 2 list is the same
+                i[1] = j  # update cart
+                session['Cart'] = cart_list  # update cart
             session.pop('CouponApplied', None)
 
     if len(cart_list) > 0:
-        session['PreviousPrice'] = [i[1] for i in cart_list] # re updating the price
+        session['PreviousPrice'] = [i[1] for i in cart_list]  # re updating the price
 
     return render_template('cart.html')
 
@@ -559,7 +558,7 @@ def cart():
 # Remove cart item
 @app.route('/removeitem/<int:id>', methods=['GET', 'POST'])
 def remove_item(id):
-    session['Cart'].pop(id - 1) # remove item
+    session['Cart'].pop(id - 1)  # remove item
     flash('Removed Item')
     return redirect(url_for('cart'))
 
@@ -567,11 +566,11 @@ def remove_item(id):
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     if len(session['Cart']) == 0:
-        flash('Cart is Empty') # checking if cart is empty
+        flash('Cart is Empty')  # checking if cart is empty
         return redirect(url_for('cart'))
 
     addresses_dict = {}  # address dict
-    db = shelve.open('Addresses') # open address db
+    db = shelve.open('Addresses')  # open address db
     try:
         if 'Address' in db:
             addresses_dict = db['Address']
@@ -582,7 +581,7 @@ def checkout():
     db.close()
 
     user_dict = {}
-    db = shelve.open('Users') # open user db
+    db = shelve.open('Users')  # open user db
     try:
         if 'User' in db:
             user_dict = db['User']
@@ -592,14 +591,14 @@ def checkout():
         print("Error in retrieving Users from storage.")
     db.close()
 
-    addresses_list = [] # append all addresses
+    addresses_list = []  # append all addresses
     for key in addresses_dict:
-        address = addresses_dict.get(key) # get the value associated with key
+        address = addresses_dict.get(key)  # get the value associated with key
         addresses_list.append(address)
 
     user = user_dict.get(session['CurrentUser'])
 
-    return render_template('checkout.html', addresses_list=addresses_list, user=user) # making it usable in html
+    return render_template('checkout.html', addresses_list=addresses_list, user=user)  # making it usable in html
 
 
 @app.route('/payment/<int:lid>/<int:id>', methods=['GET', 'POST'])
@@ -636,32 +635,33 @@ def payment(lid, id):
     except:
         print("Error in retrieving Users from storage.")
 
-    address = addresses_dict.get(lid) # get the specific address
-    session['Address'] = address.getlocation() # storing the addres in session
-    user = user_dict.get(id) # get user specific user address
-    coupons_list = [] # coupns list
+    address = addresses_dict.get(lid)  # get the specific address
+    session['Address'] = address.getlocation()  # storing the addres in session
+    user = user_dict.get(id)  # get user specific user address
+    coupons_list = []  # coupns list
     for i in user.get_coupons():
-        coupons_list.append(coupons_dict.get(i)) # append into list
+        coupons_list.append(coupons_dict.get(i))  # append into list
 
     total_amount = []
     for product in session['Cart']:
-        total_amount.append(product[1]) # append product price into list
+        total_amount.append(product[1])  # append product price into list
 
     cart_list = session['Cart']
     form = ApplyCouponForm(request.form)
-    form.coupons.choices = [('0', 'Select')] + [(i.get_id(), i.get_name()) for i in coupons_list] # get coupons that user have
+    form.coupons.choices = [('0', 'Select')] + [(i.get_id(), i.get_name()) for i in
+                                                coupons_list]  # get coupons that user have
     if request.method == "POST" and form.validate():
         for coupon in coupons_list:
             if int(form.coupons.data) == coupon.get_id():
-                for i, j in zip(cart_list, session['PreviousPrice']): # comparing prices
+                for i, j in zip(cart_list, session['PreviousPrice']):  # comparing prices
                     i[1] = j
-                    i[1] *= (1 - coupon.get_effect()) # getting the coupon effect of 15%
-                    i[1] = int(i[1]) # price = price
+                    i[1] *= (1 - coupon.get_effect())  # getting the coupon effect of 15%
+                    i[1] = int(i[1])  # price = price
                     session['Cart'] = cart_list
-                    session['CouponApplied'] = coupon.get_id() # get the specific coupon
+                    session['CouponApplied'] = coupon.get_id()  # get the specific coupon
                 return redirect(url_for('payment', id=id))
 
-            elif int(form.coupons.data) == 0: # empty form
+            elif int(form.coupons.data) == 0:  # empty form
                 for i, j in zip(cart_list, session['PreviousPrice']):
                     i[1] = j
                     session['Cart'] = cart_list
@@ -669,8 +669,8 @@ def payment(lid, id):
                 return redirect(url_for('payment', id=id))  # user id
     else:
         if 'CouponApplied' in session:
-            form.coupons.default = str(session['CouponApplied']) # default choice or the coupon applied
-            form.process() # process form doesnt submit it so just shows the effect
+            form.coupons.default = str(session['CouponApplied'])  # default choice or the coupon applied
+            form.process()  # process form doesnt submit it so just shows the effect
 
     return render_template('payment.html', address=address, total_amount=total_amount, form=form)
 
@@ -680,22 +680,22 @@ def stripe_payment(lid, id):
     line_items_list = []  # list for items in the cart
     for item in session['Cart']:
         if item[2] > 1:  # item qty more than 1
-            item[1] = int(item[1] / item[2]) # individual price of each thing
+            item[1] = int(item[1] / item[2])  # individual price of each thing
             line_item = {
                 "price_data": {"product_data": {"name": item[0]}, "currency": 'sgd', "unit_amount": item[1] * 100},
-                "quantity": item[2]} # create a line item
+                "quantity": item[2]}  # create a line item
         else:
             line_item = {
                 "price_data": {"product_data": {"name": item[0]}, "currency": 'sgd', "unit_amount": item[1] * 100},
-                "quantity": item[2]} # just get the price
+                "quantity": item[2]}  # just get the price
         line_items_list.append(dict(line_item))
 
-    checkout_session = stripe.checkout.Session.create( # creating checkout session
-        line_items=line_items_list, # list of items in the cart
-        payment_method_types=['card'], # payment type
-        mode='payment', # mode payment not refund
-        success_url=request.host_url + 'stripe-success/' + str(id), # send to success page
-        cancel_url=request.host_url + 'payment/' + str(lid) + '/' + str(id), # send back to the payment page
+    checkout_session = stripe.checkout.Session.create(  # creating checkout session
+        line_items=line_items_list,  # list of items in the cart
+        payment_method_types=['card'],  # payment type
+        mode='payment',  # mode payment not refund
+        success_url=request.host_url + 'stripe-success/' + str(id),  # send to success page
+        cancel_url=request.host_url + 'payment/' + str(lid) + '/' + str(id),  # send back to the payment page
     )
     return redirect(checkout_session.url)
 
@@ -756,10 +756,10 @@ def stripe_success(id):
     name = user.get_name()
     total = sum(total_amount)
     status = 'Processing'
-    address = session['Address'] # get address
+    address = session['Address']  # get address
     count = len(orders_dict)
 
-    order = Order(id, name, total, status, address, count) # creating an order object
+    order = Order(id, name, total, status, address, count)  # creating an order object
 
     order.set_items(session[
                         'Cart'])  # cart = [product.get_name(), form.quantity.data * product.get_price(), form.quantity.data, product.get_image(), product.get_product_id()]
@@ -1508,6 +1508,17 @@ def orders_edit(id):
         db.close()
 
         return render_template('admin/admin-orders-edit.html', form=form)
+
+
+# error pages
+@app.route('/error404')
+def error404():
+    return render_template('error/error404.html')
+
+
+@app.route('/error500')
+def error500():
+    return render_template('error/error500.html')
 
 
 if __name__ == '__main__':
