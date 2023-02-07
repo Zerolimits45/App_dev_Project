@@ -1,0 +1,6 @@
+    {% extends 'admin/adminbase-edit.html' %}
+    {% block content %}
+        <h1 class="text-colour text-centre  mt-5">Error 500</h1>
+        <p class="text-centre text-colour">Internal Server Error</p>
+        <img src="{{ url_for('static', filename='images/500.png') }}" class="w-100">
+    {% endblock %}
