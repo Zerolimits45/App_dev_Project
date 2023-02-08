@@ -29,6 +29,15 @@
             <button class="reset-btn mb-3">Reset</button>
         </a>
     </div>
+    <form method="post">
+        <div class="mb-2">
+            {{ formHelper.renderField(form2.search) }}
+        </div>
+        <div class="mb-3">
+            <input type="submit" value="Search" class="login-btn">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        </div>
+    </form>
     <div class="row">
         <div class="col-12">
             <div class="text-white">
