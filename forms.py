@@ -314,3 +314,29 @@ class ChangePassword(Form):
                                                                             message="Password needs to be at least 6 characters long.")])
     confirmPassword = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Change')
+
+
+class Search(Form):
+    search = StringField('Search By Email')
+    submit = SubmitField("Search")
+
+    def validate_search(self, search):
+        users_dict = {}
+        db = shelve.open('Users', 'c')
+        try:
+            if 'User' in db:
+                users_dict = db['User']
+            else:
+                db['User'] = users_dict
+        except:
+            print("Error in retrieving Feedbacks from storage.")
+        db.close()
+
+        user_list = []
+        for key in users_dict:
+            user = users_dict.get(key)
+            user_list.append(user.get_email())
+
+        if self.search.data:
+            if self.search.data not in user_list:
+                raise ValidationError('Email Not Found')

@@ -992,7 +992,17 @@ def users():
         elif form.sort.data == "Descending":
             users_list.sort(key=lambda x: x.get_points(), reverse=True)
 
-    return render_template('admin/admin-home.html', count=len(users_list), users_list=users_list, form=form)
+    form2 = Search(request.form)
+    if request.method == 'POST' and form2.validate():
+        if form2.search.data:
+            users_list = []
+            for key in user_dict:
+                user = user_dict.get(key)
+                if user.get_email() == form2.search.data:
+                    users_list.append(user)
+                    return render_template('admin/admin-home.html', count=len(users_list), users_list=users_list, form=form, form2=form2)
+
+    return render_template('admin/admin-home.html', count=len(users_list), users_list=users_list, form=form, form2=form2)
 
 
 # Admin edit users
