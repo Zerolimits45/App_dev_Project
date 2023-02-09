@@ -12,9 +12,11 @@ from Coupon import *
 from Orders import *
 import stripe
 from flask_mail import Mail, Message
+import plotly.express as px
+import pandas as pd
 
 app = Flask(__name__)
-app.config['MAIL_SERVER'] = 'smtp.mailtrap.io'
+app.config['MAIL_SERVER']='sandbox.smtp.mailtrap.io'
 app.config['MAIL_PORT'] = 2525
 app.config['MAIL_USERNAME'] = 'ced52a46a5aace'
 app.config['MAIL_PASSWORD'] = '9225240df0ac9c'
@@ -738,6 +740,7 @@ def stripe_success(id):
     for item in session['Cart']:
         product = products_dict.get(item[4])
         product.set_quantity((product.get_quantity() - int(item[2])))  # minus qty
+        product.set_sold(int(item[2]))
 
     db['Product'] = products_dict
     db.close()
@@ -1530,6 +1533,42 @@ def error404(error):
 @app.errorhandler(500)
 def error500(error):
     return render_template('error/error500.html'), 500
+
+
+@app.route('/admin/graph')
+def graph():
+    products_dict = {}
+    db = shelve.open('Products', 'c')
+    try:
+        if 'Product' in db:
+            products_dict = db['Product']
+        else:
+            db['Product'] = products_dict
+    except:
+        print("Error in retrieving Products from storage.")
+
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        products_list.append(product)
+
+    # Create a sample dataframe
+    df = pd.DataFrame({
+        'Product': [item.get_name() for item in products_list],
+        'Sales': [x.get_sold() for x in products_list]
+    })
+
+    # Create the Plotly figure
+    fig = px.bar(df, x='Product', y='Sales', color='Sales', text_auto=True, color_continuous_scale='rdbu', height=700)
+    fig.update_layout(
+        font=dict(
+            size=28,  # Set the font size here
+            color="RebeccaPurple"
+        )
+    )
+
+    # Return the template with the figure embedded
+    return render_template('admin/graph.html', plot=fig.to_html(full_html=False))
 
 
 if __name__ == '__main__':
