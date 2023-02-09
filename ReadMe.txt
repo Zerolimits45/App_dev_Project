@@ -11,8 +11,8 @@ Instructions to run app:
 Team Members:
  Aloysius (Orders)
  Kenneth (Users)
- Xie Hong (rewards)
- Riyaz (feedback)
+ Xie Hong (Rewards)
+ Riyaz (Feedback)
  Jia Hui (Products)
 
 Additional features
