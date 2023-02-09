@@ -8,6 +8,7 @@ class Product:
         self.__description = description
         self.__brand = brand
         self.__quantity = quantity
+        self.__sold = 0
         self.__image = image
 
     def get_product_id(self):
@@ -31,6 +32,9 @@ class Product:
     def get_image(self):
         return self.__image
 
+    def get_sold(self):
+        return self.__sold
+
     def set_product_id(self, pid):
         self.__product_id = pid
 
@@ -51,3 +55,6 @@ class Product:
 
     def set_image(self, image):
         self.__image = image
+
+    def set_sold(self, sold):
+        self.__sold += sold

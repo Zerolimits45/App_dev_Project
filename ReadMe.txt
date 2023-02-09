@@ -19,10 +19,17 @@ Additional features
 
 Kenneth:
 - Forget Password
-- Search User by email
+    - Using Flask-Mail to email the user the link to change password
+    - Used Mailtrap to capture the test emails
+    - For example, changing john@example.com password.
+    - The link To Change Password will be http://127.0.0.1:5000/changepassword/john%40example.com
+
+- Search User by Email
+- Sort Users By Points Using Lambda
+- Created Sales Data Graph Using plotly
 
 Riyaz:
-- Sort Function
+- Filter Feedbacks By Reason Function
 
 Aloysius:
 - Strip Api Payment
