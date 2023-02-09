@@ -6,21 +6,21 @@
     <div class="row">
         <div class="col-md-12">
             {% for product in session['Cart'] %}
-            <div class="card card-border cart-background" style="width: 100%;">
-                <div class="card-body">
-                    <div class="d-flex">
-                        <div class="ms-5 flex-grow-1">
-                            <h3 class="text-colour">{{ product[0] }}</h3> {# name #}
-                            <h5 class="text-colour">Price: ${{ product[1] }}</h5>
-                            <h5 class="text-colour">Quantity: {{ product[2] }}</h5>
-                        </div>
-                        <div class="me-5">
-                            <img src="{{ url_for('static', filename='uploads/' + product[3]) }}"
-                                 class="cart-image-payment">
+                <div class="card card-border cart-background" style="width: 100%;">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="ms-5 flex-grow-1">
+                                <h3 class="text-colour">{{ product[0] }}</h3> {# name #}
+                                <h5 class="text-colour">Price: ${{ product[1] }}</h5>
+                                <h5 class="text-colour">Quantity: {{ product[2] }}</h5>
+                            </div>
+                            <div class="me-5">
+                                <img src="{{ url_for('static', filename='uploads/' + product[3]) }}"
+                                     class="cart-image-payment">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             {% endfor %}
         </div>
     </div>
@@ -45,12 +45,14 @@
                 <div class="card-body">
                     <h2 class="text-centre text-colour">Total Amount: ${{ total_amount|sum() }}</h2> {# sum of list #}
                     <form method="post" novalidate>
-                        <div class="mb-2">
-                            {{ formHelper.renderField(form.coupons) }}
-                        </div>
-                        <div class="d-flex justify-content-center">
-                            <input type="submit" value="Apply" class="login-btn">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="row">
+                            <div class="mb-2 w-50 col-md-10">
+                                {{ formHelper.renderField(form.coupons) }}
+                            </div>
+                            <div class="col-md-2 mt-3">
+                                <input type="submit" value="Apply" class="apply-btn">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            </div>
                         </div>
                     </form>
                     <a href="{{ url_for('stripe_payment', lid=address.getlocationid(), id=address.getid() ) }}">

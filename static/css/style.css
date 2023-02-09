@@ -305,4 +305,44 @@ a {
     text-decoration: underline;
 }
 
+.search-btn {
+    margin-top: 21px;
+    padding: 9px 101px;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+}
+
+.search-btn:hover {
+    background-color: #7fff88;
+    color: white;
+}
+
+.show-user-address-btn {
+    padding: 5px 30px;
+    border-radius: 10px;
+    border: none;
+    background-color: #2280ff;
+}
+
+.apply-btn {
+    margin-top: 6px;
+    padding: 9px 40px;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+}
+
+.apply-btn:hover {
+    background-color: #7fff88;
+    color: white;
+}
+
+.details{
+    padding: 5px 30px;
+    border-radius: 10px;
+    border: none;
+    background-color: #2280ff;
+    color: white;
+}
 

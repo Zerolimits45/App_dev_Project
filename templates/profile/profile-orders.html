@@ -34,7 +34,7 @@
                         {% endif %}
                         {% endfor %}
                         <a href="{{ url_for('customer_order_details', id=order1.get_order_id() ) }}">
-                            <button>View Order Details</button>
+                            <button class="search-btn">View Order Details</button>
                         </a>
                     </div>
                     <div class="mt-3 me-5">
@@ -57,7 +57,7 @@
                         {% endif %}
                         {% endfor %}
                         <a href="{{ url_for('customer_order_details', id=order.get_order_id() ) }}">
-                            <button>View Order Details</button>
+                            <button class="details">View Order Details</button>
                         </a>
                     </div>
                     <div class="mt-3 me-5">
