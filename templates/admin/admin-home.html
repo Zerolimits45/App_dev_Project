@@ -30,12 +30,14 @@
         </a>
     </div>
     <form method="post">
-        <div class="mb-2">
-            {{ formHelper.renderField(form2.search) }}
-        </div>
-        <div class="mb-3">
-            <input type="submit" value="Search" class="login-btn">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="row mb-4">
+            <div class="col-md-9">
+                {{ formHelper.renderField(form2.search) }}
+            </div>
+            <div class="col-md-3">
+                <input type="submit" value="Search" class="search-btn">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            </div>
         </div>
     </form>
     <div class="row">
@@ -63,7 +65,7 @@
                         <td>{{ user.get_points() }}</td>
                         <td>
                             <a href="{{ url_for('user_address', id=user.get_uid()) }}" class="me-1">
-                                <button class="edit-qty-btn">Show User Addresses</button>
+                                <button class="show-user-address-btn">Address Details</button>
                             </a>
                             <a href="{{ url_for('editUsers', id=user.get_uid()) }}" class="me-1">
                                 <button class="edit-btn">Edit</button>
