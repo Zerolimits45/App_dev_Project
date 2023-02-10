@@ -114,7 +114,7 @@ class ContactForm(Form):
     phonenumber = StringField("Phone Number",
                               validators=[regexp("^[689]\d{7}$", message="Please enter a valid phone number")])
     reason = SelectField('Reason', validators=[DataRequired()],
-                         choices=[('', 'Select'), ('General Inquiry', 'General Inquiry'), ('Complaint', 'Complaint'),
+                         choices=[('', 'Select'), ('General Enquiry', 'General Enquiry'), ('Complaint', 'Complaint'),
                                   ('Feedback', 'Feedback')], default='')
     message = TextAreaField('Explain your Problem', validators=[DataRequired(), Length(min=1, max=1024,
                                                                                        message="Please leave a message within 1024 characters")])
