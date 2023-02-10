@@ -878,7 +878,7 @@ def redeem_reward(id, cid):
     user = user_dict.get(id)
     coupon = coupons_dict.get(cid)
     user.set_coupons(cid)
-    user.set_points(user.get_points() - coupon.get_price())
+    user.set_new_points(user.get_points() - coupon.get_price())
     db['User'] = user_dict
     db.close()
 
