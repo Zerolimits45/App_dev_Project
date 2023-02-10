@@ -388,7 +388,6 @@ def product_description(id):
         flash('Login Or Sign Up To Shop Our Products')
         return redirect(url_for('login'))
 
-    form = quantityForm(request.form)
     products_dict = {}
     db = shelve.open('Products', 'c')
     try:
