@@ -2,11 +2,13 @@ Admin id: admin@gmail.com
 Admin password: password
 
 Instructions to run app:
-1. Please sign up as a user before you use the website
+1. Please ensure all packages are downloaded from the requirements.txt
 
-2. To be able to get a coupon you first have to purchase an item, so you can get points to redeem a coupon
+2. Please sign up as a user before you use the website
 
-3. You may use 4242 4242 4242 4242 as a dummy card number in the stripe api
+3. To be able to get a coupon you first have to purchase an item, so you can get points to redeem a coupon
+
+4. You may use 4242 4242 4242 4242 as a dummy card number in the stripe api
 
 Team Members:
  Aloysius (Orders)
