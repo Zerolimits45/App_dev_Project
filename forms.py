@@ -277,7 +277,7 @@ class EditOrderForm(Form):
     save = SubmitField('Save')
 
     def validate_address(self, address):
-        g = geocoder.osm(self.address.data)
+        g = geocoder.arcgis(self.address.data)
         if not g.ok:
             raise ValidationError('This Location Does Not Exist')
 
