@@ -29,6 +29,9 @@ class User:
     def set_points(self, money_spent):
         self.__points += (money_spent/20)*10
 
+    def set_new_points(self, points):
+        self.__points -= points
+
     def set_coupons(self, coupon):
         self.__coupons.append(coupon)
 
