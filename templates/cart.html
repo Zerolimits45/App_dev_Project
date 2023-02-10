@@ -24,7 +24,7 @@
                                 <h3 class="text-colour">{{ product[0] }}</h3>
                                 <h5 class="text-colour">Price: ${{ product[1] }}</h5>
                                 <h5 class="text-colour">Quantity: {{ product[2] }}</h5>
-                                <a href="{{ url_for('product_description', id=session['Cart'].index(product)+1 ) }}">
+                                <a href="{{ url_for('product_description', id=product[4] ) }}">
                                     <button class="edit-qty-btn">Edit Quantity</button>
                                 </a>
                             </div>

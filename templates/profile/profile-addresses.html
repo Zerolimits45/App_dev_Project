@@ -50,7 +50,7 @@
                             <td>{{ address.getname() }}</td>
                             <td>{{ address.getlocation() }}</td>
                             <td>
-                                <a href="{{ url_for('edit_address', id=session['CurrentUser']) }}" class="me-1">
+                                <a href="{{ url_for('edit_address', id=address.getlocationid()) }}" class="me-1">
                                     <button class="edit-btn">Edit</button>
                                 </a>
                                 <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#myModal_{{address.getlocationid()}}">Delete</button>
