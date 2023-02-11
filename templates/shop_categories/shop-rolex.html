@@ -4,18 +4,20 @@
     <hr class="text-colour">
     {% include "includes/shop/shop-navbar-rolex.html" %}
     <div class="row">
-        <div class="col-md-4">
-            <div class="card card-border background" style="width: 100%;">
-                <div class="card-body">
-                    <div class="d-flex flex-column justify-content-center">
-                        {% for product in products_list %}
-                        <img src="{{ url_for('static', filename='uploads/' + product.get_image()) }}" class="shop-image">
-                        <a class="card-text text-colour text-centre" href="{{ url_for('product_description', id=product.get_product_id() ) }}">{{ product.get_name() }}</a>
-                        <p class="card-text text-colour text-centre bigger-font">${{ product.get_price() }}</p>
-                        {% endfor %}
+        {% for product in products_list %}
+            <div class="col-md-4">
+                <div class="card card-border background" style="width: 100%;">
+                    <div class="card-body">
+                        <div class="d-flex flex-column justify-content-center">
+                            <img src="{{ url_for('static', filename='uploads/' + product.get_image()) }}"
+                                 class="shop-image">
+                            <a class="card-text text-colour text-centre"
+                               href="{{ url_for('product_description', id=product.get_product_id() ) }}">{{ product.get_name() }}</a>
+                            <p class="card-text text-colour text-centre bigger-font">${{ product.get_price() }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endfor %}
     </div>
 {% endblock %}
