@@ -33,7 +33,7 @@
                 <td>{{ order.get_status() }}</td>
                 <td>
                     <a href="{{ url_for('order_details', id=order.get_order_id()) }}">
-                        <button>Order Details</button>
+                        <button class="details">Order Details</button>
                     </a>
                     <a href="{{ url_for('orders_edit', id=order.get_order_id()) }}">
                         <button class="edit-btn">Edit</button>
