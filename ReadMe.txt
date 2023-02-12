@@ -1,4 +1,4 @@
-Admin id: admin@gmail.com
+Admin id: admin@mail.com
 Admin password: password
 
 Instructions to run app:
