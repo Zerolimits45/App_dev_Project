@@ -1,5 +1,8 @@
-Admin id: admin@mail.com
+Admin Email: admin@mail.com
 Admin password: password
+
+User Email: aloysius@gmail.com
+User Password: 123456
 
 Instructions to run app:
 1. Please ensure all packages are downloaded from the requirements.txt
